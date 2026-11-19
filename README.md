@@ -15,9 +15,10 @@ This repository is both a **playable game** and the **team's workbench**: art sp
 | **Artist** | [`art/README.md`](art/README.md) | which folder each kind of asset goes in, file sizes and how the grid maths works, naming rules, the list of art that already exists, the handover process, the submission area |
 | **Writer** | [`script/README.md`](script/README.md) | how one line of dialogue is written in the game, how many characters per row, colour codes and expression indexes, character voice, templates you can copy, where drafts go |
 | Looking for what a file is for | [`docs/FILE_GUIDE.md`](docs/FILE_GUIDE.md) | what every folder and key file in the repository is for, and whether you can change it |
-| Looking for a line or a switch | [`docs/GAME_REFERENCE.md`](docs/GAME_REFERENCE.md) | the 23 events, 8 switches and the walkthrough for both maps |
+| Looking for a line or a switch | [`docs/GAME_REFERENCE.md`](docs/GAME_REFERENCE.md) | the three maps, switches, key items and walkthrough |
 | Wanting to read the full script | [`script/ACT1_SCRIPT.md`](script/ACT1_SCRIPT.md) | every in-game line of Act I, in order of appearance |
 | Adding files to the repository | [`docs/DEPLOY.md`](docs/DEPLOY.md) | where to put them, how to commit, how to publish |
+| Checking the updated asset list | [Act I art and playtest notes (中文)](docs/ACT1_PLAYTEST.zh-CN.md) | new scenery, motion sheets, controls and audio formats |
 | Just wanting to play | <https://jeddakholmes-byte.github.io/RememberGame/> | play in the browser, nothing to install |
 
 ---
@@ -31,7 +32,7 @@ This repository is both a **playable game** and the **team's workbench**: art sp
 | **Open it in MV to edit** | Open `game/Game.rpgproject` with RPG Maker MV 1.6.1 |
 | **Run it on your own machine** | `cd game && python3 -m http.server 8080`, then open <http://127.0.0.1:8080/>. **Double-clicking `index.html` does not work** — it must be served over HTTP |
 
-Controls: **arrow keys** to walk, **Enter / Space** to look or talk, **Esc / X** for the menu. The screen is 816 × 624 and only the keyboard is used.
+Controls: **WASD or arrows** to move, **Shift** to run, **C** to crouch, **E / Enter / Space** to interact, **I** for Inventory, and **Esc** to pause. The game runs at 816 × 624.
 
 ---
 
@@ -55,14 +56,14 @@ RememberGame/
 │   ├── DEPLOY.md              how to add files, how to publish
 │   ├── VERIFICATION.md        the browser test record taken before going live
 │   └── screenshots/           game screenshots
-└── game/                  ← the game itself. 1169 files, 400 MB, an RPG Maker MV 1.6.1 project
+└── game/                  ← the game itself, an RPG Maker MV 1.6.1 project
 ```
 
 **Languages.** Every document above except `script/ACT1_SCRIPT.md` also exists in Chinese at the same path with `.zh-CN.md` appended — `README.zh-CN.md`, `art/README.zh-CN.md`, and so on. Each page links to its other language in the first line. `ACT1_SCRIPT.md` has no translation because it is the English text the game actually plays.
 
 ---
 
-**`game/` is the complete project, and nothing in it has been deleted or changed.** It is two things at once:
+**`game/` contains the current project.** It is two things at once:
 
 - the project you open in RPG Maker MV, and
 - the web build GitHub Pages is serving.
@@ -73,33 +74,21 @@ This is not a coincidence. An RPG Maker MV game is already HTML5 + JavaScript, w
 
 ## What the game is
 
-**Act I, a single chapter.** Grace is seven, at her grandmother's funeral. She walks once around the cemetery, looks at the headstone, talks to Mom, Dad, Uncle James and Grandpa, then follows Dad into a flashback — the last argument between Dad and Grandma before she died. The chapter ends with Mom handing Grace the box Grandma left her.
+Act I follows seven-year-old Grace at her grandmother's funeral. Find Grandma's grave, talk to Dad, and witness a flashback. Back in the cemetery, Mom gives Grace a music box. Wind it at the bench to enter Grandma's house as Grace remembers it, then find Grandma. The chapter ends with their reunion; the house stays open to explore.
 
-| | |
+| Map | Role |
 |---|---|
-| Protagonist | Grace (`$RM_Grace`) |
-| Maps | `Act1_Cemetery` (Map001) and `Act1_House_Flashback` (Map002), both 24 × 18 |
-| Event commands | 508 |
-| Dialogue | 81 message boxes, 187 lines, 513 words |
-| Length | about ten minutes |
-| Switches | 8, all named — see [`docs/GAME_REFERENCE.md`](docs/GAME_REFERENCE.md) |
-| Ending | `ACT I — END / The things Grandma left behind.`, then back to the title screen |
+| `Act1_Cemetery` (Map001) | Open exploration, rainy funeral, five distinct graves and optional keepsakes |
+| `Act1_House_Flashback` (Map002) | Scripted scene in cool, overcast light |
+| `Act1_Memory_Home` (Map003) | Warm memory, optional family photograph and reunion |
 
-There is no branching and you cannot fail. The only optional content is four side conversations and the examination of the flowers and the old headstone.
+## Current build
 
----
-
-## Build state — read before you edit
-
-The build is **not final**, but the polish pass has started.
-
-**Already in.** The four characters all have their own sprites and face sets, and Grandpa's event exists at (16,7). The opening CONTROLS card is written, and the menu and save access rules are in place. Mom's long conversation only plays once and the two flower clusters share a switch. Dad's page-2 transfer goes to Map002 (12,13) facing right. The headstone and the box close-ups fade in and out instead of popping. **The box handover works again:** after Mom's line the screen fades out, Mom and Grace are repositioned to (8,14) and (9,14), and the scene fades back in on the two of them at the bench — so the full-screen `RM_Box` picture reads as a deliberate cutaway rather than a teleport.
-
-**Still not in.** The flashback still plays two screen shakes and two `RM_KnockHard` sounds, and Grace's last step there is still "move up" rather than "step backward". No event carries an `<RMHint:>` note yet, and `RM_Act1_Experience` sits in `js/plugins/` without being switched on in `js/plugins.js` — so there are no interaction hints and no footsteps. `data/System.json` still reports `locale: "zh_CN"` with the default Chinese UI terms, `optFollowers: true` and title BGM volume 90. Event 017 still contains the typo `abondoned`, and the ending's Control Switches command still turns on the whole range 0001–0005 instead of only 0005.
-
-**Nothing was changed to hide this.** No file in `game/` was edited when the repository was published.
-
-The build does run, though: it has been played in a browser from New Game through the flashback to the `ACT I — END` card, with no script errors and no missing assets. See [docs/VERIFICATION.md](docs/VERIFICATION.md).
+- The original cover stays on the main menu. Full-screen illustrations mark story beats.
+- Exploration uses a following camera, an objective card, and contextual interaction prompts.
+- The music box, faded ribbon, and family photograph are native MV key items. The item menu is read-only in Act I.
+- The title, cemetery, flashback, and keepsake share a musical motif. Background sound and footsteps use separate tracks with Ogg and M4A files.
+- Start with **New Game** for this revision; old saves carry the original switch and event states. See [verification](docs/VERIFICATION.md).
 
 ---
 

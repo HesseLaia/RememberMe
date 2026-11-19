@@ -15,9 +15,10 @@
 | **美工** | [`art/README.md`](art/README.zh-CN.md) | 每类素材放在哪个文件夹、文件尺寸和格子怎么算、命名规则、现有素材清单、交付流程、投稿区 |
 | **剧本** | [`script/README.md`](script/README.zh-CN.md) | 一句台词在游戏里怎么写、每行多少字、颜色码和表情索引、角色语气、可直接抄的模板、草稿放哪 |
 | 想知道某个文件是干嘛的 | [`docs/FILE_GUIDE.md`](docs/FILE_GUIDE.zh-CN.md) | 仓库里每个文件夹、每个关键文件的用途，以及"能不能改" |
-| 想知道某句话、某个开关在哪 | [`docs/GAME_REFERENCE.md`](docs/GAME_REFERENCE.zh-CN.md) | 两张地图的 23 个事件、8 个开关、通关流程 |
+| 想知道某句话、某个开关在哪 | [`docs/GAME_REFERENCE.md`](docs/GAME_REFERENCE.zh-CN.md) | 三张地图、开关、关键物品和通关流程 |
 | 想读完整的剧本 | [`script/ACT1_SCRIPT.md`](script/ACT1_SCRIPT.md) | 第一幕全部游戏内文本，按出现顺序 |
 | 要往仓库里加文件 | [`docs/DEPLOY.md`](docs/DEPLOY.zh-CN.md) | 怎么放、怎么提交、怎么发布上线 |
+| 想看本版素材清单与试玩步骤 | [第一幕美术与试玩](docs/ACT1_PLAYTEST.zh-CN.md) | 新场景、动作、输入和音频规格 |
 | 想直接玩 | <https://jeddakholmes-byte.github.io/RememberGame/> | 浏览器里直接玩，不用装任何东西 |
 
 ---
@@ -31,7 +32,7 @@
 | **用 MV 打开改** | 用 RPG Maker MV 1.6.1 打开 `game/Game.rpgproject` |
 | **在自己电脑上跑** | `cd game && python3 -m http.server 8080`，然后开 <http://127.0.0.1:8080/>。**双击 `index.html` 打不开**，必须走 HTTP |
 
-操作：**方向键**走，**Enter / 空格**看或说话，**Esc / X** 开菜单。画面 816 × 624，只用键盘。
+操作：**WASD／方向键**移动，**Shift** 跑，**C** 蹲，**E／Enter／空格**调查，**I** 打开物品栏，**Esc** 暂停。画面 816 × 624。
 
 ---
 
@@ -56,14 +57,14 @@ RememberGame/
 │   ├── DEPLOY.md              怎么加文件、怎么发布
 │   ├── VERIFICATION.md        上线前的浏览器实跑记录
 │   └── screenshots/           游戏截图
-└── game/                  ← 游戏本体。1169 个文件，400 MB，RPG Maker MV 1.6.1 工程
+└── game/                  ← 游戏本体，RPG Maker MV 1.6.1 工程
 ```
 
 **两种语言。** 除了 `script/ACT1_SCRIPT.md`，上面每份文档都有中文版：把路径加上 `.zh-CN.md` 就是——`README.zh-CN.md`、`art/README.zh-CN.md`，以此类推。每份文件第一行都有切换另一种语言的链接。`ACT1_SCRIPT.md` 没有中文版，因为它就是游戏里真正播的英文台词。
 
 ---
 
-**`game/` 就是完整的工程，没有删改过任何东西。** 它同时是两样东西：
+**`game/` 是当前完整工程。** 它同时是两样东西：
 
 - 用 RPG Maker MV 打开的工程，和
 - GitHub Pages 正在托管的那份网页版。
@@ -74,33 +75,21 @@ RememberGame/
 
 ## 游戏是什么
 
-**第一幕，单章。** Grace 七岁，在奶奶的葬礼上。她在墓园里走一圈，看墓碑，跟妈妈、爸爸、舅舅和爷爷说话，然后跟着爸爸进了一段闪回——奶奶走之前，爸爸和她最后那一次争吵。这一章结束在妈妈把奶奶留给 Grace 的盒子递给她。
+七岁的 Grace 在奶奶的葬礼上沿碎石路来到墓碑前，和爸爸交谈后看见一段闪回。回到墓园，她找妈妈拿到八音盒，在长椅旁亲手转动发条，走进记忆里的家。第一幕收在她与奶奶重逢；对话结束后还可以自由调查。
 
-| | |
+| 地图 | 内容 |
 |---|---|
-| 主角 | Grace（`$RM_Grace`） |
-| 地图 | `Act1_Cemetery`（Map001）和 `Act1_House_Flashback`（Map002），都是 24 × 18 |
-| 事件指令 | 508 条 |
-| 对白 | 81 个对话框、187 行、513 个词 |
-| 时长 | 大约十分钟 |
-| 开关 | 8 个，全部已命名 — 见 [`docs/GAME_REFERENCE.md`](docs/GAME_REFERENCE.zh-CN.md) |
-| 结局 | `ACT I — END / The things Grandma left behind.`，然后回到标题画面 |
+| `Act1_Cemetery`（Map001） | 阴雨葬礼、五座可辨认的墓碑和可选调查 |
+| `Act1_House_Flashback`（Map002） | 冷灰窗光下的剧情闪回 |
+| `Act1_Memory_Home`（Map003） | 暖光记忆屋、家庭照片和重逢 |
 
-没有分支，不会失败。可选内容只有四段支线对话和花朵、旧墓碑的调查。
+## 当前版本
 
----
-
-## 当前完成度 —— 动手改之前先看这段
-
-这一版**还不是最终版**，但打磨已经开始了。
-
-**已经做进去的。** 四个人物都有自己独立的行走图和脸图，爷爷的事件在 (16,7)。开场有 CONTROLS 操作说明卡，菜单和存档权限规则已经就位。妈妈那段长对话只会播一次，两处花共用一个开关。爸爸第 2 页的传送改到了 Map002 (12,13) 朝右。墓碑和盒子两张全屏特写改成了淡入淡出，不再是硬切。**结局交盒子的过场也恢复了**：妈妈说完那句之后画面淡出，妈妈和 Grace 被重新放到 (8,14) 和 (9,14)，再淡回来时两个人已经站在长椅前——这样全屏的 `RM_Box` 图才读得出是"刻意转场"，而不是凭空糊上去。
-
-**还没做进去的。** 闪回里还留着两次屏幕震动和两次 `RM_KnockHard` 音效，Grace 在闪回里的最后一步仍是"向下一步"而不是"后退一步"。还没有任何事件带 `<RMHint:>` 备注，`RM_Act1_Experience` 就在 `js/plugins/` 里但没在 `js/plugins.js` 里打开——所以没有互动提示、也没有脚步声。`data/System.json` 目前还是 `locale: "zh_CN"` 配默认中文界面用语、`optFollowers: true`、标题音乐音量 90。017 号事件里那个拼错的 `abondoned` 还在；结局那条「开关操作」仍然一次把 0001–0005 全开，而原版只开 0005。
-
-**没有为了掩盖这些改过任何东西。** 仓库发布时，`game/` 里一个文件都没动过。
-
-不过它是能跑通的：已经在浏览器里从 New Game 一路打到 `ACT I — END`，没有脚本报错，也没有缺素材——记录在 [`docs/VERIFICATION.md`](docs/VERIFICATION.zh-CN.md)。
+- 主菜单保留原版封面；关键剧情使用全屏插画。
+- 探索地图有跟随镜头、当前目标和近距离调查提示。
+- 八音盒、蓝丝带、家庭照片都是 MV 原生关键物品；第一幕物品栏供查看，留给后续解谜调用。
+- 新作四段共享动机的音乐及环境、脚步和物件音效，提供 Ogg、M4A 两种格式。
+- 本版请从 **New Game** 开始，旧存档会携带原版的开关与事件状态。参见[验证记录](docs/VERIFICATION.zh-CN.md)。
 
 ---
 
@@ -117,4 +106,4 @@ RememberGame/
 
 用 **RPG Maker MV 1.6.1**（Kadokawa / Degica）制作。`game/img/` 和 `game/audio/` 里大部分文件是 RPG Maker MV 自带的 Run Time Package 素材，随工程一起分发是 RTP 本身的用途。
 
-**这个游戏自己做的素材，文件名都以 `RM_` 开头**——标题画、两张远景底图、墓碑和遗物箱特写、七张脸图、四张行走图、碰撞图块、标题音乐，以及大约三十个音效。
+**本项目制作的素材使用 `RM_` 命名**，包括场景、人物、插画、纸色皮肤及音频。

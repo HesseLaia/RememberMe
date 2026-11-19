@@ -2,6 +2,15 @@
 
 # Verification record — does the build actually run?
 
+## Current build · 2026-11-19
+
+- Two Node checks pass for MV asset dimensions, map reachability, event wiring, key items, and Ogg/M4A files.
+- Tested the MV runtime over local HTTP in Chrome: run and crouch, animated rain, ribbon pickup and inventory, then the New Game route through the flashback, closing and reopening the music box, reuniting with Grandma, and pause/resume.
+- Mobile, old saves, and subjective audio quality were not manually tested. The section below and its screenshots describe the previous build.
+
+## Archive · original release
+
+
 Before this repository was published, the shipped build in `game/` was run in a real browser and driven from **New Game** to the end of Act I. This file records exactly what was done, what was observed, and what was *not* tested.
 
 Screenshots are in [`screenshots/`](screenshots/).
