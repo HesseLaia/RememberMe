@@ -16,6 +16,8 @@ namespace RememberMe
         public Vector2 Motion { get; private set; }
         public bool Running { get; private set; }
         readonly RaycastHit2D[] hits = new RaycastHit2D[8];
+        const float TurnTapSeconds = .035f;
+        const float Acceleration = 32f;
         Vector2 intent;
         bool sprint;
         float currentSpeed;
@@ -30,7 +32,7 @@ namespace RememberMe
             {
                 int priorFacing = View.Facing;
                 View.Face(input);
-                if (intent == Vector2.zero && priorFacing != View.Facing) turnUntil = Time.time + .05f;
+                if (intent == Vector2.zero && priorFacing != View.Facing) turnUntil = Time.time + TurnTapSeconds;
             }
             else turnUntil = 0;
             intent = input;
@@ -64,7 +66,7 @@ namespace RememberMe
             Vector2 direction = CanMove && Time.time >= turnUntil ? intent : Vector2.zero;
             Running = CanMove && sprint && !Crouched && direction.sqrMagnitude > 0;
             float speed = Crouched ? CrouchSpeed : Running ? RunSpeed : WalkSpeed;
-            currentSpeed = direction == Vector2.zero ? 0 : Mathf.MoveTowards(currentSpeed, speed, 22 * Time.fixedDeltaTime);
+            currentSpeed = direction == Vector2.zero ? 0 : Mathf.MoveTowards(currentSpeed, speed, Acceleration * Time.fixedDeltaTime);
             Vector2 delta = direction * (currentSpeed * Time.fixedDeltaTime);
             Vector2 before = Body.position;
             Motion = Resolve(delta);
@@ -106,6 +108,12 @@ namespace RememberMe
             return distance;
         }
 
-        void LateUpdate() => View.Pose(Motion, Running, Crouched, Time.deltaTime, CanMove ? intent : Vector2.zero);
+        void LateUpdate()
+        {
+            Vector2 movement = CanMove && intent != Vector2.zero ? Motion : Vector2.zero;
+            float speed = Crouched ? CrouchSpeed : Running ? RunSpeed : WalkSpeed;
+            float strideRate = speed > 0 ? Mathf.Clamp01(movement.magnitude / (speed * Time.fixedDeltaTime)) : 0;
+            View.Pose(movement, Running, Crouched, Time.deltaTime, CanMove ? intent : Vector2.zero, strideRate);
+        }
     }
 }

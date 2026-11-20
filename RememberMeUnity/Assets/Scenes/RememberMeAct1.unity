@@ -4067,7 +4067,19 @@ MonoBehaviour:
   - {fileID: 21300000, guid: ebdc4c5a5dc1e5a4aa03d117048bddf6, type: 3}
   - {fileID: 21300000, guid: 1bd5f4f3339543f4cabc8beabab9c57a, type: 3}
   - {fileID: 21300000, guid: 68b0a8e1338bcc04bb0e021b48cda0a4, type: 3}
-  Walk: []
+  Walk:
+  - {fileID: 21300000, guid: ec51e6a501b74b52a67b25f71e49f7d7, type: 3}
+  - {fileID: 21300000, guid: 0f2839765ae54e31ae6e00dc078862c8, type: 3}
+  - {fileID: 21300000, guid: d08ea0b0409843e8b28c4c7522d827f7, type: 3}
+  - {fileID: 21300000, guid: 58caae873ade47f3a46a996cb2ee5dc0, type: 3}
+  - {fileID: 21300000, guid: 9efa67ea0e584cb3886d2018a3a0ba06, type: 3}
+  - {fileID: 21300000, guid: b66be62abc114389af3f208546e87f69, type: 3}
+  - {fileID: 21300000, guid: 129d852861dc47758be2963b84144af6, type: 3}
+  - {fileID: 21300000, guid: 5b5a22a217634377a4636e8dbc24a83e, type: 3}
+  - {fileID: 21300000, guid: a208f9bf27654544b99fbc419fcf2eff, type: 3}
+  - {fileID: 21300000, guid: c310e544f7f54b178de1ddf98cc37c22, type: 3}
+  - {fileID: 21300000, guid: 8906e908488c4dc5a62c973784dd616c, type: 3}
+  - {fileID: 21300000, guid: 815918733a7c477788ffa9a77cee4d7c, type: 3}
   Run: []
   Crouch: []
   Cry: []
@@ -13182,7 +13194,19 @@ MonoBehaviour:
   - {fileID: 21300000, guid: ebdc4c5a5dc1e5a4aa03d117048bddf6, type: 3}
   - {fileID: 21300000, guid: 1bd5f4f3339543f4cabc8beabab9c57a, type: 3}
   - {fileID: 21300000, guid: 68b0a8e1338bcc04bb0e021b48cda0a4, type: 3}
-  Walk: []
+  Walk:
+  - {fileID: 21300000, guid: ec51e6a501b74b52a67b25f71e49f7d7, type: 3}
+  - {fileID: 21300000, guid: 0f2839765ae54e31ae6e00dc078862c8, type: 3}
+  - {fileID: 21300000, guid: d08ea0b0409843e8b28c4c7522d827f7, type: 3}
+  - {fileID: 21300000, guid: 58caae873ade47f3a46a996cb2ee5dc0, type: 3}
+  - {fileID: 21300000, guid: 9efa67ea0e584cb3886d2018a3a0ba06, type: 3}
+  - {fileID: 21300000, guid: b66be62abc114389af3f208546e87f69, type: 3}
+  - {fileID: 21300000, guid: 129d852861dc47758be2963b84144af6, type: 3}
+  - {fileID: 21300000, guid: 5b5a22a217634377a4636e8dbc24a83e, type: 3}
+  - {fileID: 21300000, guid: a208f9bf27654544b99fbc419fcf2eff, type: 3}
+  - {fileID: 21300000, guid: c310e544f7f54b178de1ddf98cc37c22, type: 3}
+  - {fileID: 21300000, guid: 8906e908488c4dc5a62c973784dd616c, type: 3}
+  - {fileID: 21300000, guid: 815918733a7c477788ffa9a77cee4d7c, type: 3}
   Run: []
   Crouch: []
   Cry: []
@@ -24001,6 +24025,19 @@ MonoBehaviour:
   - {fileID: 21300000, guid: d417bbe3dc9691d45b20d35140ae5fc7, type: 3}
   - {fileID: 21300000, guid: 483026ba1fb4059459cddfe7ef64d2b1, type: 3}
   - {fileID: 21300000, guid: 5234c5f45e85ee14d9098ba9f158d48b, type: 3}
+  WalkDiagonal:
+  - {fileID: 21300000, guid: dfd78d294fea44b088a9b1aac9e67d6d, type: 3}
+  - {fileID: 21300000, guid: 18748ea69f5145a9869ea9aeac0bc2d2, type: 3}
+  - {fileID: 21300000, guid: cc463327f64c4d74bb538443044862a0, type: 3}
+  - {fileID: 21300000, guid: 4d39374184c7454b8a14928832c359ed, type: 3}
+  - {fileID: 21300000, guid: 054c8d6f28d14ac6949fe11e8cb4bfcb, type: 3}
+  - {fileID: 21300000, guid: 11bc066e12b24812be55fb28f9511987, type: 3}
+  - {fileID: 21300000, guid: 93ab2718ce33458bb4d12b51701764b9, type: 3}
+  - {fileID: 21300000, guid: 778a797e3c26467cbe210e65457c9e81, type: 3}
+  - {fileID: 21300000, guid: 9493497b1df7468bb81051df88762f6c, type: 3}
+  - {fileID: 21300000, guid: 7fa28c7b59374dac89ecc29295765861, type: 3}
+  - {fileID: 21300000, guid: 0ec899b958404e7a93686d1550e226af, type: 3}
+  - {fileID: 21300000, guid: 701abdba8b6a405a8ebd80f4fbe93a0b, type: 3}
   Run:
   - {fileID: 21300000, guid: 816dc189fe84daf4f82c7030b3847b9e, type: 3}
   - {fileID: 21300000, guid: eaac7e4b053693c4e942ca44da78f1d8, type: 3}

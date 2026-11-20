@@ -50,6 +50,7 @@ namespace RememberMe.Editor
                 Interior(world.transform, RoomId.Hall), Interior(world.transform, RoomId.Study) };
             var actor = Actor(world.transform, "Grace", "GraceIdlePolished", P(576, 640), .88f);
             actor.Walk = Frames("GraceWalkPolished");
+            actor.WalkDiagonal = Frames("GraceWalkDiagonal");
             actor.Run = Frames("GraceRunPolished");
             actor.Crouch = Frames("GraceCrouchPolished");
             game.Grace = actor.gameObject.AddComponent<GraceMotor>();
@@ -454,6 +455,7 @@ namespace RememberMe.Editor
             var view = obj.AddComponent<ActorView>();
             view.Renderer = obj.AddComponent<SpriteRenderer>(); view.Renderer.sharedMaterial = material;
             view.Idle = Enumerable.Range(0, 4).Select(index => Image("Actors/" + sprites + "/" + index)).ToArray();
+            if (sprites == "Grandma") view.Walk = Frames("GrandmaWalk");
             view.Renderer.sprite = view.Idle[0];
             obj.transform.localScale *= height / view.Idle[0].bounds.size.y;
             view.Pose(Vector2.zero, false, false, 0);
