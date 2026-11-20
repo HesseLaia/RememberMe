@@ -2,7 +2,9 @@
 
 # Remember Me — Act I
 
-**CSS5190 Game Your Psychology: AI, Creativity & Mental Health**（香港中文大学（深圳），2026 秋季）期末项目的回合制叙事游戏，RPG Maker MV 1.6.1 制作。
+**CSS5190 Game Your Psychology: AI, Creativity & Mental Health**（香港中文大学（深圳），2026 秋季）期末项目的叙事游戏，提供 Unity 和 RPG Maker MV 两个版本。
+
+**Unity 版** · [可编辑工程和协作说明](RememberMeUnity/README.md) · [第一幕在线试玩](https://jeddakholmes-byte.github.io/RememberGame/unity/)
 
 这个仓库同时是**可玩的游戏**和**小组的工作台**：素材规范、剧本规范、文件清单、最新工程，都在这里。
 
@@ -57,7 +59,9 @@ RememberGame/
 │   ├── DEPLOY.md              怎么加文件、怎么发布
 │   ├── VERIFICATION.md        上线前的浏览器实跑记录
 │   └── screenshots/           游戏截图
-└── game/                  ← 游戏本体，RPG Maker MV 1.6.1 工程
+├── game/                  ← RPG Maker MV 1.6.1 工程和试玩版
+├── RememberMeUnity/        ← 可编辑的 Unity 工程与素材
+└── unity/                 ← 已上线的 Unity WebGL 成品
 ```
 
 **两种语言。** 除了 `script/ACT1_SCRIPT.md`，上面每份文档都有中文版：把路径加上 `.zh-CN.md` 就是——`README.zh-CN.md`、`art/README.zh-CN.md`，以此类推。每份文件第一行都有切换另一种语言的链接。`ACT1_SCRIPT.md` 没有中文版，因为它就是游戏里真正播的英文台词。

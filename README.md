@@ -2,7 +2,9 @@
 
 # Remember Me — Act I
 
-A turn-based narrative game for the final project of **CSS5190 Game Your Psychology: AI, Creativity & Mental Health** (The Chinese University of Hong Kong, Shenzhen, Fall 2026), made with RPG Maker MV 1.6.1.
+A narrative game for the final project of **CSS5190 Game Your Psychology: AI, Creativity & Mental Health** (The Chinese University of Hong Kong, Shenzhen, Fall 2026), with Unity and RPG Maker MV editions.
+
+**Unity edition** · [Editable project and team setup](RememberMeUnity/README.md) · [Play Act I in your browser](https://jeddakholmes-byte.github.io/RememberGame/unity/)
 
 This repository is both a **playable game** and the **team's workbench**: art specs, script specs, file lists and the latest build all live here.
 
@@ -56,7 +58,9 @@ RememberGame/
 │   ├── DEPLOY.md              how to add files, how to publish
 │   ├── VERIFICATION.md        the browser test record taken before going live
 │   └── screenshots/           game screenshots
-└── game/                  ← the game itself, an RPG Maker MV 1.6.1 project
+├── game/                  ← the RPG Maker MV 1.6.1 project and player
+├── RememberMeUnity/        ← the editable Unity project and its assets
+└── unity/                 ← the published Unity WebGL build
 ```
 
 **Languages.** Every document above except `script/ACT1_SCRIPT.md` also exists in Chinese at the same path with `.zh-CN.md` appended — `README.zh-CN.md`, `art/README.zh-CN.md`, and so on. Each page links to its other language in the first line. `ACT1_SCRIPT.md` has no translation because it is the English text the game actually plays.

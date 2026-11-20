@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#12201c">
+  <title>Remember Me</title>
+  <style>
+    :root { color-scheme: dark; background: #111a17; color: #f4ead6; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100dvh; display: grid; place-content: center; font-family: Georgia, serif; padding: 12px; }
+    main { width: min(1280px, calc(100vw - 24px), max(320px, (100dvh - 88px) * 1.6)); }
+    header { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+    h1 { margin: 0; font-size: 1.25rem; font-weight: 400; }
+    button { background: #263a31; color: #f4ead6; border: 1px solid #91795a; padding: 5px 10px; font: inherit; }
+    button:enabled { cursor: pointer; }
+    button:disabled { color: #b1a793; }
+    button:focus-visible, canvas:focus-visible { outline: 2px solid #ebcf94; outline-offset: 2px; }
+    #stage { position: relative; aspect-ratio: 8 / 5; background: #18231e; border: 1px solid #78664e; }
+    canvas { display: block; width: 100%; height: 100%; }
+    #loading { position: absolute; inset: 0; display: grid; place-items: center; background: #18231e; padding: 16px; text-align: center; }
+    #loading[hidden] { display: none; }
+    footer { margin-top: 8px; color: #d8c8ae; font: .85rem system-ui, sans-serif; }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Remember Me</h1>
+      <button type="button" id="fullscreen" disabled>Fullscreen</button>
+    </header>
+    <div id="stage">
+      <canvas id="unity-canvas" tabindex="0" aria-label="Remember Me game"></canvas>
+      <div id="loading" role="status" aria-live="polite">Loading Remember Me…</div>
+    </div>
+    <footer>Keyboard · WASD or arrows to move · Shift to run · C to crouch · E to interact · Esc for the menu</footer>
+  </main>
+  <script>
+    const canvas = document.querySelector('#unity-canvas');
+    const loading = document.querySelector('#loading');
+    const fullscreen = document.querySelector('#fullscreen');
+    const config = {
+      dataUrl: 'Build/{{{ DATA_FILENAME }}}',
+      frameworkUrl: 'Build/{{{ FRAMEWORK_FILENAME }}}',
+      codeUrl: 'Build/{{{ CODE_FILENAME }}}',
+      streamingAssetsUrl: 'StreamingAssets',
+      companyName: {{{ JSON.stringify(COMPANY_NAME) }}},
+      productName: {{{ JSON.stringify(PRODUCT_NAME) }}},
+      productVersion: {{{ JSON.stringify(PRODUCT_VERSION) }}},
+      devicePixelRatio: Math.min(window.devicePixelRatio || 1, 1.5)
+    };
+
+    const loader = document.createElement('script');
+    loader.src = 'Build/{{{ LOADER_FILENAME }}}';
+    loader.onerror = () => { loading.textContent = 'The game could not load. Refresh this page to try again.'; };
+    loader.onload = () => {
+      createUnityInstance(canvas, config, (progress) => {
+        loading.textContent = `Loading Remember Me… ${Math.round(100 * progress)}%`;
+      }).then((game) => {
+        loading.hidden = true;
+        canvas.focus({ preventScroll: true });
+        fullscreen.disabled = !document.fullscreenEnabled;
+        fullscreen.addEventListener('click', () => {
+          game.SetFullscreen(document.fullscreenElement ? 0 : 1);
+          canvas.focus({ preventScroll: true });
+        });
+      }).catch((error) => {
+        loading.textContent = 'The game could not start. Try a desktop browser with WebGL enabled.';
+        console.error(error);
+      });
+    };
+    canvas.addEventListener('pointerdown', () => canvas.focus({ preventScroll: true }));
+    document.body.append(loader);
+  </script>
+</body>
+</html>
