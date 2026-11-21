@@ -526,13 +526,15 @@ namespace RememberMe.Editor
             string path = Art + key + ".png";
             if (AssetImporter.GetAtPath(path) is not TextureImporter importer)
                 throw new FileNotFoundException("Missing art " + path);
+            // Double-resolution actors have the same world-space footprint at double PPU.
+            float pixelsPerUnit = importer.spritePixelsPerUnit == Pixels * 2 ? Pixels * 2 : Pixels;
             var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path);
-            if (sprite && Mathf.Abs(sprite.pivot.y) < .01f && sprite.pixelsPerUnit == Pixels &&
+            if (sprite && Mathf.Abs(sprite.pivot.y) < .01f && sprite.pixelsPerUnit == pixelsPerUnit &&
                 importer.maxTextureSize == 4096 && importer.textureCompression == TextureImporterCompression.Uncompressed)
                 return sprite;
             importer.textureType = TextureImporterType.Sprite;
             importer.spriteImportMode = SpriteImportMode.Single;
-            importer.spritePixelsPerUnit = Pixels;
+            importer.spritePixelsPerUnit = pixelsPerUnit;
             importer.maxTextureSize = 4096;
             importer.textureCompression = TextureImporterCompression.Uncompressed;
             importer.filterMode = FilterMode.Bilinear;
@@ -546,8 +548,8 @@ namespace RememberMe.Editor
             importer.SetTextureSettings(settings);
             importer.SaveAndReimport();
             sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path);
-            if (!sprite || Mathf.Abs(sprite.pivot.y) > .01f || sprite.pixelsPerUnit != Pixels)
-                throw new InvalidOperationException("Expected 96 PPU with a bottom pivot: " + path);
+            if (!sprite || Mathf.Abs(sprite.pivot.y) > .01f || sprite.pixelsPerUnit != pixelsPerUnit)
+                throw new InvalidOperationException($"Expected {pixelsPerUnit} PPU with a bottom pivot: " + path);
             return sprite;
         }
         static AudioClip Audio(string key)

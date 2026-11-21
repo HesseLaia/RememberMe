@@ -52,7 +52,17 @@ namespace RememberMe
             saveFile = Path.Combine(Application.persistentDataPath, qa ? "qa-act1.json" : "act1.json");
 #endif
             if (qa) Debug.Log("REMEMBER_SMOKE_STARTED");
-            Application.targetFrameRate = Application.isMobilePlatform ? 60 : -1;
+            if (Application.isMobilePlatform)
+            {
+                int refreshRate = Mathf.RoundToInt((float)Screen.currentResolution.refreshRateRatio.value);
+                Application.targetFrameRate = Mathf.Clamp(refreshRate, 30, 120);
+            }
+            else
+            {
+                // Render on each display refresh, including 120 Hz when available.
+                QualitySettings.vSyncCount = 1;
+                Application.targetFrameRate = -1;
+            }
             HUD.Initialize();
             graceExpressions = LoadExpressions("Grace", new[] { 0, 1, 2, 3, 4, 5, 6, 7 });
             grandmaExpressions = LoadExpressions("Grandma", new[] { 0, 1, 4, 2, 3, 5, 6, 7 });

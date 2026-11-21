@@ -10,16 +10,9 @@
     * { box-sizing: border-box; }
     body { margin: 0; min-height: 100dvh; display: grid; place-content: center; font-family: Georgia, serif; padding: 12px; }
     main { width: min(1280px, calc(100vw - 24px), max(320px, (100dvh - 88px) * 1.6)); }
-    main:fullscreen, main.full-window { width: 100%; height: 100%; padding: 12px; background: #111a17;
-      display: grid; place-content: center;
-      grid-template-columns: min(calc(100vw - 24px), max(160px, (100dvh - 100px) * 1.6)); }
-    main.full-window { position: fixed; inset: 0; z-index: 10; overflow: auto; }
-    header { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+    header { margin-bottom: 8px; }
     h1 { margin: 0; font-size: 1.25rem; font-weight: 400; }
-    button { background: #263a31; color: #f4ead6; border: 1px solid #91795a; padding: 5px 10px; font: inherit; }
-    button:enabled { cursor: pointer; }
-    button:disabled { color: #b1a793; }
-    button:focus-visible, canvas:focus-visible { outline: 2px solid #ebcf94; outline-offset: 2px; }
+    canvas:focus-visible { outline: 2px solid #ebcf94; outline-offset: 2px; }
     #stage { position: relative; aspect-ratio: 8 / 5; background: #18231e; border: 1px solid #78664e; }
     canvas { display: block; width: 100%; height: 100%; }
     #loading { position: absolute; inset: 0; display: grid; place-items: center; background: #18231e; padding: 16px; text-align: center; }
@@ -33,10 +26,9 @@
   </style>
 </head>
 <body>
-  <main id="game-page">
+  <main>
     <header>
       <h1>Remember Me</h1>
-      <button type="button" id="fullscreen" disabled>Fullscreen</button>
     </header>
     <div id="stage">
       <canvas id="unity-canvas" tabindex="0" aria-label="Remember Me game"></canvas>
@@ -52,9 +44,7 @@
   </main>
   <script>
     const canvas = document.querySelector('#unity-canvas');
-    const gamePage = document.querySelector('#game-page');
     const loading = document.querySelector('#loading');
-    const fullscreen = document.querySelector('#fullscreen');
     const config = {
       dataUrl: 'Build/{{{ DATA_FILENAME }}}',
       frameworkUrl: 'Build/{{{ FRAMEWORK_FILENAME }}}',
@@ -75,36 +65,6 @@
       }).then(() => {
         loading.hidden = true;
         canvas.focus({ preventScroll: true });
-        fullscreen.disabled = false;
-        const isFullWindow = () => gamePage.classList.contains('full-window');
-        const updateFullscreen = () => {
-          const active = document.fullscreenElement === gamePage || isFullWindow();
-          fullscreen.textContent = active ? 'Exit fullscreen' : 'Fullscreen';
-          fullscreen.setAttribute('aria-pressed', String(active));
-        };
-        document.addEventListener('fullscreenchange', updateFullscreen);
-        document.addEventListener('keydown', (event) => {
-          if (event.key !== 'Escape' || !isFullWindow()) return;
-          event.preventDefault();
-          event.stopImmediatePropagation();
-          gamePage.classList.remove('full-window');
-          updateFullscreen();
-          canvas.focus({ preventScroll: true });
-        }, true);
-        fullscreen.addEventListener('click', async () => {
-          if (isFullWindow()) gamePage.classList.remove('full-window');
-          else if (document.fullscreenElement === gamePage) await document.exitFullscreen();
-          else {
-            try {
-              if (!document.fullscreenEnabled) throw new Error('Fullscreen is unavailable.');
-              await gamePage.requestFullscreen();
-            } catch {
-              gamePage.classList.add('full-window');
-            }
-          }
-          updateFullscreen();
-          canvas.focus({ preventScroll: true });
-        });
       }).catch((error) => {
         loading.textContent = 'The game could not start. Try a desktop browser with WebGL enabled.';
         console.error(error);
