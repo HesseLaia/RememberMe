@@ -25,8 +25,9 @@ namespace RememberMe
         RectTransform chapterCenter;
         Image illustration;
         Image illustrationBacking;
-        RectTransform windingFrame;
-        Image windingHand;
+        Material windingMaterial;
+        static readonly int CrankAngle = Shader.PropertyToID("_CrankAngle");
+        static readonly int CylinderTravel = Shader.PropertyToID("_CylinderTravel");
         Image memoryButterfly;
         Image splash;
         Image portrait;
@@ -78,15 +79,6 @@ namespace RememberMe
             illustration.preserveAspect = true;
             illustration.raycastTarget = false;
             illustration.enabled = false;
-            windingFrame = Rect(illustration.rectTransform, "Music box close-up bounds", Vector2.one * .5f,
-                Vector2.one * .5f, Vector2.zero, Vector2.zero);
-            windingFrame.gameObject.AddComponent<RectMask2D>();
-            windingHand = Surface(windingFrame, "Grace winds the key", Color.white,
-                Vector2.one * .5f, Vector2.one * .5f, Vector2.zero, Vector2.zero);
-            windingHand.sprite = Resources.Load<Sprite>("MusicBox/Hand");
-            windingHand.raycastTarget = false;
-            windingHand.rectTransform.pivot = new Vector2(.96f, .51f);
-            windingHand.enabled = false;
             chapterCard = Surface(art, "Chapter card", new Color(Night.r, Night.g, Night.b, .81f),
                 Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero).rectTransform;
             chapterCenter = Rect(chapterCard, "Chapter lettering", new(.5f,.5f), new(.5f,.5f), new(-440,-95), new(440,95));
@@ -294,7 +286,7 @@ namespace RememberMe
         public void HideDialogue() => dialogue.gameObject.SetActive(false);
         public void Picture(Sprite image)
         {
-            windingHand.enabled = false;
+            illustration.material = null;
             illustration.sprite = image;
             illustration.enabled = image != null;
             illustrationBacking.enabled = image != null;
@@ -302,23 +294,22 @@ namespace RememberMe
 
         public void WindMusicBox(float progress)
         {
-            windingHand.enabled = windingHand.sprite && illustration.sprite && progress < 1;
-            if (!windingHand.enabled) return;
-            Vector2 panel = illustration.rectTransform.rect.size;
-            Vector2 image = illustration.sprite.rect.size;
-            Vector2 fitted = image * Mathf.Min(panel.x / image.x, panel.y / image.y);
-            windingFrame.sizeDelta = fitted;
-            // The grip point is the center of the brass loop in Mechanism.png.
-            Vector2 grip = Vector2.Scale(new Vector2(.182f, .754f) - Vector2.one * .5f, fitted);
-            float reach = Mathf.SmoothStep(0, 1, Mathf.InverseLerp(0, .25f, progress))
-                * (1 - Mathf.SmoothStep(0, 1, Mathf.InverseLerp(.80f, 1, progress)));
-            float turn = Mathf.InverseLerp(.25f, .80f, progress);
-            var hand = windingHand.rectTransform;
-            hand.anchoredPosition = grip - new Vector2((1 - reach) * fitted.x * .13f, (1 - reach) * fitted.y * .08f);
-            float width = fitted.x * .26f;
-            hand.sizeDelta = new Vector2(width, width * windingHand.sprite.rect.height / windingHand.sprite.rect.width);
-            hand.localEulerAngles = new Vector3(0, 0, 19 * Mathf.Sin(turn * Mathf.PI * 4));
-            windingHand.color = new Color(1, 1, 1, reach);
+            if (!illustration.sprite) return;
+            if (!windingMaterial)
+            {
+                var shader = Resources.Load<Shader>("MusicBox/WindingMotion");
+                if (!shader || !shader.isSupported) return;
+                windingMaterial = new Material(shader);
+            }
+            illustration.material = windingMaterial;
+            float revolutions = 2 * Mathf.SmoothStep(0, 1, progress);
+            windingMaterial.SetFloat(CrankAngle, revolutions * 2 * Mathf.PI);
+            windingMaterial.SetFloat(CylinderTravel, revolutions * .62f);
+        }
+
+        void OnDestroy()
+        {
+            if (windingMaterial) Destroy(windingMaterial);
         }
 
         public void PrepareCapture(Camera camera)
