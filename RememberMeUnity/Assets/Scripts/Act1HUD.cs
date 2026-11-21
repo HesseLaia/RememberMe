@@ -27,6 +27,7 @@ namespace RememberMe
         Image illustrationBacking;
         RectTransform windingFrame;
         Image windingHand;
+        Image memoryButterfly;
         Image splash;
         Image portrait;
         RectTransform portraitFrame;
@@ -116,6 +117,12 @@ namespace RememberMe
             HintControl(controls, "Shift", "Run", 46);
             HintControl(controls, "C", "Crouch", 24);
             HintControl(controls, "Esc", "Menu", 32);
+            memoryButterfly = Surface(canvas, "Memory butterfly", Color.white, Vector2.zero, Vector2.zero,
+                new(-18, -13), new(18, 13));
+            memoryButterfly.sprite = Resources.Load<Sprite>("Story/GuideButterfly");
+            memoryButterfly.preserveAspect = true;
+            memoryButterfly.raycastTarget = false;
+            memoryButterfly.enabled = false;
             dialogue = Surface(canvas, "Dialogue panel", Paper, new Vector2(.5f, 0), new Vector2(.5f, 0),
                 new Vector2(-479, 26), new Vector2(479, 226)).rectTransform;
             Frame(dialogue, 8, Edge);
@@ -238,6 +245,30 @@ namespace RememberMe
         }
 
         public void ShowHUD(bool shown) => hud.gameObject.SetActive(shown);
+
+        public bool ShowButterfly(Camera camera, Vector2? point, float opacity = 1)
+        {
+            if (!point.HasValue || !memoryButterfly.sprite || opacity <= 0)
+            {
+                memoryButterfly.enabled = false;
+                return false;
+            }
+            Vector2 screen = Vector2.Scale(camera.WorldToViewportPoint(point.Value), canvas.rect.size);
+            Vector2 size = canvas.rect.size;
+            if (screen.x < 20 || screen.x > size.x - 20 || screen.y < 57 || screen.y > size.y - 21)
+            {
+                memoryButterfly.enabled = false;
+                return false;
+            }
+            float flutter = Time.unscaledTime * 18;
+            var rect = memoryButterfly.rectTransform;
+            rect.anchoredPosition = screen;
+            rect.localScale = new Vector3(.54f + .46f * Mathf.Abs(Mathf.Sin(flutter)), 1, 1);
+            rect.localRotation = Quaternion.Euler(0, 0, 12 * Mathf.Sin(flutter * .17f));
+            memoryButterfly.color = new Color(1, 1, 1, opacity);
+            memoryButterfly.enabled = true;
+            return true;
+        }
         public void ChapterCard(bool visible, bool funeral = false)
         {
             if (visible)

@@ -10,9 +10,10 @@
     * { box-sizing: border-box; }
     body { margin: 0; min-height: 100dvh; display: grid; place-content: center; font-family: Georgia, serif; padding: 12px; }
     main { width: min(1280px, calc(100vw - 24px), max(320px, (100dvh - 88px) * 1.6)); }
-    main:fullscreen { width: 100%; height: 100%; padding: 12px; background: #111a17;
+    main:fullscreen, main.full-window { width: 100%; height: 100%; padding: 12px; background: #111a17;
       display: grid; place-content: center;
       grid-template-columns: min(calc(100vw - 24px), max(160px, (100dvh - 100px) * 1.6)); }
+    main.full-window { position: fixed; inset: 0; z-index: 10; overflow: auto; }
     header { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
     h1 { margin: 0; font-size: 1.25rem; font-weight: 400; }
     button { background: #263a31; color: #f4ead6; border: 1px solid #91795a; padding: 5px 10px; font: inherit; }
@@ -74,18 +75,35 @@
       }).then(() => {
         loading.hidden = true;
         canvas.focus({ preventScroll: true });
-        fullscreen.disabled = !document.fullscreenEnabled || typeof gamePage.requestFullscreen !== 'function';
-        document.addEventListener('fullscreenchange', () => {
-          fullscreen.textContent = document.fullscreenElement === gamePage ? 'Exit fullscreen' : 'Fullscreen';
-        });
+        fullscreen.disabled = false;
+        const isFullWindow = () => gamePage.classList.contains('full-window');
+        const updateFullscreen = () => {
+          const active = document.fullscreenElement === gamePage || isFullWindow();
+          fullscreen.textContent = active ? 'Exit fullscreen' : 'Fullscreen';
+          fullscreen.setAttribute('aria-pressed', String(active));
+        };
+        document.addEventListener('fullscreenchange', updateFullscreen);
+        document.addEventListener('keydown', (event) => {
+          if (event.key !== 'Escape' || !isFullWindow()) return;
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          gamePage.classList.remove('full-window');
+          updateFullscreen();
+          canvas.focus({ preventScroll: true });
+        }, true);
         fullscreen.addEventListener('click', async () => {
-          try {
-            if (document.fullscreenElement === gamePage) await document.exitFullscreen();
-            else await gamePage.requestFullscreen();
-            canvas.focus({ preventScroll: true });
-          } catch (error) {
-            console.warn('Fullscreen could not be changed.', error);
+          if (isFullWindow()) gamePage.classList.remove('full-window');
+          else if (document.fullscreenElement === gamePage) await document.exitFullscreen();
+          else {
+            try {
+              if (!document.fullscreenEnabled) throw new Error('Fullscreen is unavailable.');
+              await gamePage.requestFullscreen();
+            } catch {
+              gamePage.classList.add('full-window');
+            }
           }
+          updateFullscreen();
+          canvas.focus({ preventScroll: true });
         });
       }).catch((error) => {
         loading.textContent = 'The game could not start. Try a desktop browser with WebGL enabled.';

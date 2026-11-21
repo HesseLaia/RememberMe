@@ -28,6 +28,9 @@ namespace RememberMe
         Act1Target nearby;
         bool atTitle, busy, read, menuSave, qa;
         bool gateCallLatched;
+        bool butterflyGuiding, butterflyEcho;
+        Vector2 butterflyPosition;
+        float butterflyArrivedAt;
         int gateCalls;
         bool qaWideView, qaCloseParcelOverview;
         Vector2 qaDirection;
@@ -129,9 +132,39 @@ namespace RememberMe
             // for the camera, so it stops with Grace and does not ease past her.
             WorldCamera.transform.position = CameraPosition(Grace.transform.position);
             var objective = !busy && !HUD.IsModal ? ObjectiveTarget() : null;
+            bool guidedByButterfly = UpdateButterflyGuide(objective);
             var highlight = objective && objective.FocusArt ? objective.FocusArt : null;
-            HUD.Locate(WorldCamera, objective ? objective.Approach : (Vector2?)null, highlight ? highlight.bounds : (Bounds?)null);
+            HUD.Locate(WorldCamera, objective && !guidedByButterfly ? objective.Approach : (Vector2?)null,
+                highlight ? highlight.bounds : (Bounds?)null);
         }
+
+        bool UpdateButterflyGuide(Act1Target target)
+        {
+            if (butterflyEcho) return false;
+            if (!target || room.Id != RoomId.Hall || story.Stage != StoryStage.FindStudy)
+            {
+                butterflyGuiding = false;
+                HUD.ShowButterfly(WorldCamera, null);
+                return false;
+            }
+
+            // Lead along the open path from the front-room entrance to the back-room door.
+            Vector2 destination = target.Approach;
+            destination.x += .27f;
+            destination.y = Mathf.Clamp(Grace.transform.position.y + 1.1f, room.Entry.y + 1, target.Approach.y + .27f);
+            if (!butterflyGuiding)
+            {
+                butterflyGuiding = true;
+                butterflyArrivedAt = Time.time;
+                butterflyPosition = destination - new Vector2(.57f, .34f);
+            }
+            butterflyPosition = Vector2.MoveTowards(butterflyPosition, destination, Time.deltaTime * 4.8f);
+            float opacity = Mathf.Lerp(.12f, 1, Mathf.Clamp01((Time.time - butterflyArrivedAt) * 3));
+            return HUD.ShowButterfly(WorldCamera, FlutterAt(butterflyPosition), opacity);
+        }
+
+        static Vector2 FlutterAt(Vector2 center) =>
+            center + new Vector2(Mathf.Sin(Time.time * 2.6f) * .11f, Mathf.Sin(Time.time * 3.1f) * .09f);
 
         Vector3 CameraPosition(Vector2 feet)
         {
@@ -201,6 +234,7 @@ namespace RememberMe
         void Title()
         {
             atTitle = true; busy = false; Grace.CanMove = false;
+            HUD.ShowButterfly(WorldCamera, null);
             foreach (var entry in Rooms) entry.gameObject.SetActive(false);
             Grace.gameObject.SetActive(false);
             HUD.HideDialogue(); HUD.ShowHUD(false); HUD.Picture(Cover);
@@ -253,6 +287,8 @@ namespace RememberMe
 
         void Enter(RoomId id, bool returnDoor = false, Vector2? savedFeet = null)
         {
+            HUD.ShowButterfly(WorldCamera, null);
+            butterflyGuiding = false;
             room = Array.Find(Rooms, entry => entry.Id == id);
             foreach (var entry in Rooms) entry.gameObject.SetActive(entry == room);
             story.Room = id;
@@ -484,6 +520,7 @@ namespace RememberMe
                         if (qa) yield return Capture("04b-reunion-illustration");
                         yield return Say("Grandma", "Sit with me a minute, love. We can listen together.", expression: Expression.Warm);
                         story.Stage = StoryStage.Complete;
+                        yield return ReunionButterfly();
                     }
                     break;
                 case TargetId.Ribbon:
@@ -551,6 +588,29 @@ namespace RememberMe
                 yield return null;
             }
             HUD.Fade(to);
+        }
+
+        IEnumerator ReunionButterfly()
+        {
+            var grandma = TargetInRoom(TargetId.Grandma);
+            var window = TargetInRoom(TargetId.Window);
+            if (!grandma || !grandma.Speaker || !window) yield break;
+            HUD.Picture(null);
+            butterflyEcho = true;
+            Vector2 start = (Vector2)grandma.Speaker.transform.position + new Vector2(-.32f, .62f);
+            Vector2 end = window.Approach + new Vector2(.1f, .97f);
+            float duration = qa ? .18f : 2.65f;
+            for (float elapsed = 0; elapsed < duration; elapsed += Time.deltaTime)
+            {
+                float progress = elapsed / duration;
+                float flight = Mathf.SmoothStep(0, 1, Mathf.InverseLerp(.26f, 1, progress));
+                Vector2 position = Vector2.Lerp(start, end, flight) + Vector2.up * (.72f * Mathf.Sin(flight * Mathf.PI));
+                float opacity = Mathf.Min(Mathf.InverseLerp(0, .18f, progress), 1 - Mathf.InverseLerp(.78f, 1, progress));
+                HUD.ShowButterfly(WorldCamera, FlutterAt(position), opacity);
+                yield return null;
+            }
+            HUD.ShowButterfly(WorldCamera, null);
+            butterflyEcho = false;
         }
 
         IEnumerator WindMusicBox()
