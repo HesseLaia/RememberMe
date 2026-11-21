@@ -309,7 +309,7 @@ namespace RememberMe
             Vector2 fitted = image * Mathf.Min(panel.x / image.x, panel.y / image.y);
             windingFrame.sizeDelta = fitted;
             // The grip point is the center of the brass loop in Mechanism.png.
-            Vector2 grip = Vector2.Scale(new Vector2(.198f, .77f) - Vector2.one * .5f, fitted);
+            Vector2 grip = Vector2.Scale(new Vector2(.182f, .754f) - Vector2.one * .5f, fitted);
             float reach = Mathf.SmoothStep(0, 1, Mathf.InverseLerp(0, .25f, progress))
                 * (1 - Mathf.SmoothStep(0, 1, Mathf.InverseLerp(.80f, 1, progress)));
             float turn = Mathf.InverseLerp(.25f, .80f, progress);
