@@ -286,6 +286,7 @@ namespace RememberMe.Editor
             ArtAt(parent, "Props/Lilies", 523, 333, 45, 26);
             ArtAt(parent, "Props/Lilies", 1587, 1097, 43, 24);
             ArtAt(parent, "Props/Lilies", 722, 779, 46, 27);
+            DressCemetery(parent);
 
             var parcelBench = Prop(parent, "Bench", 1370, 1228, 119, 69, 109, 22);
             var parcel = On(parent, "Parcel", 1347, 1228, 25, 22, 27);
@@ -336,17 +337,20 @@ namespace RememberMe.Editor
             Boundary(parent, 325, 672, 416, 21); Boundary(parent, 829, 672, 410, 21);
             Boundary(parent, 525, 738, 22, 137); Boundary(parent, 626, 738, 22, 137);
             Boundary(parent, 576, 820, 115, 20);
-            var rug = ArtAt(parent, "Props/Rug", 568, 580, 294, 177);
-            rug.sortingOrder = -100;
+            if (id != RoomId.Hall)
+                ArtAt(parent, "Props/Rug", 568, 580, 294, 177).sortingOrder = -100;
 
             if (!study)
             {
-                var sofa = Prop(parent, "Sofa", 253, 529, 116, 88, 108, 33);
-                var sideboard = Prop(parent, "Sideboard", 260, 347, 118, 101, 109, 32);
-                Prop(parent, "Cabinet", 911, 352, 83, 121, 78, 30);
-                Prop(parent, "Chair", 870, 544, 57, 72, 53, 28);
-                var teaTable = Prop(parent, "TeaTable", 944, 548, 45, 48, 34, 28);
-                var cup = On(parent, "Cup", 944, 548, 17, 14, 34);
+                float sofaX = flash ? 253 : 298, sofaY = flash ? 529 : 493;
+                float chairX = flash ? 870 : 836, chairY = flash ? 544 : 510;
+                float teaX = flash ? 944 : 911, teaY = flash ? 548 : 537;
+                var sofa = Furniture(parent, "Sofa", sofaX, sofaY, 116, 88, 108, 33);
+                var sideboard = Furniture(parent, "Sideboard", 260, 347, 118, 101, 109, 32);
+                if (flash) Furniture(parent, "Cabinet", 911, 352, 83, 121, 78, 30);
+                Furniture(parent, "Chair", chairX, chairY, 57, 72, 53, 28);
+                var teaTable = Furniture(parent, "TeaTable", teaX, teaY, 45, 48, 34, 28);
+                var cup = On(parent, "Cup", teaX, teaY, 17, 14, 34);
                 room.Door = ArtAt(parent, flash ? "Props/DoorNew" : "Props/DoorOpenNew", 576, 224, flash ? 53 : 61, 96);
                 if (flash)
                 {
@@ -357,27 +361,27 @@ namespace RememberMe.Editor
                 }
                 else
                 {
-                    var console = Prop(parent, "ConsoleFront", 707, 423, 96, 64, 89, 32);
-                    var book = On(parent, "Book", 712, 423, 26, 18, 52);
-                    Reach(Target(parent, TargetId.Book, "Take the blue storybook", 708, 448, book), console, book);
-                    var sewing = Prop(parent, "Sewing", 324, 492, 27, 23, 24, 18);
-                    Reach(Target(parent, TargetId.Sewing, "Check the sewing basket", 353, 502), sewing);
+                    var console = Furniture(parent, "ConsoleFront", 759, 367, 96, 64, 89, 32);
+                    var book = On(parent, "Book", 764, 367, 26, 18, 52);
+                    Reach(Target(parent, TargetId.Book, "Take the blue storybook", 760, 392, book), console, book);
+                    var sewing = Furniture(parent, "Sewing", 369, 471, 27, 23, 24, 18);
+                    Reach(Target(parent, TargetId.Sewing, "Check the sewing basket", 397, 482), sewing);
                     Reach(Target(parent, TargetId.Photo, "Look at the photograph", 260, 371), sideboard);
-                    Reach(Target(parent, TargetId.Blanket, "Touch the patchwork blanket", 253, 556), sofa);
-                    Reach(Target(parent, TargetId.Tea, "Look at the teacup", 946, 571), teaTable, cup);
-                    Target(parent, TargetId.Window, "Look out the window", 890, 250);
+                    Reach(Target(parent, TargetId.Blanket, "Touch the patchwork blanket", sofaX, sofaY + 28), sofa);
+                    Reach(Target(parent, TargetId.Tea, "Look at the teacup", teaX, teaY + 25), teaTable, cup);
+                    Target(parent, TargetId.Window, "Look out the window", 890, 291);
                     Target(parent, TargetId.ToStudy, "Follow the music", 576, 248).FocusArt = room.Door;
                 }
             }
             else
             {
-                Prop(parent, "Sideboard", 260, 407, 121, 104, 112, 32);
-                var cabinet = Prop(parent, "Cabinet", 924, 366, 85, 125, 79, 28);
-                var console = Prop(parent, "ConsoleFront", 657, 401, 94, 61, 86, 32);
+                Furniture(parent, "Sideboard", 260, 407, 121, 104, 112, 32);
+                var cabinet = Furniture(parent, "Cabinet", 924, 366, 85, 125, 79, 28);
+                var console = Furniture(parent, "ConsoleFront", 657, 401, 94, 61, 86, 32);
                 On(parent, "Letters", 640, 401, 26, 14, 49);
                 On(parent, "Sewing", 676, 401, 27, 24, 52);
-                Prop(parent, "Chair", 831, 461, 57, 70, 53, 27);
-                var teaTable = Prop(parent, "TeaTable", 902, 482, 48, 48, 41, 28);
+                Furniture(parent, "Chair", 831, 461, 57, 70, 53, 27);
+                var teaTable = Furniture(parent, "TeaTable", 902, 482, 48, 48, 41, 28);
                 On(parent, "Cup", 892, 482, 15, 12, 35);
                 On(parent, "Cup", 910, 482, 12, 10, 34);
                 var book = On(parent, "Book", 922, 365, 24, 21, 47);
@@ -388,8 +392,121 @@ namespace RememberMe.Editor
                 Target(parent, TargetId.ToHall, "Return to the front room", 576, 796);
                 NPC(parent, "Grandma", 798, 367, TargetId.Grandma, "Talk to Grandma");
             }
+            DressInterior(parent, id);
             room.Targets = targets.ToArray();
             return room;
+        }
+
+        static void DressCemetery(Transform parent)
+        {
+            // Ground cover grows around the stones and at the edge of the paving.
+            Vector2[] edges = { new(326, 281), new(426, 348), new(466, 517), new(576, 667),
+                new(778, 581), new(958, 779), new(1230, 658), new(1312, 667), new(1349, 584),
+                new(1439, 347), new(1584, 666), new(1690, 789), new(1801, 579),
+                new(324, 1172), new(716, 1161), new(1214, 1238), new(1475, 1230), new(1787, 1249) };
+            for (int i = 0; i < edges.Length; i++)
+            {
+                var point = edges[i];
+                bool leaves = i % 3 == 1;
+                var patch = leaves
+                    ? Dress(parent, "WetLeaves", point.x, point.y, 24 + i % 4 * 5, 14 + i % 3 * 3)
+                    : Dress(parent, "MossAndClover", point.x, point.y, 36 + i % 4 * 8, 20 + i % 3 * 4);
+                patch.sortingOrder = -2770;
+                patch.flipX = i % 2 == 0;
+                patch.color = new Color(.66f, .72f, .63f, .74f);
+            }
+
+            // Visitors have left small offerings close to a few memorials.
+            foreach (var point in new[] { new Vector2(1240, 657), new(1537, 340), new(857, 985) })
+            {
+                GroundShadow(parent, point.x, point.y, 20, 10, .62f, -2760);
+                Dress(parent, "MemorialLantern", point.x, point.y, 14, 19).color = new Color(.79f, .82f, .79f);
+            }
+            foreach (var point in new[] { new Vector2(571, 472), new(1597, 659), new(712, 1104) })
+            {
+                GroundShadow(parent, point.x, point.y, 29, 13, .62f, -2760);
+                Dress(parent, "MemorialVase", point.x, point.y, 23, 21).color = new Color(.82f, .84f, .80f);
+            }
+        }
+
+        static void DressInterior(Transform parent, RoomId id)
+        {
+            if (id == RoomId.Hall)
+            {
+                DressParlour(parent);
+                return;
+            }
+            if (id == RoomId.Study)
+            {
+                WallDetail(parent, "WallPhoto", 644, 233, 32, 33, .88f);
+                WallDetail(parent, "SillIvy", 345, 253, 26, 27, .94f);
+                GroundShadow(parent, 975, 369, 37, 18, .75f, -96);
+                Dress(parent, "LinenBasket", 975, 371, 35, 30).color = new Color(.77f, .73f, .66f);
+                return;
+            }
+
+            const float light = .73f;
+            WallDetail(parent, "WallPhoto", 704, 169, 35, 36, light);
+            WallDetail(parent, "ShawlRail", 482, 209, 32, 37, light);
+            WallDetail(parent, "SillIvy", 911, 179, 22, 23, light);
+
+            GroundShadow(parent, 286, 547, 24, 13, .69f, -96);
+            var slippers = Dress(parent, "Slippers", 286, 552, 21, 18);
+            slippers.sortingOrder = -92;
+            slippers.color = new Color(.68f, .70f, .72f);
+            GroundShadow(parent, 189, 530, 31, 17, .75f, -96);
+            Dress(parent, "LinenBasket", 189, 532, 29, 26).color = new Color(.68f, .70f, .72f);
+        }
+
+        static void DressParlour(Transform parent)
+        {
+            // Footprints for the hearth, bookcase, and window seat baked into the room painting.
+            Boundary(parent, 437, 268, 168, 24);
+            Boundary(parent, 723, 252, 190, 29);
+            Boundary(parent, 925, 253, 166, 28);
+
+            ParlourFurniture(parent, "ParlourTable", 342, 574, 100, 63, 93, 33);
+            ParlourFurniture(parent, "PleatedLamp", 217, 482, 35, 99, 19, 14);
+            ParlourFurniture(parent, "Aspidistra", 988, 412, 53, 67, 25, 18);
+
+            GroundShadow(parent, 274, 516, 22, 12, .65f, -96);
+            var slippers = Dress(parent, "Slippers", 274, 519, 20, 18);
+            slippers.sortingOrder = -92;
+            slippers.color = new Color(.83f, .79f, .72f);
+        }
+
+        static void ParlourFurniture(Transform parent, string asset, float x, float y, float width, float height,
+            float footWidth, float footDepth)
+        {
+            GroundShadow(parent, x + 3, y - footDepth * .22f, footWidth * 1.21f, footDepth * .91f, .78f, -95);
+            var sprite = Dress(parent, asset, x, y, width, height);
+            sprite.color = new Color(.89f, .85f, .79f);
+            Boundary(sprite.transform, x, y - footDepth / 2, footWidth, footDepth);
+        }
+
+        static void WallDetail(Transform parent, string asset, float x, float y, float width, float height, float light)
+        {
+            var detail = Dress(parent, asset, x, y, width, height);
+            detail.sortingOrder = -125;
+            detail.color = new Color(light, light, light);
+        }
+
+        static void GroundShadow(Transform parent, float x, float y, float width, float height, float opacity, int layer)
+        {
+            var shade = Dress(parent, "ContactShadow", x, y + height * .30f, width, height);
+            shade.sortingOrder = layer;
+            shade.color = new Color(1, 1, 1, opacity);
+        }
+
+        static SpriteRenderer Dress(Transform room, string asset, float x, float y, float width, float height) =>
+            ArtAt(room, "SetDressing/" + asset, x, y, width, height);
+
+        static SpriteRenderer Furniture(Transform room, string name, float x, float y, float width, float height,
+            float footWidth, float footDepth)
+        {
+            GroundShadow(room, x + 3, y - footDepth * .22f,
+                footWidth * 1.21f, footDepth * .91f, .74f, -95);
+            return Prop(room, name, x, y, width, height, footWidth, footDepth);
         }
 
         static void Grave(Transform parent, string name, int x, int y, TargetId id, string label, int width = 91)

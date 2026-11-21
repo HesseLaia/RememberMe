@@ -179,6 +179,8 @@ namespace RememberMe
         Vector3 CameraPosition(Vector2 feet)
         {
             Vector2 size = room.Size;
+            if (room.Id == RoomId.Hall)
+                return new Vector3(size.x / 2, size.y / 2, -10);
             float ext = Mathf.Min(size.x / 2, WorldCamera.orthographicSize * WorldCamera.aspect);
             return new Vector3(Mathf.Clamp(feet.x, ext, size.x - ext),
                 Mathf.Clamp(feet.y + .28f, WorldCamera.orthographicSize, size.y - WorldCamera.orthographicSize), -10);
@@ -311,7 +313,13 @@ namespace RememberMe
                 room.Dad.SetCrying(story.Stage == StoryStage.FindDad);
                 room.Dad.Look(TargetInRoom(TargetId.Grave).FocusArt.transform.position - room.Dad.transform.position);
             }
-            WorldCamera.orthographicSize = id == RoomId.Flashback ? 4.4f : id == RoomId.Cemetery ? 3.38f : 3.22f;
+            WorldCamera.orthographicSize = id switch
+            {
+                RoomId.Flashback => 4.4f,
+                RoomId.Hall => 4.3f,
+                RoomId.Cemetery => 3.38f,
+                _ => 3.22f
+            };
             WorldCamera.transform.position = id == RoomId.Flashback ? new Vector3(6, 4.5f, -10) : CameraPosition(Grace.Body.position);
             foreach (var target in room.Targets)
             {
