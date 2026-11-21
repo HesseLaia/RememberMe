@@ -843,6 +843,12 @@ namespace RememberMe
                     Array.IndexOf(patrols[i].View.Walk, patrols[i].View.Renderer.sprite) < 0)
                     throw new InvalidOperationException("Mourner failed to animate on route: " + patrols[i].name);
             yield return Capture("01a-walk");
+            qaDirection = Vector2.left;
+            yield return null;
+            yield return new WaitForFixedUpdate();
+            if (Grace.Motion.x >= -.001f || Grace.Motion.y <= .001f)
+                throw new InvalidOperationException("Steering must travel through an intermediate heading when the input turns.");
+            qaDirection = Vector2.up;
             qaSprint = true;
             yield return MotionFrames();
             if (!Grace.Running || Array.IndexOf(Grace.View.Run, Grace.View.Renderer.sprite) < 0)

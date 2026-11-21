@@ -14,6 +14,7 @@ namespace RememberMe
         public bool Crying { get; private set; }
         float phase;
         int facing;
+        int walkSector = -1;
         int previousRow = -1;
         public int Facing => facing;
         public Vector2 Forward => facing switch { 1 => Vector2.left, 2 => Vector2.right, 3 => Vector2.up, _ => Vector2.down };
@@ -50,13 +51,23 @@ namespace RememberMe
             Sprite[] pose = Crying && !moving && Cry != null && Cry.Length == 4 ? Cry :
                 row == 3 ? Crouch : row == 2 ? Run : row == 1 ? Walk : Idle;
             int poseFacing = facing;
-            // Pick diagonals from traveled motion so blocked input cannot trigger a diagonal stride.
-            if (row == 1 && WalkDiagonal != null && WalkDiagonal.Length == 12 &&
-                Mathf.Abs(movement.x) > 0.002f && Mathf.Abs(movement.y) > 0.002f)
+            // Select the walking pose from traveled heading and hold it near a sector boundary.
+            if (row == 1 && WalkDiagonal != null && WalkDiagonal.Length == 12)
             {
-                pose = WalkDiagonal;
-                poseFacing = (movement.y > 0 ? 2 : 0) + (movement.x > 0 ? 1 : 0);
+                float heading = Mathf.Atan2(movement.x, -movement.y) * Mathf.Rad2Deg;
+                if (walkSector < 0 || Mathf.Abs(Mathf.DeltaAngle(walkSector * 45f, heading)) > 27f)
+                    walkSector = (Mathf.RoundToInt(heading / 45f) + 8) % 8;
+                if ((walkSector & 1) == 1)
+                {
+                    pose = WalkDiagonal;
+                    poseFacing = walkSector switch { 1 => 1, 3 => 3, 5 => 2, _ => 0 };
+                }
+                else
+                {
+                    poseFacing = walkSector switch { 2 => 2, 4 => 3, 6 => 1, _ => 0 };
+                }
             }
+            else walkSector = -1;
             if (pose == null || pose.Length < 4) pose = Idle;
             if (pose != null && pose.Length >= 4)
             {
