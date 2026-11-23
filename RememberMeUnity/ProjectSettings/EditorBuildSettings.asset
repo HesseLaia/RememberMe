@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/RememberMeAct1.unity
     guid: 009f02898456423448917cb3cc3cdd84
+  - enabled: 1
+    path: Assets/Scenes/Kitchen.unity
+    guid: 559cf46430304ed0b784a5cd54f04475
   m_configObjects: {}

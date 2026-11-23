@@ -14,6 +14,8 @@ namespace RememberMe
         static readonly Color Gold = new(0.88f, 0.72f, 0.45f);
         static readonly Color Night = new(0.065f, 0.12f, 0.11f, 0.96f);
         static readonly Color Edge = new(0.48f, 0.39f, 0.25f, .63f);
+        static readonly Color HintBackground = new(.045f, .073f, .063f, .79f);
+        static readonly Color KeyBackground = new(.94f, .84f, .64f, .18f);
         Font serif;
         RectTransform canvas;
         RectTransform hud;
@@ -23,25 +25,28 @@ namespace RememberMe
         RectTransform chapterCenter;
         Image illustration;
         Image illustrationBacking;
+        Material windingMaterial;
+        static readonly int CrankAngle = Shader.PropertyToID("_CrankAngle");
+        static readonly int CylinderTravel = Shader.PropertyToID("_CylinderTravel");
+        Image memoryButterfly;
         Image splash;
         Image portrait;
         RectTransform portraitFrame;
         Text objective;
         Text cue;
+        Text cueKey;
         Text speaker;
         Text paragraph;
         Text chapterNumber;
         Text chapterTitle;
         RectTransform controls;
-        RectTransform locator;
-        RectTransform locatorRing;
-        RectTransform finder;
-        Text finderArrow;
+        RectTransform interaction;
+        RectTransform objectiveArrow;
         Canvas stageCanvas;
         CanvasGroup presentation;
         public float PresentationOpacity { get => presentation.alpha; set => presentation.alpha = value; }
         public bool IsModal => modal.gameObject.activeSelf;
-        public bool IsBracketing => locatorRing.gameObject.activeInHierarchy;
+        public bool HasObjectiveArrow => objectiveArrow.gameObject.activeInHierarchy;
         public bool HasPortrait => portrait.enabled && dialogue.gameObject.activeInHierarchy;
 
         public void Initialize()
@@ -83,39 +88,33 @@ namespace RememberMe
                 new(0, 25), new(880, 99));
             chapterCard.gameObject.SetActive(false);
             hud = Rect(canvas, "HUD", Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
-            locator = Rect(hud, "World objective", Vector2.zero, Vector2.zero, Vector2.zero, Vector2.zero);
-            locatorRing = Rect(locator, "Four corners", Vector2.zero, Vector2.zero, Vector2.zero, Vector2.zero);
-            for (int i = 0; i < 4; i++)
-            {
-                Vector2 corner = new(i % 2, i / 2);
-                Vector2 inward = Vector2.one - 2 * corner;
-                var point = Rect(locatorRing, "Corner", corner, corner, Vector2.zero, Vector2.zero);
-                Stroke(point, Night, Vector2.Min(new(-2, -2), inward * new Vector2(19, 5)), Vector2.Max(new(2, 2), inward * new Vector2(19, 5)));
-                Stroke(point, Night, Vector2.Min(new(-2, -2), inward * new Vector2(5, 19)), Vector2.Max(new(2, 2), inward * new Vector2(5, 19)));
-                Stroke(point, Gold, Vector2.Min(Vector2.zero, inward * new Vector2(17, 3)), Vector2.Max(Vector2.zero, inward * new Vector2(17, 3)));
-                Stroke(point, Gold, Vector2.Min(Vector2.zero, inward * new Vector2(3, 17)), Vector2.Max(Vector2.zero, inward * new Vector2(3, 17)));
-            }
-            finder = Surface(locator, "Direction", Night, Vector2.zero, Vector2.zero, Vector2.zero, Vector2.zero).rectTransform;
-            Frame(finder, 4, Edge);
-            finderArrow = Copy(finder, "▲", 19, Gold, TextAnchor.MiddleCenter, Vector2.zero, new Vector2(38, 38));
-            finderArrow.font = fallback;
-            locator.gameObject.SetActive(false);
-            var card = Surface(hud, "Objective card", Night, Vector2.up, Vector2.up,
-                new Vector2(28, -108), new Vector2(476, -28)).rectTransform;
-            Frame(card, 6, Edge);
-            Stroke(card, Gold, new Vector2(0, 13), new Vector2(3, 67));
-            Copy(card, "Current Objective", 16, Gold, TextAnchor.MiddleLeft,
-                new Vector2(20, 51), new Vector2(430, 70));
-            objective = Copy(card, "", 24, Paper, TextAnchor.MiddleLeft, new Vector2(20, 11), new Vector2(429, 50));
+            objectiveArrow = Rect(hud, "Objective arrow", Vector2.zero, Vector2.zero, new(-14, -14), new(14, 14));
+            ArrowWing(objectiveArrow, -1, 6, HintBackground);
+            ArrowWing(objectiveArrow, 1, 6, HintBackground);
+            ArrowWing(objectiveArrow, -1, 3, Gold);
+            ArrowWing(objectiveArrow, 1, 3, Gold);
+            objectiveArrow.gameObject.SetActive(false);
+            var card = Surface(hud, "Objective card", HintBackground, Vector2.up, Vector2.up,
+                new Vector2(24, -85), new Vector2(434, -24)).rectTransform;
+            card.GetComponent<Image>().raycastTarget = false;
+            Copy(card, "Objective", 15, Gold, TextAnchor.MiddleLeft, new(14, 35), new(396, 54));
+            objective = Copy(card, "", 21, Paper, TextAnchor.MiddleLeft, new(14, 7), new(396, 36));
             objective.fontStyle = FontStyle.Bold;
-            var hint = Surface(hud, "Interaction", Night, new Vector2(.5f, 0), new Vector2(.5f, 0),
-                new Vector2(-267, 26), new Vector2(267, 76)).rectTransform;
-            Frame(hint, 5, Edge);
-            cue = Copy(hint, "", 22, Paper, TextAnchor.MiddleCenter, new Vector2(9, 0), new Vector2(525, 50));
-            cue.fontStyle = FontStyle.Bold;
-            controls = Surface(hud, "Controls", Night, Vector2.right, Vector2.right, new Vector2(-395, 25), new Vector2(-27, 62)).rectTransform;
-            Frame(controls, 4, Edge);
-            Copy(controls, "WASD  Move     Shift  Run     C  Crouch     Esc  Menu", 16, Paper, TextAnchor.MiddleCenter, Vector2.zero, new Vector2(368, 37));
+            interaction = HintBar(hud, "Interaction");
+            cueKey = HintKey(interaction, "", 84);
+            cue = HintText(interaction, "");
+            interaction.gameObject.SetActive(false);
+            controls = HintBar(hud, "Controls");
+            HintControl(controls, "WASD", "Move", 52);
+            HintControl(controls, "Shift", "Run", 46);
+            HintControl(controls, "C", "Crouch", 24);
+            HintControl(controls, "Esc", "Menu", 32);
+            memoryButterfly = Surface(canvas, "Memory butterfly", Color.white, Vector2.zero, Vector2.zero,
+                new(-18, -13), new(18, 13));
+            memoryButterfly.sprite = Resources.Load<Sprite>("Story/GuideButterfly");
+            memoryButterfly.preserveAspect = true;
+            memoryButterfly.raycastTarget = false;
+            memoryButterfly.enabled = false;
             dialogue = Surface(canvas, "Dialogue panel", Paper, new Vector2(.5f, 0), new Vector2(.5f, 0),
                 new Vector2(-479, 26), new Vector2(479, 226)).rectTransform;
             Frame(dialogue, 8, Edge);
@@ -142,45 +141,126 @@ namespace RememberMe
             Fade(0);
         }
 
-        public void Guide(string goal, string interaction)
+        public void Guide(string goal, string key, string action)
         {
             if (objective.text != goal) objective.text = goal;
-            if (cue.text != interaction) cue.text = interaction;
-            cue.transform.parent.gameObject.SetActive(!string.IsNullOrEmpty(interaction));
-            controls.gameObject.SetActive(string.IsNullOrEmpty(interaction));
+            if (cueKey.text != key) cueKey.text = key;
+            if (cue.text != action) cue.text = action;
+            bool hasAction = !string.IsNullOrEmpty(action);
+            interaction.gameObject.SetActive(hasAction);
+            controls.gameObject.SetActive(!hasAction);
         }
 
         public void Locate(Camera camera, Vector2? goal, Bounds? art)
         {
-            locator.gameObject.SetActive(goal.HasValue);
+            objectiveArrow.gameObject.SetActive(goal.HasValue);
             if (!goal.HasValue) return;
             Vector2 size = canvas.rect.size;
             Vector2 ScreenPoint(Vector3 p) => Vector2.Scale(camera.WorldToViewportPoint(p), size);
             Vector2 center = ScreenPoint(art?.center ?? (Vector3)goal.Value);
-            bool onScreen = center.x > 33 && center.x < size.x - 33 && center.y > 52 && center.y < size.y - 30;
-            bool bracket = onScreen && art.HasValue;
-            locatorRing.gameObject.SetActive(bracket);
-            finder.gameObject.SetActive(!bracket);
-            if (bracket)
+            var min = new Vector2(24, 78);
+            var max = size - new Vector2(24, 25);
+            bool onScreen = center.x >= min.x && center.x <= max.x && center.y >= min.y && center.y <= max.y;
+            Vector2 position;
+            Vector2 direction;
+            if (onScreen)
             {
-                var bounds = art.Value;
-                locatorRing.offsetMin = ScreenPoint(bounds.min) - new Vector2(9, 7);
-                locatorRing.offsetMax = ScreenPoint(bounds.max) + new Vector2(9, 8);
+                float above = (art.HasValue ? ScreenPoint(art.Value.max).y : center.y) + 22;
+                if (above > max.y)
+                {
+                    float below = (art.HasValue ? ScreenPoint(art.Value.min).y : center.y) - 18;
+                    position = new Vector2(center.x, Mathf.Max(min.y, below));
+                    direction = Vector2.up;
+                }
+                else
+                {
+                    position = new Vector2(center.x, above);
+                    direction = Vector2.down;
+                }
             }
             else
             {
-                var middle = size / 2;
-                var direction = center - middle;
-                Vector2 edgePoint = onScreen ? center + new Vector2(0, 36) : middle + direction /
-                    Mathf.Max(Mathf.Abs(direction.x) / (middle.x - 44), Mathf.Abs(direction.y) / (middle.y - 87));
-                finder.offsetMin = edgePoint - Vector2.one * 19;
-                finder.offsetMax = edgePoint + Vector2.one * 19;
-                finderArrow.text = onScreen ? "◆" : "▲";
-                finderArrow.rectTransform.localEulerAngles = new Vector3(0, 0, onScreen ? 0 : Vector2.SignedAngle(Vector2.up, direction));
+                var middle = (min + max) / 2;
+                var extent = (max - min) / 2;
+                direction = center - middle;
+                position = middle + direction /
+                    Mathf.Max(Mathf.Abs(direction.x) / extent.x, Mathf.Abs(direction.y) / extent.y);
             }
+            objectiveArrow.anchoredPosition = position;
+            objectiveArrow.localEulerAngles = new Vector3(0, 0, Vector2.SignedAngle(Vector2.up, direction));
+        }
+
+        static void ArrowWing(RectTransform arrow, int side, float thickness, Color color)
+        {
+            var wing = Surface(arrow, "Chevron wing", color, Vector2.one * .5f, Vector2.one * .5f,
+                new Vector2(side * 4.5f - 7, -thickness * .5f), new Vector2(side * 4.5f + 7, thickness * .5f));
+            wing.raycastTarget = false;
+            wing.rectTransform.localEulerAngles = new Vector3(0, 0, -side * 42);
+        }
+
+        static RectTransform HintBar(RectTransform parent, string name)
+        {
+            var anchor = new Vector2(.5f, 0);
+            var background = Surface(parent, name, HintBackground, anchor, anchor, new(0, 20), new(0, 60));
+            background.raycastTarget = false;
+            var layout = background.gameObject.AddComponent<HorizontalLayoutGroup>();
+            layout.padding = new RectOffset(12, 12, 0, 0);
+            layout.spacing = 9;
+            layout.childAlignment = TextAnchor.MiddleCenter;
+            layout.childForceExpandWidth = false;
+            layout.childForceExpandHeight = false;
+            background.gameObject.AddComponent<ContentSizeFitter>().horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+            return background.rectTransform;
+        }
+
+        Text HintKey(RectTransform parent, string key, float width)
+        {
+            var badge = Surface(parent, "Key", KeyBackground, Vector2.zero, Vector2.zero, Vector2.zero, new(width, 25));
+            badge.raycastTarget = false;
+            var size = badge.gameObject.AddComponent<LayoutElement>();
+            size.preferredWidth = width;
+            size.preferredHeight = 25;
+            var text = Copy(badge.transform, key, 15, Paper, TextAnchor.MiddleCenter, Vector2.zero, Vector2.zero);
+            text.rectTransform.anchorMax = Vector2.one;
+            text.rectTransform.offsetMin = Vector2.zero;
+            text.rectTransform.offsetMax = Vector2.zero;
+            return text;
+        }
+
+        Text HintText(RectTransform parent, string label) =>
+            Copy(parent, label, 19, Paper, TextAnchor.MiddleCenter, Vector2.zero, Vector2.zero);
+
+        void HintControl(RectTransform parent, string key, string label, float width)
+        {
+            HintKey(parent, key, width);
+            HintText(parent, label);
         }
 
         public void ShowHUD(bool shown) => hud.gameObject.SetActive(shown);
+
+        public bool ShowButterfly(Camera camera, Vector2? point, float opacity = 1)
+        {
+            if (!point.HasValue || !memoryButterfly.sprite || opacity <= 0)
+            {
+                memoryButterfly.enabled = false;
+                return false;
+            }
+            Vector2 screen = Vector2.Scale(camera.WorldToViewportPoint(point.Value), canvas.rect.size);
+            Vector2 size = canvas.rect.size;
+            if (screen.x < 20 || screen.x > size.x - 20 || screen.y < 57 || screen.y > size.y - 21)
+            {
+                memoryButterfly.enabled = false;
+                return false;
+            }
+            float flutter = Time.unscaledTime * 18;
+            var rect = memoryButterfly.rectTransform;
+            rect.anchoredPosition = screen;
+            rect.localScale = new Vector3(.54f + .46f * Mathf.Abs(Mathf.Sin(flutter)), 1, 1);
+            rect.localRotation = Quaternion.Euler(0, 0, 12 * Mathf.Sin(flutter * .17f));
+            memoryButterfly.color = new Color(1, 1, 1, opacity);
+            memoryButterfly.enabled = true;
+            return true;
+        }
         public void ChapterCard(bool visible, bool funeral = false)
         {
             if (visible)
@@ -206,9 +286,30 @@ namespace RememberMe
         public void HideDialogue() => dialogue.gameObject.SetActive(false);
         public void Picture(Sprite image)
         {
+            illustration.material = null;
             illustration.sprite = image;
             illustration.enabled = image != null;
             illustrationBacking.enabled = image != null;
+        }
+
+        public void WindMusicBox(float progress)
+        {
+            if (!illustration.sprite) return;
+            if (!windingMaterial)
+            {
+                var shader = Resources.Load<Shader>("MusicBox/WindingMotion");
+                if (!shader || !shader.isSupported) return;
+                windingMaterial = new Material(shader);
+            }
+            illustration.material = windingMaterial;
+            float revolutions = 2 * Mathf.SmoothStep(0, 1, progress);
+            windingMaterial.SetFloat(CrankAngle, revolutions * 2 * Mathf.PI);
+            windingMaterial.SetFloat(CylinderTravel, revolutions * .62f);
+        }
+
+        void OnDestroy()
+        {
+            if (windingMaterial) Destroy(windingMaterial);
         }
 
         public void PrepareCapture(Camera camera)

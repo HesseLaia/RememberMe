@@ -10,6 +10,10 @@ namespace RememberMe
 {
     public sealed class Act1Game : MonoBehaviour
     {
+        internal enum Expression { Neutral, Warm, Surprise, Concern, Reflective, Tense, Grief, Quiet }
+
+        Sprite[] graceExpressions, grandmaExpressions, momExpressions, dadExpressions;
+
         public GraceMotor Grace;
         public Camera WorldCamera;
         public Act1HUD HUD;
@@ -17,23 +21,49 @@ namespace RememberMe
         public Sprite Cover, Gravestone, ClosedParcel, OpenParcel, Mechanism, Reunion, WindowView;
         public Sprite GracePortrait, MomPortrait, DadPortrait, DadSadPortrait, GrandmaPortrait, GrandpaPortrait, UnclePortrait, AuntPortrait;
         public AudioClip TitleMusic, BoxMusic, Hinge, Latch, Gravel, Board, Cloth;
-        AudioSource music, ambience, effects;
+        AudioSource music, ambience, effects, footsteps;
+        AudioClip windingClick;
         Act1Room room;
         Act1Story story = new();
         Act1Target nearby;
         bool atTitle, busy, read, menuSave, qa;
         bool gateCallLatched;
+        bool butterflyGuiding, butterflyEcho;
+        Vector2 butterflyPosition;
+        float butterflyArrivedAt;
         int gateCalls;
         bool qaWideView, qaCloseParcelOverview;
         Vector2 qaDirection;
         bool qaSprint;
-        float nextStep;
+        AudioClip[] gravelSteps, woodSteps;
+        int lastGravelStep = -1, lastWoodStep = -1;
+        readonly System.Random stepRandom = new();
         string saveFile;
+
+        static bool openedChapterLink;
 
         void Start()
         {
+            if (Application.isMobilePlatform)
+            {
+                int refreshRate = Mathf.RoundToInt((float)Screen.currentResolution.refreshRateRatio.value);
+                Application.targetFrameRate = Mathf.Clamp(refreshRate, 30, 120);
+            }
+            else
+            {
+                // Render on each display refresh, including 120 Hz when available.
+                QualitySettings.vSyncCount = 1;
+                Application.targetFrameRate = -1;
+            }
 #if UNITY_WEBGL && !UNITY_EDITOR
             qa = Uri.TryCreate(Application.absoluteURL, UriKind.Absolute, out var page) && page.Query == "?remember-smoke=1";
+            if (!openedChapterLink && page != null && (page.Query == "?kitchen=1" || page.Query == "?kitchen-check=1"))
+            {
+                openedChapterLink = true;
+                enabled = false;
+                UnityEngine.SceneManagement.SceneManager.LoadScene("Kitchen");
+                return;
+            }
             saveFile = qa ? "remember-me-qa" : "remember-me-act-one";
             WebGLInput.captureAllKeyboardInput = false;
             if (qa && Act1Story.TryRead(saveFile, out var prior) && prior.Stage == StoryStage.Complete)
@@ -44,11 +74,19 @@ namespace RememberMe
             saveFile = Path.Combine(Application.persistentDataPath, qa ? "qa-act1.json" : "act1.json");
 #endif
             if (qa) Debug.Log("REMEMBER_SMOKE_STARTED");
-            Application.targetFrameRate = 60;
             HUD.Initialize();
+            graceExpressions = LoadGraceExpressions();
+            grandmaExpressions = LoadGrandmaExpressions();
+            momExpressions = LoadExpressions("Mom", new[] { 0, 1, 5, 2, 4, 6, 3, 7 });
+            dadExpressions = LoadExpressions("Dad", new[] { 0, 1, 4, 3, 7, 6, 5, 2 });
             music = Audio(true, .42f);
             ambience = Audio(true, .25f);
             effects = Audio(false, .42f);
+            footsteps = Audio(false, .55f);
+            gravelSteps = LoadSteps(Gravel, "Stone");
+            woodSteps = LoadSteps(Board, "Wood");
+            Grace.Footfall += PlayFootfall;
+            windingClick = Resources.Load<AudioClip>("MusicBox/Winding");
             HUD.Fade(0);
             Title();
             if (qa) StartCoroutine(Smoke());
@@ -99,30 +137,83 @@ namespace RememberMe
                 }
             }
             nearby = Closest(Grace.Body.position, Grace.View.Forward);
-            HUD.Guide(Objective(), nearby ? (nearby.Id == TargetId.Ribbon && !Grace.Crouched ? "C  ·  Crouch to inspect" :
-                "E / Enter   ·   " + (nearby.Id == TargetId.Parcel && story.ParcelOpened ? "Reopen the parcel" : nearby.Label)) : "");
+            bool needsCrouch = nearby && nearby.Id == TargetId.Ribbon && !Grace.Crouched;
+            string action = !nearby ? "" : needsCrouch ? "Crouch to inspect" :
+                nearby.Id == TargetId.Parcel && story.ParcelOpened ? "Reopen the parcel" : nearby.Label;
+            HUD.Guide(Objective(), needsCrouch ? "C" : "E / Enter", action);
             if (nearby && (Press(KeyCode.E) || Press(KeyCode.Return) || Press(KeyCode.Space))) Trigger(nearby.Id);
-            if (Grace.Motion.sqrMagnitude > 0.0001f && Time.time >= nextStep)
-            {
-                nextStep = Time.time + (Grace.Crouched ? .47f : Grace.Running ? .23f : .34f);
-                var clip = room.Id == RoomId.Cemetery ? Gravel : Board;
-                if (clip) effects.PlayOneShot(clip, Grace.Crouched ? .23f : .4f);
-            }
+        }
+
+        static AudioClip[] LoadSteps(AudioClip fallback, string surface)
+        {
+            var clips = Resources.LoadAll<AudioClip>("Footsteps/" + surface);
+            return clips.Length > 0 ? clips : new[] { fallback };
+        }
+
+        void PlayFootfall()
+        {
+            if (busy || atTitle || room == null || HUD.IsModal) return;
+            bool outdoors = room.Id == RoomId.Cemetery;
+            var clips = outdoors ? gravelSteps : woodSteps;
+            int previous = outdoors ? lastGravelStep : lastWoodStep;
+            int index = stepRandom.Next(previous < 0 ? clips.Length : Mathf.Max(1, clips.Length - 1));
+            if (clips.Length > 1 && previous >= 0 && index >= previous) index++;
+            if (outdoors) lastGravelStep = index;
+            else lastWoodStep = index;
+
+            var clip = clips[index];
+            if (!clip) return;
+            footsteps.pitch = .94f + (float)stepRandom.NextDouble() * .12f;
+            float strength = Grace.Crouched ? .23f : Grace.Running ? .58f : .42f;
+            footsteps.PlayOneShot(clip, strength * (.87f + (float)stepRandom.NextDouble() * .26f));
         }
 
         void LateUpdate()
         {
             if (atTitle || room == null || room.Id == RoomId.Flashback || qaWideView) return;
-            Vector3 target = CameraPosition(Grace.transform.position);
-            WorldCamera.transform.position = Vector3.Lerp(WorldCamera.transform.position, target, 1 - Mathf.Exp(-11 * Time.deltaTime));
+            // The Rigidbody interpolates the rendered position. Read that same position
+            // for the camera, so it stops with Grace and does not ease past her.
+            WorldCamera.transform.position = CameraPosition(Grace.transform.position);
             var objective = !busy && !HUD.IsModal ? ObjectiveTarget() : null;
+            bool guidedByButterfly = UpdateButterflyGuide(objective);
             var highlight = objective && objective.FocusArt ? objective.FocusArt : null;
-            HUD.Locate(WorldCamera, objective ? objective.Approach : (Vector2?)null, highlight ? highlight.bounds : (Bounds?)null);
+            HUD.Locate(WorldCamera, objective && !guidedByButterfly ? objective.Approach : (Vector2?)null,
+                highlight ? highlight.bounds : (Bounds?)null);
         }
+
+        bool UpdateButterflyGuide(Act1Target target)
+        {
+            if (butterflyEcho) return false;
+            if (!target || room.Id != RoomId.Hall || story.Stage != StoryStage.FindStudy)
+            {
+                butterflyGuiding = false;
+                HUD.ShowButterfly(WorldCamera, null);
+                return false;
+            }
+
+            // Lead along the open path from the front-room entrance to the back-room door.
+            Vector2 destination = target.Approach;
+            destination.x += .27f;
+            destination.y = Mathf.Clamp(Grace.transform.position.y + 1.1f, room.Entry.y + 1, target.Approach.y + .27f);
+            if (!butterflyGuiding)
+            {
+                butterflyGuiding = true;
+                butterflyArrivedAt = Time.time;
+                butterflyPosition = destination - new Vector2(.57f, .34f);
+            }
+            butterflyPosition = Vector2.MoveTowards(butterflyPosition, destination, Time.deltaTime * 4.8f);
+            float opacity = Mathf.Lerp(.12f, 1, Mathf.Clamp01((Time.time - butterflyArrivedAt) * 3));
+            return HUD.ShowButterfly(WorldCamera, FlutterAt(butterflyPosition), opacity);
+        }
+
+        static Vector2 FlutterAt(Vector2 center) =>
+            center + new Vector2(Mathf.Sin(Time.time * 2.6f) * .11f, Mathf.Sin(Time.time * 3.1f) * .09f);
 
         Vector3 CameraPosition(Vector2 feet)
         {
             Vector2 size = room.Size;
+            if (room.Id == RoomId.Hall)
+                return new Vector3(size.x / 2, size.y / 2, -10);
             float ext = Mathf.Min(size.x / 2, WorldCamera.orthographicSize * WorldCamera.aspect);
             return new Vector3(Mathf.Clamp(feet.x, ext, size.x - ext),
                 Mathf.Clamp(feet.y + .28f, WorldCamera.orthographicSize, size.y - WorldCamera.orthographicSize), -10);
@@ -188,20 +279,22 @@ namespace RememberMe
         void Title()
         {
             atTitle = true; busy = false; Grace.CanMove = false;
+            HUD.ShowButterfly(WorldCamera, null);
             foreach (var entry in Rooms) entry.gameObject.SetActive(false);
             Grace.gameObject.SetActive(false);
             HUD.HideDialogue(); HUD.ShowHUD(false); HUD.Picture(Cover);
             Song(music, TitleMusic); Song(ambience, null);
             HUD.Menu("Remember Me", "A story about love, memory and goodbye.",
 #if UNITY_WEBGL && !UNITY_EDITOR
-                new[] {"New Game", "Continue"}, choice =>
+                new[] {"New Game", "Continue", "Kitchen"}, choice =>
 #else
-                new[] {"New Game", "Continue", "Quit"}, choice =>
+                new[] {"New Game", "Continue", "Kitchen", "Quit"}, choice =>
 #endif
                 {
                     if (choice == 0) StartCoroutine(Begin());
                     if (choice == 1) Load();
-                    if (choice == 2) Application.Quit();
+                    if (choice == 2) UnityEngine.SceneManagement.SceneManager.LoadScene("Kitchen");
+                    if (choice == 3) Application.Quit();
                 }, choice => choice != 1 || Act1Story.TryRead(saveFile, out _), coverMenu: true);
         }
 
@@ -231,15 +324,17 @@ namespace RememberMe
             HUD.ChapterCard(false);
             HUD.Picture(null);
             HUD.PresentationOpacity = 1;
-            yield return Say("Grace", "Everyone wore black today. Uncle James even put on a tie.");
+            yield return Say("Grace", "Everyone wore black today. Uncle James even put on a tie.", expression: Expression.Quiet);
             FaceSpeaker(TargetInRoom(TargetId.Mom));
             yield return Say("Mom", "See the white flowers past the first crossing, on the right? That’s Grandma’s spot.");
-            yield return Say("Mom", "You can go ahead. I’ll stay here by the gate.");
+            yield return Say("Mom", "You can go ahead. I’ll stay here by the gate.", expression: Expression.Warm);
             Enable();
         }
 
         void Enter(RoomId id, bool returnDoor = false, Vector2? savedFeet = null)
         {
+            HUD.ShowButterfly(WorldCamera, null);
+            butterflyGuiding = false;
             room = Array.Find(Rooms, entry => entry.Id == id);
             foreach (var entry in Rooms) entry.gameObject.SetActive(entry == room);
             story.Room = id;
@@ -252,7 +347,13 @@ namespace RememberMe
                 room.Dad.SetCrying(story.Stage == StoryStage.FindDad);
                 room.Dad.Look(TargetInRoom(TargetId.Grave).FocusArt.transform.position - room.Dad.transform.position);
             }
-            WorldCamera.orthographicSize = id == RoomId.Flashback ? 4.4f : id == RoomId.Cemetery ? 3.38f : 3.22f;
+            WorldCamera.orthographicSize = id switch
+            {
+                RoomId.Flashback => 4.4f,
+                RoomId.Hall => 4.3f,
+                RoomId.Cemetery => 3.38f,
+                _ => 3.22f
+            };
             WorldCamera.transform.position = id == RoomId.Flashback ? new Vector3(6, 4.5f, -10) : CameraPosition(Grace.Body.position);
             foreach (var target in room.Targets)
             {
@@ -290,15 +391,34 @@ namespace RememberMe
             StartCoroutine(Interact(id));
         }
 
-        IEnumerator Say(string speaker, string line, string qaPicture = null)
+        internal static Sprite[] LoadGraceExpressions() => LoadExpressions("Grace", new[] { 0, 1, 2, 3, 4, 5, 6, 7 });
+
+        internal static Sprite[] LoadGrandmaExpressions() => LoadExpressions("Grandma", new[] { 0, 1, 4, 2, 3, 5, 6, 7 });
+
+        static Sprite[] LoadExpressions(string person, int[] cells)
+        {
+            var sheet = Resources.Load<Texture2D>("ExpressionSheets/" + person);
+            if (!sheet || sheet.width % 4 != 0 || sheet.height % 2 != 0) return null;
+            int width = sheet.width / 4, height = sheet.height / 2;
+            return Array.ConvertAll(cells, cell => Sprite.Create(sheet,
+                new Rect(cell % 4 * width, (1 - cell / 4) * height, width, height),
+                new Vector2(.5f, .5f), 100, 0, SpriteMeshType.FullRect));
+        }
+
+        static Sprite Face(Sprite[] expressions, Expression expression, Sprite fallback) =>
+            expressions != null ? expressions[(int)expression] : fallback;
+
+        IEnumerator Say(string speaker, string line, string qaPicture = null, Expression expression = Expression.Neutral)
         {
             read = false;
             Sprite face = speaker switch
             {
-                "Grace" => GracePortrait,
-                "Mom" or "Mom  ·  From the path" or "Mom  ·  By the path" => MomPortrait,
-                "Dad" => room.Id == RoomId.Cemetery && room.Dad.Crying ? DadSadPortrait : DadPortrait,
-                "Grandma" => GrandmaPortrait,
+                "Grace" => Face(graceExpressions, expression, GracePortrait),
+                "Mom" or "Mom  ·  From the path" or "Mom  ·  By the path" => Face(momExpressions, expression, MomPortrait),
+                "Dad" when room.Id == RoomId.Cemetery && room.Dad.Crying => Face(dadExpressions,
+                    expression == Expression.Neutral ? Expression.Grief : expression, DadSadPortrait),
+                "Dad" => Face(dadExpressions, expression, DadPortrait),
+                "Grandma" => Face(grandmaExpressions, expression, GrandmaPortrait),
                 "Grandpa" => GrandpaPortrait,
                 "Uncle James" => UnclePortrait,
                 "Aunt" => AuntPortrait,
@@ -333,7 +453,7 @@ namespace RememberMe
                     if (story.Stage == StoryStage.Farewell)
                     {
                         yield return Say("Grace", "Evelyn Hart. I can read it without Mom.");
-                        yield return Say("Grace", "Is that her? Her hair looks different. She knew my name then.");
+                        yield return Say("Grace", "Is that her? Her hair looks different. She knew my name then.", expression: Expression.Surprise);
                         HUD.Picture(null);
                         story.Stage = StoryStage.FindDad;
                         room.Dad.SetCrying(true);
@@ -343,7 +463,7 @@ namespace RememberMe
                     break;
                 case TargetId.WhiteFlowers:
                     yield return Say("Grace", "Those grew by Grandma’s door. The ones with the little yellow middles.", "01d-flowers-dialogue");
-                    yield return Say("Grace", "She said they made her sneeze. I can’t remember when she stopped saying that.");
+                    yield return Say("Grace", "She said they made her sneeze. I can’t remember when she stopped saying that.", expression: Expression.Concern);
                     break;
                 case TargetId.Gate:
                     gateCalls++;
@@ -362,8 +482,8 @@ namespace RememberMe
                 case TargetId.Mom:
                     if (story.Stage == StoryStage.Farewell)
                     {
-                        yield return Say("Grace", "Mom? Where’s Grandma now? I mean… where did she go?");
-                        yield return Say("Mom", "I don’t know, sweetheart.");
+                        yield return Say("Grace", "Mom? Where’s Grandma now? I mean… where did she go?", expression: Expression.Tense);
+                        yield return Say("Mom", "I don’t know, sweetheart.", expression: Expression.Grief);
                         yield return Say("Mom", "Come find me if you want to talk, all right? I’ll be here.", "01e-facing");
                     }
                     else if (story.Stage != StoryStage.FindMom)
@@ -372,7 +492,7 @@ namespace RememberMe
                     {
                         HUD.Picture(ClosedParcel);
                         yield return Say("Mom", "I found this when we were going through Grandma’s things.");
-                        yield return Say("Grace", "That’s my name. Did she write it?");
+                        yield return Say("Grace", "That’s my name. Did she write it?", expression: Expression.Surprise);
                         yield return Say("Mom", "I think so. I’ll put it on the bench, right next to my bag.");
                         story.Stage = StoryStage.OpenParcel;
                     }
@@ -426,11 +546,10 @@ namespace RememberMe
                     yield return new WaitUntil(() => picked);
                     if (wind)
                     {
-                        Song(music, BoxMusic);
-                        yield return Delay(.55f);
+                        yield return WindMusicBox();
                         story.Stage = StoryStage.FindStudy;
                         yield return ChangeRoom(RoomId.Hall);
-                        yield return Say("Grace", "Grandma’s house. I can hear the song again. It’s coming from the back room.");
+                        yield return Say("Grace", "Grandma’s house. I can hear the song again. It’s coming from the back room.", expression: Expression.Warm);
                     }
                     break;
                 case TargetId.ToStudy:
@@ -441,10 +560,10 @@ namespace RememberMe
                     yield return ChangeRoom(RoomId.Hall, true);
                     break;
                 case TargetId.Grandma:
-                    if (story.Stage == StoryStage.Complete) yield return Say("Grandma", "Come back when you’re ready, love. I’ll be right here.");
+                    if (story.Stage == StoryStage.Complete) yield return IntoKitchen();
                     else
                     {
-                        yield return Say("Grandma", "I was saving this chair for someone. It’s slipped my mind who.");
+                        yield return Say("Grandma", "I was saving this chair for someone. It’s slipped my mind who.", expression: Expression.Concern);
                         int memory = -1;
                         HUD.Menu("Sit with Grandma", "Take a moment with her.", new[] { "Share the Photograph", "Hum the Tune" },
                             choice => { memory = choice; HUD.HideMenu(); });
@@ -455,8 +574,10 @@ namespace RememberMe
                             : "I know that tune. I used to hum it while I waited for the kettle.");
                         HUD.Picture(Reunion);
                         if (qa) yield return Capture("04b-reunion-illustration");
-                        yield return Say("Grandma", "Sit with me a minute, love. We can listen together.");
+                        yield return Say("Grandma", "Sit with me a minute, love. We can listen together.", expression: Expression.Warm);
                         story.Stage = StoryStage.Complete;
+                        yield return ReunionButterfly();
+                        if (!qa) yield return IntoKitchen();
                     }
                     break;
                 case TargetId.Ribbon:
@@ -526,6 +647,64 @@ namespace RememberMe
             HUD.Fade(to);
         }
 
+        IEnumerator ReunionButterfly()
+        {
+            var grandma = TargetInRoom(TargetId.Grandma);
+            var window = TargetInRoom(TargetId.Window);
+            if (!grandma || !grandma.Speaker || !window) yield break;
+            HUD.Picture(null);
+            butterflyEcho = true;
+            Vector2 start = (Vector2)grandma.Speaker.transform.position + new Vector2(-.32f, .62f);
+            Vector2 end = window.Approach + new Vector2(.1f, .97f);
+            float duration = qa ? .18f : 2.65f;
+            for (float elapsed = 0; elapsed < duration; elapsed += Time.deltaTime)
+            {
+                float progress = elapsed / duration;
+                float flight = Mathf.SmoothStep(0, 1, Mathf.InverseLerp(.26f, 1, progress));
+                Vector2 position = Vector2.Lerp(start, end, flight) + Vector2.up * (.72f * Mathf.Sin(flight * Mathf.PI));
+                float opacity = Mathf.Min(Mathf.InverseLerp(0, .18f, progress), 1 - Mathf.InverseLerp(.78f, 1, progress));
+                HUD.ShowButterfly(WorldCamera, FlutterAt(position), opacity);
+                yield return null;
+            }
+            HUD.ShowButterfly(WorldCamera, null);
+            butterflyEcho = false;
+        }
+
+        IEnumerator WindMusicBox()
+        {
+            float duration = qa ? .24f : 1.75f;
+            float originalRain = ambience.volume;
+            bool firstClick = false, secondClick = false, playing = false;
+            for (float elapsed = 0; elapsed < duration; elapsed += Time.deltaTime)
+            {
+                float progress = elapsed / duration;
+                HUD.WindMusicBox(progress);
+                ambience.volume = originalRain * (1 - .72f * Mathf.SmoothStep(0, 1, progress));
+                if (!firstClick && progress >= .30f)
+                {
+                    firstClick = true;
+                    if (windingClick) effects.PlayOneShot(windingClick, .48f);
+                }
+                if (!secondClick && progress >= .54f)
+                {
+                    secondClick = true;
+                    if (windingClick) effects.PlayOneShot(windingClick, .42f);
+                }
+                if (!playing && progress >= .76f)
+                {
+                    playing = true;
+                    Song(music, BoxMusic);
+                }
+                yield return null;
+            }
+            HUD.WindMusicBox(1);
+            if (!playing) Song(music, BoxMusic);
+            yield return Delay(.45f);
+            // The room transition swaps the rain loop while the screen is dark.
+            ambience.Stop();
+            ambience.volume = originalRain;
+        }
+
         IEnumerator ChangeRoom(RoomId id, bool returnDoor = false)
         {
             yield return Fade(0, 1);
@@ -547,35 +726,52 @@ namespace RememberMe
             actor.Face(Vector2.up); actor.Pose(Vector2.zero, false, false, 0);
         }
 
+        IEnumerator IntoKitchen()
+        {
+            HUD.Picture(null);
+            int choice = -1;
+            HUD.Menu("Grandma’s kitchen", "That night, Grace opens the box again.", new[] {"Open the memory box", "Stay here"},
+                which => { choice = which; HUD.HideMenu(); });
+            if (qa) HUD.ChooseForVerification(0);
+            yield return new WaitUntil(() => choice >= 0);
+            if (choice == 0) UnityEngine.SceneManagement.SceneManager.LoadScene("Kitchen");
+        }
+
         IEnumerator Flashback()
         {
-            yield return Say("Grace", "Dad?", "02a-grace-talk");
+            yield return Say("Grace", "Dad?", "02a-grace-talk", Expression.Concern);
             yield return Say("Dad", "Hey, Gracie. Just give me a second.", "02a-dad-portrait");
             yield return Say("Grace", "Are you crying?");
-            yield return Say("Dad", "Yeah. I miss her.");
+            yield return Say("Dad", "Yeah. I miss her.", expression: Expression.Grief);
             yield return ChangeRoom(RoomId.Flashback);
             room.Door.sprite = room.ClosedDoor;
             room.Grandma.transform.position = new Vector2(5.63f, 5.8f);
             room.Dad.transform.position = new Vector2(7.1f, 5.55f);
             room.Grandma.Look(Vector2.up);
             room.Dad.Look(room.Grandma.transform.position - room.Dad.transform.position);
-            yield return Say("Grandma", "I’d better get home. It’s getting late.");
-            yield return WalkActor(room.Grandma, new Vector2(5.71f, 6.46f));
+            yield return Say("Grandma", "I’d better get home. It’s getting late.", expression: Expression.Tense);
+            Vector2 threshold = room.Door.transform.position;
+            // Leave room for the whole sprite to stand on the floor in front of the door.
+            Vector2 grandmaMark = threshold + new Vector2(-.29f, -.71f);
+            Vector2 dadMark = threshold + new Vector2(.41f, -.71f);
+            yield return WalkActor(room.Grandma, grandmaMark);
             room.Door.sprite = room.OpenDoor;
             doorOpened = true;
             if (Hinge) effects.PlayOneShot(Hinge);
-            yield return Say("Dad", "Mom, this is your house. Come and sit with me.");
-            yield return WalkActor(room.Dad, new Vector2(6.85f, 6.14f));
-            yield return WalkActor(room.Dad, new Vector2(6.31f, 6.46f));
+            yield return Say("Dad", "Mom, this is your house. Come and sit with me.", expression: Expression.Concern);
+            yield return WalkActor(room.Dad, dadMark);
             room.Dad.Face(Vector2.up);
             if (qa) yield return Capture("02b-door");
             if (Latch) effects.PlayOneShot(Latch);
             room.Door.sprite = room.ClosedDoor;
-            doorClosedBeside = Mathf.Abs(room.Grandma.transform.position.y - room.Dad.transform.position.y) < .05f &&
-                room.Dad.transform.position.x > 6 && room.Grandma.transform.position.x < 6;
-            yield return Say("Grandma", "Grace? Can you open the door for me?");
+            Vector2 grandmaFeet = room.Grandma.transform.position;
+            Vector2 dadFeet = room.Dad.transform.position;
+            doorClosedBeside = Mathf.Abs(grandmaFeet.y - dadFeet.y) < .05f &&
+                grandmaFeet.y <= threshold.y - .65f && dadFeet.x - grandmaFeet.x > .64f &&
+                dadFeet.x > threshold.x && grandmaFeet.x < threshold.x;
+            yield return Say("Grandma", "Grace? Can you open the door for me?", expression: Expression.Surprise);
             room.Dad.Look(room.Grandma.transform.position - room.Dad.transform.position);
-            yield return Say("Dad", "Mom, please. We’ve been over this. I can’t do it again.");
+            yield return Say("Dad", "Mom, please. We’ve been over this. I can’t do it again.", expression: Expression.Tense);
             Grace.Place(Grace.Body.position + Vector2.down * .24f);
             Grace.LookAt(new Vector2(6, 6.5f));
             yield return Delay(.6f);
@@ -586,7 +782,7 @@ namespace RememberMe
             yield return Say("Grace", "Mm-hm.");
             var grave = TargetInRoom(TargetId.Grave);
             Grace.LookAt(grave.FocusArt.transform.position);
-            yield return Say("Grace", "He sounded so mad that night. I didn’t know he missed her this much.");
+            yield return Say("Grace", "He sounded so mad that night. I didn’t know he missed her this much.", expression: Expression.Grief);
             FaceSpeaker(TargetInRoom(TargetId.Mom));
             yield return Say("Mom", "Grace? When you’re ready, come see me by the bench. I found something of Grandma’s.");
         }
@@ -703,6 +899,12 @@ namespace RememberMe
                     Array.IndexOf(patrols[i].View.Walk, patrols[i].View.Renderer.sprite) < 0)
                     throw new InvalidOperationException("Mourner failed to animate on route: " + patrols[i].name);
             yield return Capture("01a-walk");
+            qaDirection = Vector2.left;
+            yield return null;
+            yield return new WaitForFixedUpdate();
+            if (Grace.Motion.x >= -.001f || Grace.Motion.y <= .001f)
+                throw new InvalidOperationException("Steering must travel through an intermediate heading when the input turns.");
+            qaDirection = Vector2.up;
             qaSprint = true;
             yield return MotionFrames();
             if (!Grace.Running || Array.IndexOf(Grace.View.Run, Grace.View.Renderer.sprite) < 0)
@@ -719,7 +921,7 @@ namespace RememberMe
             if (Grace.Crouched || !Grace.Running)
                 throw new InvalidOperationException("Sprint input did not release the crouch.");
             qaDirection = Vector2.zero; qaSprint = false;
-            Debug.Log("REMEMBER_MOTION_PASS: separate walk, sprint, and crouch poses; Shift exits crouch; four mourners animate along their routes.");
+            Debug.Log("REMEMBER_MOTION_PASS: separate walk, sprint, and crouch poses; sprint exits crouch; four mourners animate along their routes.");
             Grace.Place(new Vector2(11f, 1.18f));
             qaDirection = Vector2.down;
             yield return MotionFrames();
@@ -750,7 +952,7 @@ namespace RememberMe
             WorldCamera.transform.position = CameraPosition(Grace.Body.position);
             yield return null;
             yield return Capture("01c-grave-guidance");
-            if (!HUD.IsBracketing) throw new InvalidOperationException("The headstone did not gain a visible objective highlight.");
+            if (!HUD.HasObjectiveArrow) throw new InvalidOperationException("The headstone objective arrow did not appear.");
             yield return TestAction(TargetId.WhiteFlowers);
             yield return TestAction(TargetId.Ribbon);
             if (!story.Ribbon) { Application.Quit(8); yield break; }
@@ -829,7 +1031,10 @@ namespace RememberMe
             yield return Capture("05-pause");
             yield return new WaitForSeconds(1);
             Debug.Log("REMEMBER_SMOKE_PASS: cover dissolve, tap and blocked turning, keyboard and hover focus, four-sided Mom reach, patrols, portraits, story and save/load.");
-#if !UNITY_WEBGL || UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR
+            CloseMenu();
+            yield return TestAction(TargetId.Grandma);
+#else
             Application.Quit(0);
 #endif
         }
