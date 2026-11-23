@@ -84,7 +84,7 @@ namespace RememberMe.Editor
             foreach (var room in game.Rooms) room.gameObject.SetActive(room.Id == RoomId.Hall);
             game.Grace.Place(game.Rooms[2].Entry);
             EditorSceneManager.SaveScene(scene, ScenePath);
-            EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true) };
+            EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true), new EditorBuildSettingsScene("Assets/Scenes/Kitchen.unity", true) };
             EditorBuildSettings.RemoveConfigObject("com.unity.input.settings.actions");
             PlayerSettings.defaultScreenWidth = 1280;
             PlayerSettings.defaultScreenHeight = 800;
@@ -102,7 +102,7 @@ namespace RememberMe.Editor
             Act1Verification.Verify();
             Assemble();
             Directory.CreateDirectory("Build/Windows");
-            var report = BuildPipeline.BuildPlayer(new[] { ScenePath }, "Build/Windows/RememberMe.exe",
+            var report = BuildPipeline.BuildPlayer(new[] { ScenePath, "Assets/Scenes/Kitchen.unity" }, "Build/Windows/RememberMe.exe",
                 BuildTarget.StandaloneWindows64, BuildOptions.None);
             if (report.summary.result != BuildResult.Succeeded)
                 throw new InvalidOperationException("Windows build: " + report.summary.result);
@@ -124,7 +124,7 @@ namespace RememberMe.Editor
             PlayerSettings.WebGL.compressionFormat = WebGLCompressionFormat.Gzip;
             PlayerSettings.WebGL.decompressionFallback = true;
             PlayerSettings.WebGL.template = "PROJECT:RememberMePages";
-            var report = BuildPipeline.BuildPlayer(new[] { ScenePath }, output, BuildTarget.WebGL, BuildOptions.None);
+            var report = BuildPipeline.BuildPlayer(new[] { ScenePath, "Assets/Scenes/Kitchen.unity" }, output, BuildTarget.WebGL, BuildOptions.None);
             if (report.summary.result != BuildResult.Succeeded)
                 throw new InvalidOperationException("Web build: " + report.summary.result);
             File.WriteAllText(Path.Combine(output, ".nojekyll"), "");
@@ -220,7 +220,8 @@ namespace RememberMe.Editor
             layoutHeight = room.Size.y * Pixels;
             float width = room.Size.x * Pixels;
             if (id == RoomId.Cemetery) BuildCemeteryLawn();
-            var ground = ArtAt(room.transform, id == RoomId.Cemetery ? "Ground/CemeteryLawn" : "Ground/" + id,
+            string groundAsset = id == RoomId.Cemetery ? "CemeteryLawn" : id == RoomId.Flashback ? "Hall" : id.ToString();
+            var ground = ArtAt(room.transform, "Ground/" + groundAsset,
                 width / 2, layoutHeight, width, layoutHeight);
             ground.sortingOrder = -3000;
             room.Entry = P(576, 640); room.ReturnEntry = room.Entry;
@@ -337,23 +338,29 @@ namespace RememberMe.Editor
             Boundary(parent, 325, 672, 416, 21); Boundary(parent, 829, 672, 410, 21);
             Boundary(parent, 525, 738, 22, 137); Boundary(parent, 626, 738, 22, 137);
             Boundary(parent, 576, 820, 115, 20);
-            if (id != RoomId.Hall)
+            if (study)
                 ArtAt(parent, "Props/Rug", 568, 580, 294, 177).sortingOrder = -100;
 
             if (!study)
             {
-                float sofaX = flash ? 253 : 298, sofaY = flash ? 529 : 493;
-                float chairX = flash ? 870 : 836, chairY = flash ? 544 : 510;
-                float teaX = flash ? 944 : 911, teaY = flash ? 548 : 537;
+                const float sofaX = 298, sofaY = 493;
+                const float teaX = 911, teaY = 537;
                 var sofa = Furniture(parent, "Sofa", sofaX, sofaY, 116, 88, 108, 33);
                 var sideboard = Furniture(parent, "Sideboard", 260, 347, 118, 101, 109, 32);
-                if (flash) Furniture(parent, "Cabinet", 911, 352, 83, 121, 78, 30);
-                Furniture(parent, "Chair", chairX, chairY, 57, 72, 53, 28);
+                Furniture(parent, "Chair", 836, 510, 57, 72, 53, 28);
                 var teaTable = Furniture(parent, "TeaTable", teaX, teaY, 45, 48, 34, 28);
                 var cup = On(parent, "Cup", teaX, teaY, 17, 14, 34);
+                var console = Furniture(parent, "ConsoleFront", 759, 367, 96, 64, 89, 32);
+                var book = On(parent, "Book", 764, 367, 26, 18, 52);
+                var sewing = Furniture(parent, "Sewing", 369, 471, 27, 23, 24, 18);
+                DressParlour(parent);
                 room.Door = ArtAt(parent, flash ? "Props/DoorNew" : "Props/DoorOpenNew", 576, 224, flash ? 53 : 61, 96);
                 if (flash)
                 {
+                    foreach (var sprite in parent.GetComponentsInChildren<SpriteRenderer>())
+                        sprite.color *= sprite.sortingOrder == -3000
+                            ? new Color(.60f, .72f, .83f)
+                            : new Color(.73f, .80f, .91f);
                     room.ClosedDoor = Image("Props/DoorNew");
                     room.OpenDoor = Image("Props/DoorOpenNew");
                     room.Dad = Actor(parent, "Dad at the doorway", "Dad", P(686, 337), 1.09f);
@@ -361,10 +368,7 @@ namespace RememberMe.Editor
                 }
                 else
                 {
-                    var console = Furniture(parent, "ConsoleFront", 759, 367, 96, 64, 89, 32);
-                    var book = On(parent, "Book", 764, 367, 26, 18, 52);
                     Reach(Target(parent, TargetId.Book, "Take the blue storybook", 760, 392, book), console, book);
-                    var sewing = Furniture(parent, "Sewing", 369, 471, 27, 23, 24, 18);
                     Reach(Target(parent, TargetId.Sewing, "Check the sewing basket", 397, 482), sewing);
                     Reach(Target(parent, TargetId.Photo, "Look at the photograph", 260, 371), sideboard);
                     Reach(Target(parent, TargetId.Blanket, "Touch the patchwork blanket", sofaX, sofaY + 28), sofa);
@@ -391,8 +395,12 @@ namespace RememberMe.Editor
                 Reach(Target(parent, TargetId.Tea, "Look at the two cups", 902, 507), teaTable);
                 Target(parent, TargetId.ToHall, "Return to the front room", 576, 796);
                 NPC(parent, "Grandma", 798, 367, TargetId.Grandma, "Talk to Grandma");
+                WallDetail(parent, "WallPhoto", 644, 233, 32, 33, .88f);
+                WallDetail(parent, "SillIvy", 345, 253, 26, 27, .94f);
+                GroundShadow(parent, 975, 369, 37, 18, .75f, -96);
+                Dress(parent, "LinenBasket", 975, 371, 35, 30).color = new Color(.77f, .73f, .66f);
             }
-            DressInterior(parent, id);
+
             room.Targets = targets.ToArray();
             return room;
         }
@@ -427,35 +435,6 @@ namespace RememberMe.Editor
                 GroundShadow(parent, point.x, point.y, 29, 13, .62f, -2760);
                 Dress(parent, "MemorialVase", point.x, point.y, 23, 21).color = new Color(.82f, .84f, .80f);
             }
-        }
-
-        static void DressInterior(Transform parent, RoomId id)
-        {
-            if (id == RoomId.Hall)
-            {
-                DressParlour(parent);
-                return;
-            }
-            if (id == RoomId.Study)
-            {
-                WallDetail(parent, "WallPhoto", 644, 233, 32, 33, .88f);
-                WallDetail(parent, "SillIvy", 345, 253, 26, 27, .94f);
-                GroundShadow(parent, 975, 369, 37, 18, .75f, -96);
-                Dress(parent, "LinenBasket", 975, 371, 35, 30).color = new Color(.77f, .73f, .66f);
-                return;
-            }
-
-            const float light = .73f;
-            WallDetail(parent, "WallPhoto", 704, 169, 35, 36, light);
-            WallDetail(parent, "ShawlRail", 482, 209, 32, 37, light);
-            WallDetail(parent, "SillIvy", 911, 179, 22, 23, light);
-
-            GroundShadow(parent, 286, 547, 24, 13, .69f, -96);
-            var slippers = Dress(parent, "Slippers", 286, 552, 21, 18);
-            slippers.sortingOrder = -92;
-            slippers.color = new Color(.68f, .70f, .72f);
-            GroundShadow(parent, 189, 530, 31, 17, .75f, -96);
-            Dress(parent, "LinenBasket", 189, 532, 29, 26).color = new Color(.68f, .70f, .72f);
         }
 
         static void DressParlour(Transform parent)

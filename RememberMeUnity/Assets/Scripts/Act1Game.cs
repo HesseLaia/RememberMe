@@ -10,7 +10,7 @@ namespace RememberMe
 {
     public sealed class Act1Game : MonoBehaviour
     {
-        enum Expression { Neutral, Warm, Surprise, Concern, Reflective, Tense, Grief, Quiet }
+        internal enum Expression { Neutral, Warm, Surprise, Concern, Reflective, Tense, Grief, Quiet }
 
         Sprite[] graceExpressions, grandmaExpressions, momExpressions, dadExpressions;
 
@@ -21,7 +21,7 @@ namespace RememberMe
         public Sprite Cover, Gravestone, ClosedParcel, OpenParcel, Mechanism, Reunion, WindowView;
         public Sprite GracePortrait, MomPortrait, DadPortrait, DadSadPortrait, GrandmaPortrait, GrandpaPortrait, UnclePortrait, AuntPortrait;
         public AudioClip TitleMusic, BoxMusic, Hinge, Latch, Gravel, Board, Cloth;
-        AudioSource music, ambience, effects;
+        AudioSource music, ambience, effects, footsteps;
         AudioClip windingClick;
         Act1Room room;
         Act1Story story = new();
@@ -35,23 +35,15 @@ namespace RememberMe
         bool qaWideView, qaCloseParcelOverview;
         Vector2 qaDirection;
         bool qaSprint;
-        float nextStep;
+        AudioClip[] gravelSteps, woodSteps;
+        int lastGravelStep = -1, lastWoodStep = -1;
+        readonly System.Random stepRandom = new();
         string saveFile;
+
+        static bool openedChapterLink;
 
         void Start()
         {
-#if UNITY_WEBGL && !UNITY_EDITOR
-            qa = Uri.TryCreate(Application.absoluteURL, UriKind.Absolute, out var page) && page.Query == "?remember-smoke=1";
-            saveFile = qa ? "remember-me-qa" : "remember-me-act-one";
-            WebGLInput.captureAllKeyboardInput = false;
-            if (qa && Act1Story.TryRead(saveFile, out var prior) && prior.Stage == StoryStage.Complete)
-                Debug.Log("REMEMBER_WEB_SAVE_RELOADED");
-#else
-            string[] args = Environment.GetCommandLineArgs();
-            qa = Array.IndexOf(args, "-remember-smoke") >= 0;
-            saveFile = Path.Combine(Application.persistentDataPath, qa ? "qa-act1.json" : "act1.json");
-#endif
-            if (qa) Debug.Log("REMEMBER_SMOKE_STARTED");
             if (Application.isMobilePlatform)
             {
                 int refreshRate = Mathf.RoundToInt((float)Screen.currentResolution.refreshRateRatio.value);
@@ -63,14 +55,37 @@ namespace RememberMe
                 QualitySettings.vSyncCount = 1;
                 Application.targetFrameRate = -1;
             }
+#if UNITY_WEBGL && !UNITY_EDITOR
+            qa = Uri.TryCreate(Application.absoluteURL, UriKind.Absolute, out var page) && page.Query == "?remember-smoke=1";
+            if (!openedChapterLink && page != null && (page.Query == "?kitchen=1" || page.Query == "?kitchen-check=1"))
+            {
+                openedChapterLink = true;
+                enabled = false;
+                UnityEngine.SceneManagement.SceneManager.LoadScene("Kitchen");
+                return;
+            }
+            saveFile = qa ? "remember-me-qa" : "remember-me-act-one";
+            WebGLInput.captureAllKeyboardInput = false;
+            if (qa && Act1Story.TryRead(saveFile, out var prior) && prior.Stage == StoryStage.Complete)
+                Debug.Log("REMEMBER_WEB_SAVE_RELOADED");
+#else
+            string[] args = Environment.GetCommandLineArgs();
+            qa = Array.IndexOf(args, "-remember-smoke") >= 0;
+            saveFile = Path.Combine(Application.persistentDataPath, qa ? "qa-act1.json" : "act1.json");
+#endif
+            if (qa) Debug.Log("REMEMBER_SMOKE_STARTED");
             HUD.Initialize();
-            graceExpressions = LoadExpressions("Grace", new[] { 0, 1, 2, 3, 4, 5, 6, 7 });
-            grandmaExpressions = LoadExpressions("Grandma", new[] { 0, 1, 4, 2, 3, 5, 6, 7 });
+            graceExpressions = LoadGraceExpressions();
+            grandmaExpressions = LoadGrandmaExpressions();
             momExpressions = LoadExpressions("Mom", new[] { 0, 1, 5, 2, 4, 6, 3, 7 });
             dadExpressions = LoadExpressions("Dad", new[] { 0, 1, 4, 3, 7, 6, 5, 2 });
             music = Audio(true, .42f);
             ambience = Audio(true, .25f);
             effects = Audio(false, .42f);
+            footsteps = Audio(false, .55f);
+            gravelSteps = LoadSteps(Gravel, "Stone");
+            woodSteps = LoadSteps(Board, "Wood");
+            Grace.Footfall += PlayFootfall;
             windingClick = Resources.Load<AudioClip>("MusicBox/Winding");
             HUD.Fade(0);
             Title();
@@ -127,12 +142,30 @@ namespace RememberMe
                 nearby.Id == TargetId.Parcel && story.ParcelOpened ? "Reopen the parcel" : nearby.Label;
             HUD.Guide(Objective(), needsCrouch ? "C" : "E / Enter", action);
             if (nearby && (Press(KeyCode.E) || Press(KeyCode.Return) || Press(KeyCode.Space))) Trigger(nearby.Id);
-            if (Grace.Motion.sqrMagnitude > 0.0001f && Time.time >= nextStep)
-            {
-                nextStep = Time.time + (Grace.Crouched ? .47f : Grace.Running ? .23f : .34f);
-                var clip = room.Id == RoomId.Cemetery ? Gravel : Board;
-                if (clip) effects.PlayOneShot(clip, Grace.Crouched ? .23f : .4f);
-            }
+        }
+
+        static AudioClip[] LoadSteps(AudioClip fallback, string surface)
+        {
+            var clips = Resources.LoadAll<AudioClip>("Footsteps/" + surface);
+            return clips.Length > 0 ? clips : new[] { fallback };
+        }
+
+        void PlayFootfall()
+        {
+            if (busy || atTitle || room == null || HUD.IsModal) return;
+            bool outdoors = room.Id == RoomId.Cemetery;
+            var clips = outdoors ? gravelSteps : woodSteps;
+            int previous = outdoors ? lastGravelStep : lastWoodStep;
+            int index = stepRandom.Next(previous < 0 ? clips.Length : Mathf.Max(1, clips.Length - 1));
+            if (clips.Length > 1 && previous >= 0 && index >= previous) index++;
+            if (outdoors) lastGravelStep = index;
+            else lastWoodStep = index;
+
+            var clip = clips[index];
+            if (!clip) return;
+            footsteps.pitch = .94f + (float)stepRandom.NextDouble() * .12f;
+            float strength = Grace.Crouched ? .23f : Grace.Running ? .58f : .42f;
+            footsteps.PlayOneShot(clip, strength * (.87f + (float)stepRandom.NextDouble() * .26f));
         }
 
         void LateUpdate()
@@ -253,14 +286,15 @@ namespace RememberMe
             Song(music, TitleMusic); Song(ambience, null);
             HUD.Menu("Remember Me", "A story about love, memory and goodbye.",
 #if UNITY_WEBGL && !UNITY_EDITOR
-                new[] {"New Game", "Continue"}, choice =>
+                new[] {"New Game", "Continue", "Kitchen"}, choice =>
 #else
-                new[] {"New Game", "Continue", "Quit"}, choice =>
+                new[] {"New Game", "Continue", "Kitchen", "Quit"}, choice =>
 #endif
                 {
                     if (choice == 0) StartCoroutine(Begin());
                     if (choice == 1) Load();
-                    if (choice == 2) Application.Quit();
+                    if (choice == 2) UnityEngine.SceneManagement.SceneManager.LoadScene("Kitchen");
+                    if (choice == 3) Application.Quit();
                 }, choice => choice != 1 || Act1Story.TryRead(saveFile, out _), coverMenu: true);
         }
 
@@ -356,6 +390,10 @@ namespace RememberMe
             FaceSpeaker(TargetInRoom(id));
             StartCoroutine(Interact(id));
         }
+
+        internal static Sprite[] LoadGraceExpressions() => LoadExpressions("Grace", new[] { 0, 1, 2, 3, 4, 5, 6, 7 });
+
+        internal static Sprite[] LoadGrandmaExpressions() => LoadExpressions("Grandma", new[] { 0, 1, 4, 2, 3, 5, 6, 7 });
 
         static Sprite[] LoadExpressions(string person, int[] cells)
         {
@@ -522,7 +560,7 @@ namespace RememberMe
                     yield return ChangeRoom(RoomId.Hall, true);
                     break;
                 case TargetId.Grandma:
-                    if (story.Stage == StoryStage.Complete) yield return Say("Grandma", "Come back when you’re ready, love. I’ll be right here.");
+                    if (story.Stage == StoryStage.Complete) yield return IntoKitchen();
                     else
                     {
                         yield return Say("Grandma", "I was saving this chair for someone. It’s slipped my mind who.", expression: Expression.Concern);
@@ -539,6 +577,7 @@ namespace RememberMe
                         yield return Say("Grandma", "Sit with me a minute, love. We can listen together.", expression: Expression.Warm);
                         story.Stage = StoryStage.Complete;
                         yield return ReunionButterfly();
+                        if (!qa) yield return IntoKitchen();
                     }
                     break;
                 case TargetId.Ribbon:
@@ -687,6 +726,17 @@ namespace RememberMe
             actor.Face(Vector2.up); actor.Pose(Vector2.zero, false, false, 0);
         }
 
+        IEnumerator IntoKitchen()
+        {
+            HUD.Picture(null);
+            int choice = -1;
+            HUD.Menu("Grandma’s kitchen", "That night, Grace opens the box again.", new[] {"Open the memory box", "Stay here"},
+                which => { choice = which; HUD.HideMenu(); });
+            if (qa) HUD.ChooseForVerification(0);
+            yield return new WaitUntil(() => choice >= 0);
+            if (choice == 0) UnityEngine.SceneManagement.SceneManager.LoadScene("Kitchen");
+        }
+
         IEnumerator Flashback()
         {
             yield return Say("Grace", "Dad?", "02a-grace-talk", Expression.Concern);
@@ -700,19 +750,25 @@ namespace RememberMe
             room.Grandma.Look(Vector2.up);
             room.Dad.Look(room.Grandma.transform.position - room.Dad.transform.position);
             yield return Say("Grandma", "I’d better get home. It’s getting late.", expression: Expression.Tense);
-            yield return WalkActor(room.Grandma, new Vector2(5.71f, 6.46f));
+            Vector2 threshold = room.Door.transform.position;
+            // Leave room for the whole sprite to stand on the floor in front of the door.
+            Vector2 grandmaMark = threshold + new Vector2(-.29f, -.71f);
+            Vector2 dadMark = threshold + new Vector2(.41f, -.71f);
+            yield return WalkActor(room.Grandma, grandmaMark);
             room.Door.sprite = room.OpenDoor;
             doorOpened = true;
             if (Hinge) effects.PlayOneShot(Hinge);
             yield return Say("Dad", "Mom, this is your house. Come and sit with me.", expression: Expression.Concern);
-            yield return WalkActor(room.Dad, new Vector2(6.85f, 6.14f));
-            yield return WalkActor(room.Dad, new Vector2(6.31f, 6.46f));
+            yield return WalkActor(room.Dad, dadMark);
             room.Dad.Face(Vector2.up);
             if (qa) yield return Capture("02b-door");
             if (Latch) effects.PlayOneShot(Latch);
             room.Door.sprite = room.ClosedDoor;
-            doorClosedBeside = Mathf.Abs(room.Grandma.transform.position.y - room.Dad.transform.position.y) < .05f &&
-                room.Dad.transform.position.x > 6 && room.Grandma.transform.position.x < 6;
+            Vector2 grandmaFeet = room.Grandma.transform.position;
+            Vector2 dadFeet = room.Dad.transform.position;
+            doorClosedBeside = Mathf.Abs(grandmaFeet.y - dadFeet.y) < .05f &&
+                grandmaFeet.y <= threshold.y - .65f && dadFeet.x - grandmaFeet.x > .64f &&
+                dadFeet.x > threshold.x && grandmaFeet.x < threshold.x;
             yield return Say("Grandma", "Grace? Can you open the door for me?", expression: Expression.Surprise);
             room.Dad.Look(room.Grandma.transform.position - room.Dad.transform.position);
             yield return Say("Dad", "Mom, please. We’ve been over this. I can’t do it again.", expression: Expression.Tense);
@@ -975,7 +1031,10 @@ namespace RememberMe
             yield return Capture("05-pause");
             yield return new WaitForSeconds(1);
             Debug.Log("REMEMBER_SMOKE_PASS: cover dissolve, tap and blocked turning, keyboard and hover focus, four-sided Mom reach, patrols, portraits, story and save/load.");
-#if !UNITY_WEBGL || UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR
+            CloseMenu();
+            yield return TestAction(TargetId.Grandma);
+#else
             Application.Quit(0);
 #endif
         }

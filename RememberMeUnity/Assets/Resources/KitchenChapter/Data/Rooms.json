@@ -1,0 +1,61 @@
+{
+  "rooms": [
+    {
+      "art": "Kitchen",
+      "top": 338,
+      "furniture": []
+    },
+    {
+      "art": "Hall",
+      "top": 329,
+      "furniture": []
+    },
+    {
+      "art": "Parlor",
+      "top": 225,
+      "furniture": [
+        {
+          "x": 196,
+          "y": 265,
+          "width": 132,
+          "height": 108
+        },
+        {
+          "x": 650,
+          "y": 243,
+          "width": 171,
+          "height": 124
+        },
+        {
+          "x": 882,
+          "y": 233,
+          "width": 114,
+          "height": 137
+        },
+        {
+          "x": 183,
+          "y": 443,
+          "width": 186,
+          "height": 141
+        },
+        {
+          "x": 831,
+          "y": 465,
+          "width": 153,
+          "height": 125
+        },
+        {
+          "x": 859,
+          "y": 190,
+          "width": 74,
+          "height": 55
+        }
+      ]
+    },
+    {
+      "art": "Bedroom",
+      "top": 330,
+      "furniture": []
+    }
+  ]
+}

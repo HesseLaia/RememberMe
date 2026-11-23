@@ -15,6 +15,7 @@ namespace RememberMe
         public bool Crouched { get; private set; }
         public Vector2 Motion { get; private set; }
         public bool Running { get; private set; }
+        public event System.Action Footfall;
         readonly RaycastHit2D[] hits = new RaycastHit2D[8];
         const float TurnTapSeconds = .035f;
         const float Acceleration = 32f;
@@ -23,6 +24,8 @@ namespace RememberMe
         Vector2 velocity;
         bool sprint;
         float turnUntil;
+        float strideProgress = .55f;
+        float stillFor;
 
         public static Vector2 ClampInput(Vector2 direction) => Vector2.ClampMagnitude(direction, 1);
 
@@ -52,6 +55,8 @@ namespace RememberMe
             intent = Vector2.zero;
             velocity = Vector2.zero;
             turnUntil = 0;
+            strideProgress = .55f;
+            stillFor = 0;
             Physics2D.SyncTransforms();
         }
 
@@ -77,6 +82,24 @@ namespace RememberMe
             Vector2 before = Body.position;
             Motion = Resolve(delta);
             Body.MovePosition(before + Motion);
+            AdvanceFootsteps(Motion.magnitude);
+        }
+
+        void AdvanceFootsteps(float distance)
+        {
+            if (distance < .0005f)
+            {
+                stillFor += Time.fixedDeltaTime;
+                if (stillFor > .18f) strideProgress = .55f;
+                return;
+            }
+
+            stillFor = 0;
+            float stride = Crouched ? .65f : Running ? 1.02f : .82f;
+            strideProgress += distance / stride;
+            if (strideProgress < 1) return;
+            strideProgress -= 1;
+            Footfall?.Invoke();
         }
 
         public Vector2 Resolve(Vector2 delta)
