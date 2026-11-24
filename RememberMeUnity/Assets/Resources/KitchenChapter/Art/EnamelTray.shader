@@ -1,10 +1,12 @@
 Shader "RememberMe/EnamelTray" {
- Properties { _MainTex ("Surface",2D)="white" {} }
+ Properties { _MainTex ("Surface",2D)="white" {}
+ _ForkMark ("Fork pattern",Float)=0 }
  SubShader { Tags {"Queue"="Transparent" "RenderType"="Transparent"} Cull Off ZWrite Off Blend SrcAlpha OneMinusSrcAlpha
  Pass { CGPROGRAM
  #pragma vertex vert_img
  #pragma fragment frag
  #include "UnityCG.cginc"
+ float _ForkMark;
  float grain(float2 p){return frac(sin(dot(p,float2(35.1,73.4)))*2418.32);}
  float rounded(float2 p,float2 h,float r){float2 q=abs(p)-h+r;return length(max(q,0))+min(max(q.x,q.y),0)-r;}
  fixed4 frag(v2f_img i):SV_Target {
@@ -23,6 +25,12 @@ Shader "RememberMe/EnamelTray" {
      float2 dots=q*4.6; float k=grain(floor(dots)+n);
      float speck=1-smoothstep(.04,.16,length(frac(dots)-float2(.3+k*.3,.43)));
      biscuit*=1-.43*speck*step(.45,k);
+     if(n==2){
+       float thumb=exp(-dot(q*float2(2.8,2.35),q*float2(2.8,2.35)));
+       float2 groove=abs(frac(q*2.6+.5)-.5);
+       float cross=(1-smoothstep(.05,.16,min(groove.x,groove.y)))*(1-smoothstep(.4,.68,length(q)));
+       biscuit*=1-lerp(.38*thumb,.43*cross,_ForkMark);
+     }
      col=lerp(col,biscuit,1-smoothstep(.95,1.01,rim));
    }
    return fixed4(col,a);

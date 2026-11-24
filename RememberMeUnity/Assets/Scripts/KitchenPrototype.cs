@@ -81,7 +81,9 @@ namespace RememberMe
         string[] lines;
         Action afterDialogue;
         int line;
-        int anchors;
+        int anchors; // Objects Grace has recognised on the return trip.
+        bool forkMark, showingFreshCookies;
+        float trayFocus;
         bool looped;
         bool showPhoto;
         float decay;
@@ -238,7 +240,9 @@ namespace RememberMe
         void Restart()
         {
             chapter = Chapter.Bedroom;
-            looped = false;
+            looped = forkMark = showingFreshCookies = false;
+            trayFocus = 0;
+            enamel.SetFloat("_ForkMark", 0);
             wrongDoors = anchors = ingredients = cards = baking = errors = 0;
             photoSeen = showPhoto = false;
             endingTime = decay = 0;
@@ -356,11 +360,11 @@ namespace RememberMe
             }
 
             float goal = chapter == Chapter.Cards || chapter == Chapter.Baking || chapter == Chapter.Tray ? .36f : chapter == Chapter.FindDoor ? .94f :
-                chapter == Chapter.ReturnForGrandma ? .90f - anchors * .22f :
+                chapter == Chapter.ReturnForGrandma ? .90f - CountFinds(anchors) * .22f :
                 chapter == Chapter.Escort ? .28f : chapter == Chapter.Finished ? .45f : 0f;
             decay = Mathf.MoveTowards(decay, goal, dt * .48f);
             roomMaterial.SetFloat("_Decay", decay);
-            roomMaterial.SetFloat("_Path", chapter == Chapter.Escort ? 1f : anchors * .24f);
+            roomMaterial.SetFloat("_Path", chapter == Chapter.Escort ? 1f : CountFinds(anchors) * .24f);
         }
 
         void FitView()
@@ -368,7 +372,9 @@ namespace RememberMe
             float ratio = Screen.width / (float)Mathf.Max(1, Screen.height);
             bool kitchen = currentRoom == Room.Kitchen;
             float aspect = kitchen ? Mathf.Clamp(ratio, 1.25f, 1.72f) : Width / Height;
-            float halfHeight = kitchen ? 273f : Height / 2;
+            trayFocus = Mathf.MoveTowards(trayFocus, showingFreshCookies ? 1f : 0f, Time.deltaTime / .85f);
+            float focus = Mathf.SmoothStep(0f,1f,trayFocus);
+            float halfHeight = kitchen ? Mathf.Lerp(273f,142f,focus) : Height / 2;
             view.orthographicSize = halfHeight / Ppu;
             Vector2 center = new Vector2(Width / 2, Height / 2);
             if (kitchen)
@@ -376,6 +382,8 @@ namespace RememberMe
                 float halfWidth = halfHeight * aspect;
                 center = new Vector2(Mathf.Clamp(grace.Feet.x,92+halfWidth,1060-halfWidth),
                     Mathf.Clamp(grace.Feet.y - 105, 38+halfHeight, 827-halfHeight));
+                // Frame the tray above the dialogue panel and ease back when control returns.
+                center = Vector2.Lerp(center, new Vector2(895,243), focus);
             }
             var destination = World(center);
             var cameraPoint = kitchen ? Vector2.SmoothDamp((Vector2)view.transform.position,destination,ref cameraVelocity,.14f) : destination;
@@ -525,6 +533,13 @@ namespace RememberMe
         void FamilyPhoto()
         {
             photoSeen = true;
+            if (chapter == Chapter.ReturnForGrandma && (anchors & 1) == 0)
+            {
+                anchors |= 1;
+                Say("Grace", Expression.Reflective, new[] {"Dad in his school coat. The sleeves cover his hands."},
+                    () => Say("Grandma", Expression.Warm, new[] {"I left room for him to grow."}));
+                return;
+            }
             Say("Grace", Expression.Surprise, new[] {"That's Dad! He's so little."}, () =>
                 Say("Grandma", Expression.Reflective, new[] {"By the living room window. See the blue curtains? He always waited there for cookies."}));
         }
@@ -532,11 +547,19 @@ namespace RememberMe
         void MusicBox()
         {
             Play("RM_Chime", .34f);
+            if (chapter == Chapter.ReturnForGrandma && (anchors & 2) == 0)
+            {
+                anchors |= 2;
+                Say("Grandma", Expression.Quiet, new[] {"There's a note missing at the end."},
+                    () => Say("Grace", Expression.Warm, new[] {"I know. You always used to hum that bit."}));
+                return;
+            }
             Say("Grandma", Expression.Warm, new[] {"Your dad liked that song. I used to play it at bedtime."});
         }
 
         void Flour()
         {
+            if ((ingredients & 1) != 0) { Say("Grace", new[] {"The flour is already set out."}); return; }
             ingredients |= 1;
             Say("Grace", new[] {"Flour. I'll set the bag on the counter."});
         }
@@ -544,12 +567,14 @@ namespace RememberMe
         void Fridge()
         {
             if (chapter == Chapter.Cards) { Card(4, "Shape the cookies"); return; }
+            if ((ingredients & 2) != 0) { Say("Grace", new[] {"We have the butter and eggs."}); return; }
             ingredients |= 2;
             Say("Grace", new[] {"Butter and eggs, together on the shelf."});
         }
 
         void Jars()
         {
+            if ((ingredients & 4) != 0) { Say("Grace", new[] {"The ribbon jar is already beside the flour."}); return; }
             inspectJars = true;
             Offer("Two white jars. The labels have worn away.", new[] {"Jar with the blue ribbon", "Plain jar"}, i => {
                 if (i == 0) ingredients |= 4;
@@ -567,14 +592,14 @@ namespace RememberMe
         void Bowl()
         {
             if (chapter == Chapter.Cards) Card(1, "Add eggs and flour");
-            else if (chapter == Chapter.Baking) Bake();
+            else if (chapter == Chapter.Baking) Bake(false);
             else Say("Grace", new[] {"Grandma's wooden spoon is resting in the bowl."});
         }
 
         void Counter()
         {
             if (chapter == Chapter.Cards) Card(2, "Mix into dough");
-            else if (chapter == Chapter.Baking) Bake();
+            else if (chapter == Chapter.Baking) Bake(true);
             else Recipe();
         }
 
@@ -597,7 +622,7 @@ namespace RememberMe
                 if (cards != 7) Say("Grace", new[] {"Three steps are missing. I'll look by the bowl, the stove and the fridge."});
                 else SortCards(new List<int>());
             }
-            else if (chapter == Chapter.Baking) Bake();
+            else if (chapter == Chapter.Baking) Say("Grace", new[] { BakingHint() });
             else Say("Grace", new[] {"Dad's pictures are still here."});
         }
 
@@ -624,20 +649,46 @@ namespace RememberMe
             });
         }
 
-        void Bake()
+        string BakingHint()
         {
-            string[] actions = {"Turn the spoon together", "Fold the dough over", "Place the first rounds on the tray", "Shape a bigger cookie for Dad"};
-            Offer("At the mixing bowl", new[] {actions[baking]}, i => {
-                Play("RM_StoryTap", .25f);
+            if (baking == 0) return "Stir the butter and sugar at the mixing bowl.";
+            if (baking == 1) return "Fold the dough at the mixing bowl.";
+            if (baking == 2) return "Shape the cookies at the baking counter.";
+            return "Slide the tray into the oven at the baking counter.";
+        }
+
+        void Bake(bool atCounter)
+        {
+            if (atCounter != (baking >= 2))
+            {
+                Say("Grace", new[] { BakingHint() });
+                return;
+            }
+            // The first two actions are direct interactions, leaving the decision for Dad’s cookie.
+            if (baking < 2)
+            {
+                Play("RM_StoryTap", .23f);
                 baking++;
-                if (baking == 3) Say("Grandma", Expression.Warm, new[] {"Wait. Let's make this one bigger. Your dad always likes the biggest one."});
-                else if (baking == 4) {
-                    chapter = Chapter.Tray;
-                    Play("RM_Chime", .4f);
-                    Say("Grace", Expression.Warm, new[] {"They smell good!"}, () => Say("Grandma", Expression.Warm, new[] {"We made them together. Let's bring these to your dad."}));
-                }
-                else Say("Grandma", new[] {baking == 1 ? "I'll hold the bowl, love. You turn the spoon." : "There. Feel how the dough holds together now?"});
-            });
+                Say("Grandma", Expression.Warm, new[] {baking == 1 ? "That's it. I'll hold the bowl. Fold the flour in now." :
+                    "Feel how it comes away from the spoon? Take it over to the board."});
+                return;
+            }
+            if (baking == 2)
+            {
+                Offer("Leave a mark on Dad’s cookie", new[] {"Press your thumb into the dough", "Press a cross with the fork"}, i => {
+                    forkMark = i == 1;
+                    enamel.SetFloat("_ForkMark", forkMark ? 1 : 0);
+                    baking++;
+                    Say("Grandma", Expression.Warm, new[] {forkMark ? "He used to count those little squares before he'd take a bite." :
+                        "Your thumb just fits inside the print he used to make."});
+                });
+                return;
+            }
+            Play("RM_Chime", .36f);
+            chapter = Chapter.Tray;
+            showingFreshCookies = true;
+            Say("Grace", Expression.Quiet, new[] {"We sit by the oven until the edges turn gold."}, () =>
+                Say("Grandma", Expression.Warm, new[] {"There. He'll know which one's his."}, () => showingFreshCookies = false));
         }
 
         void TakeTray()
@@ -709,7 +760,7 @@ namespace RememberMe
                 endingTime = 0f;
                 Say("Grandma", new[]
                 {
-                    "Leave the biggest one by the window, would you?",
+                    forkMark ? "Leave the one with the little squares by his chair, would you?" : "Leave the one with your thumbprint by his chair, would you?",
                     "He’ll be home from school any minute."
                 }, () => Say("Grace", Expression.Surprise, new[] { "From school?" },
                     () => Say("Grandma", new[] { "Oh, his coat. It gets cold when the sun goes down." })));
@@ -854,21 +905,21 @@ namespace RememberMe
         {
             switch (chapter)
             {
-                case Chapter.Bedroom: return "Grace’s bedroom · the night of the funeral";
+                case Chapter.Bedroom: return "Open the keepsake box beside the bed.";
                 case Chapter.Ingredients:
                     if (ingredients == 7) return "Set the ingredients beside the recipe.";
                     return "Gather ingredients  ·  " + CountFinds(ingredients) + " / 3";
                 case Chapter.Cards: return cards == 7 ? "Put Dad’s cards in order at the recipe book." :
                     "Find Dad’s recipe cards  ·  " + CountFinds(cards) + " / 3";
-                case Chapter.Baking: return "Make the cookies together at the bowl.";
+                case Chapter.Baking: return BakingHint();
                 case Chapter.Tray: return "Pick up the blue serving tray.";
                 case Chapter.FindDoor: return "Find the room with the blue curtains.";
                 case Chapter.ReturnForGrandma:
                     if (currentRoom == Room.Hall) return "Return to the kitchen for Grandma.";
-                    return "Go to Grandma and offer her your hand.";
+                    return anchors == 0 ? "Find Grandma. The photo and music box may feel familiar." : "Go to Grandma and offer her your hand.";
                 case Chapter.Escort:
                     return currentRoom == Room.Kitchen ? "Lead Grandma back to the hallway." : "Walk with Grandma to the blue curtains.";
-                case Chapter.Finished: return "Next · The Coat by the Door   /   R to replay · Esc for title";
+                case Chapter.Finished: return "Chapter complete   ·   R to replay   /   Esc for title";
                 default: return "By the Blue Curtains";
             }
         }
@@ -886,8 +937,6 @@ namespace RememberMe
                 GUI.DrawTexture(new Rect(192, 347, 190, 150), quilt, ScaleMode.ScaleToFit);
                 GUI.DrawTexture(new Rect(382, 409, 50, 53), parcel, ScaleMode.ScaleToFit);
             }
-            if (chapter == Chapter.Baking && currentRoom == Room.Kitchen)
-                DrawBaking();
             if (inspectJars)
             {
                 Panel(new Rect(329,170,494,345));
@@ -924,13 +973,6 @@ namespace RememberMe
             GUI.color = color;
             GUI.DrawTexture(rect, Texture2D.whiteTexture);
             GUI.color = previous;
-        }
-
-        void DrawBaking()
-        {
-            Panel(new Rect(754,24,355,71));
-            Label(new Rect(771,30,330,32), "Grandma’s recipe", 19, Color.white);
-            Label(new Rect(771,57,330,29), new[] {"Cream the mixture", "Fold into dough", "Shape the cookies", "The biggest one for Dad"}[baking], 16, Color.white);
         }
 
         static void Panel(Rect bounds)

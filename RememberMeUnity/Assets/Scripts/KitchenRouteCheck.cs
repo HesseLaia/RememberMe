@@ -70,7 +70,14 @@ namespace RememberMe
             yield return Select(0); yield return Select(0);yield return Select(0); Expect(Chapter.Cards);
             yield return CounterVisit("Recipe book",585);
             yield return Select(1); yield return Select(1);yield return Select(0); Expect(Chapter.Baking);
-            for(int n=0;n<4;n++){yield return CounterVisit("Mixing bowl",677);yield return Select(0);}
+            yield return CounterVisit("Baking counter",460);
+            if (baking != 0) throw new InvalidOperationException("Wrong station advanced baking.");
+            yield return CounterVisit("Mixing bowl",677); yield return CounterVisit("Mixing bowl",677);
+            yield return CounterVisit("Baking counter",460);
+            bool testFork = Application.absoluteURL.Contains("remember-smoke");
+            yield return Select(testFork ? 1 : 0);
+            if (forkMark != testFork) throw new InvalidOperationException("Cookie mark lost.");
+            yield return CounterVisit("Baking counter",460);
             Expect(Chapter.Tray);
             yield return CounterVisit("Blue serving tray",895);
             yield return Visit("Kitchen doorway",new Vector2(576,723));
@@ -80,6 +87,10 @@ namespace RememberMe
             yield return Visit("Listen at the right door",new Vector2(836,369));
             yield return Visit("Look under the middle door",new Vector2(576,369)); Expect(Chapter.ReturnForGrandma);
             yield return Visit("Back to the kitchen",new Vector2(576,723));
+            yield return CounterVisit("Music box",975); yield return CounterVisit("Music box",975);
+            if (anchors != 2) throw new InvalidOperationException("Repeated memory counted twice.");
+            yield return CounterVisit("Family photograph",518);
+            if (anchors != 3) throw new InvalidOperationException("Missing memory.");
             yield return Visit("Talk to Grandma",grandma.Feet+new Vector2(0,34));Expect(Chapter.Escort);
             yield return Visit("Kitchen doorway",new Vector2(576,723));
             yield return WalkTo(new Vector2(576,369));
