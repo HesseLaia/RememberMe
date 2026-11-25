@@ -1,5 +1,7 @@
-# 历史部署样例
+# Historical Deployment Examples
 
-此目录保存早期 GitHub Actions／GameCI 工作流和部署草案，便于追溯曾采用的方案。
+English | [简体中文](README.zh-CN.md)
 
-当前仓库通过 main 分支根目录发布已构建的 WebGL 文件，步骤见[当前发布说明](../../../../docs/DEPLOY.zh-CN.md)。
+This directory preserves an early GitHub Actions/GameCI workflow and its [deployment draft](DEPLOY.md).
+
+The current repository publishes built WebGL files from the root of `main`. Follow the [current deployment guide](../../../../docs/DEPLOY.md) for releases.

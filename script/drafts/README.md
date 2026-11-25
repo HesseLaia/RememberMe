@@ -1,8 +1,10 @@
 **English** · [简体中文](README.zh-CN.md)
 
-# Script drafts drafts/
+# Script drafts
 
-Put newly written script here first. For format, naming and voice rules, see the parent folder's [`../README.md`](../README.md).
+Store scene drafts here. Use the [script guide](../README.md) for the historical MV format and voice rules. Current Unity implementation follows the [Unity project guide](../../RememberMeUnity/README.md).
+
+The [kitchen v0.4 draft](scene1_draft_2.md) preserves an earlier design, including pixel art and unresolved implementation questions. Shipped v10 uses illustrated assets. Compare the draft with `KitchenPrototype.cs` before changing the game. Each draft has an English default and a `.zh-CN.md` companion.
 
 ## Naming
 
@@ -10,11 +12,11 @@ Put newly written script here first. For format, naming and voice rules, see the
 ACT2_<scene name>_script.md        e.g. ACT2_Attic_script.md
 ```
 
-One file per scene. Do not have several people writing into the same file.
+Use one file per scene and designate an editor when several people contribute. Name the Chinese companion `ACT2_<scene name>_script.zh-CN.md` and add reciprocal language links.
 
 ## How to write a change to an existing line
 
-Do not edit `../ACT1_SCRIPT.md` directly (it is exported from the project and any change is overwritten). Create a new file here and write "original / changed to" clearly:
+Record the event or Unity trigger and the original and replacement lines in a draft. For the historical MV version, include map, event, and coordinates. Regenerate `../ACT1_SCRIPT.md` after updating engine events. Example:
 
 ```markdown
 # Change: the typo in Act I OldGrave_4
@@ -33,8 +35,8 @@ for a long time.
 Fix the `abondoned` spelling; also closer to a child's concrete observation.
 ```
 
-Include the **event name and coordinates**, so whoever builds events can find the place.
+Include the **event name and coordinates** for MV, or the **source file and trigger** for Unity, so the implementer can locate the line.
 
 ## Once it is final
 
-One person merges the draft into the project (into the RPG Maker MV events), then **plays through from New Game** to confirm the lines appear in the right place and in the right order. After that merge, data-exported files such as `../ACT1_SCRIPT.md` have to be exported again, so the text in the repository does not drift from the game.
+One person integrates the approved draft into the engine project, then **plays from New Game** to verify dialogue placement and sequence. For MV changes, regenerate exported reading copies such as `../ACT1_SCRIPT.md`. Update both document languages together.

@@ -1,5 +1,7 @@
 # 交互约定
 
+[English](Interaction.md) | 简体中文
+
 第一幕与第二幕共用 StoryInput 和 Act1HUD。后续修改交互时先阅读本文件。
 
 | 当前状态 | 键盘 | 鼠标 | 退出方式 |

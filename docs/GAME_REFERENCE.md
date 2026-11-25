@@ -11,7 +11,7 @@ RPG Maker MV 1.6.1 at 816 × 624. The source of truth is `game/data/` and the en
 1. Start a New Game, follow the path to Grandma's grave, and then talk to Dad.
 2. Watch the cool-toned flashback. Back at the cemetery, speak to Mom to receive the music box.
 3. Inspect the music box by the bench and choose **Turn the key**. Closing it returns to exploration and you can try again.
-4. Explore the warm memory home and talk to Grandma. The reunion completes Act I without removing free exploration.
+4. Explore the warm memory home and talk to Grandma. The reunion completes Act I, and free exploration remains available.
 
 ## Maps and events
 
@@ -99,5 +99,5 @@ Key items:
 
 - `Act1_TransparentCollision` separates passage from the parallax. Recheck accessible tiles and event coordinates whenever moving furniture, tree trunks, or grave bases.
 - Inspectable events use `<RMInspect: label>`. The ribbon also uses `<RMCrouch>` so it can only be collected while crouching.
-- MV animates the cemetery rain; the background has no rain streaks. The flashback is locked while exploration maps use a following camera.
-- Variable `0001` still counts old grave visits. The ribbon and family photograph do not gate the main story.
+- MV animates the cemetery rain over the background. The flashback uses fixed framing while exploration maps use a following camera.
+- Variable `0001` counts old grave visits. The ribbon and family photograph are optional collectibles.

@@ -1,12 +1,12 @@
-# 参与 Remember Me 协作
+**English** · [简体中文](CONTRIBUTING.zh-CN.md)
 
-[English project overview](README.md) · [中文项目说明](README.zh-CN.md)
+# Contributing to Remember Me
 
-接手现有任务先阅读[接力说明](docs/HANDOFF.zh-CN.md)，确认当前版本、已验证内容和下一步任务。
+[Project overview](README.md) · [Current handoff](docs/HANDOFF.md)
 
-## 开始任务
+## Start a task
 
-首次参与先克隆本仓库。已有副本时，在仓库根目录执行以下命令，将分支名替换为当前任务。
+Clone the repository for a first checkout. For an existing checkout, run these commands from the repository root and choose a branch name for the task.
 
 ~~~sh
 git switch main
@@ -14,22 +14,22 @@ git pull --ff-only origin main
 git switch -c feature/your-task
 ~~~
 
-存在未提交改动时，先提交到自己的任务分支或保存工作，再切换分支。每个分支围绕一个可说明、可验证的改动。
+Save or commit existing work on its task branch before switching branches. Keep each branch focused on a change that reviewers can explain and verify.
 
-## 按角色交付
+## Deliverables
 
-| 工作 | 位置与交付 |
+| Work | Location and handover |
 | --- | --- |
-| 玩法、界面、动画 | RememberMeUnity/Assets/Scripts/，附复现步骤与试玩结果 |
-| 场景、碰撞 | RememberMeUnity/Assets/Editor/Act1Builder.cs 和相关场景，检查重建后的布局 |
-| 已接入的美术、音频 | 对应 Unity Assets 目录，附 .meta、来源和许可证 |
-| 新素材提案 | art/incoming/，注明用途、尺寸、透明背景、朝向与替换目标 |
-| 剧情提案 | script/drafts/，注明幕、场景、触发条件、对白与下一步目标 |
-| 试玩反馈 | 网页右上角 Feedback，注明版本、位置、操作、预期和实际结果 |
+| Gameplay, UI and animation | RememberMeUnity/Assets/Scripts/, with reproduction steps and playtest results |
+| Layout and collision | RememberMeUnity/Assets/Editor/Act1Builder.cs and affected scenes, checked after rebuilding |
+| Integrated artwork and audio | The relevant Unity Assets directory, with .meta files, source and license |
+| New artwork proposals | art/incoming/, with purpose, dimensions, transparency, directions and replacement target |
+| Narrative proposals | script/drafts/, with act, scene, trigger, dialogue and next objective |
+| Playtest feedback | The web player's Feedback link, with version, location, actions, expected and actual result |
 
-在 Unity Project 面板移动资源，让 .meta 跟随资源。修改共用场景前在任务或 PR 中说明涉及区域，便于协作者协调。
+Move assets through Unity's Project window so their .meta files follow them. Identify affected scene areas in the task or PR so contributors can coordinate shared edits.
 
-## 提交与评审
+## Submit and review
 
 ~~~sh
 git add path/to/changed-files
@@ -38,8 +38,12 @@ git commit -m "Describe the change"
 git push -u origin feature/your-task
 ~~~
 
-在 GitHub 创建目标分支为 main 的 Pull Request，说明改动、相关截图和测试步骤。评审通过后合并，其他成员再同步 main。
+Open a pull request targeting main. Describe the change, relevant screenshots and verification steps. Merge after review, then synchronize main on other checkouts.
 
-提交前检查新资源的引用和 .meta，检查键盘、鼠标、暂停后继续，以及涉及的完整剧情路径。修改存档时验证已有数据。输入和菜单行为遵循[交互约定](RememberMeUnity/Docs/Interaction.zh-CN.md)。
+Check asset references, .meta files, keyboard and mouse input, resuming after pause and the affected story route. For save changes, test existing data. Follow the [interaction rules](RememberMeUnity/Docs/Interaction.md).
 
-本地缓存、日志和构建输出由 RememberMeUnity/.gitignore 管理。网页发布时提交经过验证的版本目录及入口更新，步骤见[发布说明](docs/DEPLOY.zh-CN.md)。
+The Unity project's .gitignore covers local caches, logs and build output. Publish verified web output and entry updates using the [deployment guide](docs/DEPLOY.md).
+
+## Documentation
+
+Maintain an English .md file and a matching Chinese .zh-CN.md file, with reciprocal language links. English is the default entry. State findings, procedures and remaining decisions directly, preserving technical conditions and character voice. The upload preflight checks language pairs and local links.

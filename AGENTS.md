@@ -1,9 +1,13 @@
-# 接力入口
+**English** · [简体中文](AGENTS.zh-CN.md)
 
-开始工作先阅读 docs/HANDOFF.zh-CN.md，核对当前版本、上传状态、验证记录和下一步任务。
+# Handoff entry
 
-准备上传先运行 node tools/check-repo.cjs，读取一行摘要，再按需查看本机上传报告和相关变更。后续发布遵循 docs/UPLOAD.zh-CN.md，复用既有脚本与已记录的验证结果。
+Read docs/HANDOFF.md before starting work. Check the published version, uploaded materials, verification evidence and next tasks.
 
-当前游戏源工程在 RememberMeUnity/。修改 Unity 文件时同时阅读 RememberMeUnity/AGENTS.md 及其引用的交互约定。
+Before uploading, run node tools/check-repo.cjs. Read its summary, then inspect the report and changed files as needed. Follow docs/UPLOAD.md and reuse the existing build and test scripts.
 
-历史网页集中在 archive/web/，旧链接由根目录 404.html 跳转。提交目录调整时检查文档引用与已有试玩入口。交接更新写入 docs/HANDOFF.zh-CN.md。
+The active game project is RememberMeUnity/. For Unity changes, also read RememberMeUnity/AGENTS.md and its interaction reference.
+
+Historical web builds live in archive/web/. Root 404.html redirects earlier shared entry URLs. Check document references and existing play links when reorganizing files. Record handoff updates in docs/HANDOFF.md and its Chinese counterpart.
+
+Maintain English .md and Chinese .zh-CN.md versions of project documents, with English as the default. Use the anti-defensive writing skill to state procedures, evidence and scope directly.

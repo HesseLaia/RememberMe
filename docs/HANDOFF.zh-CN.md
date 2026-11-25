@@ -1,8 +1,12 @@
+[English](HANDOFF.md) · **简体中文**
+
 # 协作者接力说明
 
-更新于 2026-11-25。首次接力先读本页，再读[工程入口](../RememberMeUnity/README.md)和[交互约定](../RememberMeUnity/Docs/Interaction.zh-CN.md)。
+更新于 2026-11-25。首次接力先读本页，再读[工程入口](../RememberMeUnity/README.zh-CN.md)和[交互约定](../RememberMeUnity/Docs/Interaction.zh-CN.md)。
 
 下一次上传先运行 node tools/check-repo.cjs，后续操作见[固定上传流程](UPLOAD.zh-CN.md)。release.json 记录当前正式版本及对应源码。
+
+项目文档现提供 27 组中英对照，包括历史第一幕完整阅读稿和厨房工作稿，默认入口使用英文。上传预检通过 tools/check-languages.cjs 检查语言配对及切换链接。
 
 ## 已上传内容
 
@@ -13,7 +17,7 @@
 | 中英文 README、协作流程与早期截图整理 | b81c9a7、608e6c8 | 已进入 main |
 | 当前 Unity 源工程 | RememberMeUnity/Assets、Packages、ProjectSettings | 可克隆后通过 Unity Hub 打开 |
 | 当前网页成品 | unity-v10/ | 已公开发布，入口为 unity/ |
-| 第二幕厨房原始工作稿 v0.4 | [scene1_draft_2.md](../script/drafts/scene1_draft_2.md) | 从本机提供的原稿补入，供接力核对 |
+| 第二幕厨房原始工作稿 v0.4 | [scene1_draft_2.md](../script/drafts/scene1_draft_2.zh-CN.md) | 从本机提供的原稿补入，供接力核对 |
 | 待评审侧围栏预览 | [预览图](handoff/Cemetery-Side-Fence-Preview.png) | 已补入，替换方案等待用户确认 |
 | 本轮浏览器与公开网页验证记录 | [完整流程日志](handoff/2026-11-25-browser-verification.log)、[公开入口日志](handoff/2026-11-25-public-verification.log) | 已补入可复核的简短记录 |
 | 本轮目录归档验证 | [八个历史入口验证](handoff/2026-11-25-archive-verification.log) | 保留查询参数与页面片段的浏览器跳转已通过 |
@@ -38,7 +42,7 @@
 
 ### 1. 接手验收并处理试玩反馈
 
-- 从 main 创建任务分支，按[协作流程](../CONTRIBUTING.md)打开 Unity 6000.6.1f1。
+- 从 main 创建任务分支，按[协作流程](../CONTRIBUTING.zh-CN.md)打开 Unity 6000.6.1f1。
 - 分别从 New Game 和 Kitchen 试玩。重点记录壁炉脚底位置、厨房门槛、卡片撤回与重开、暂停后继续、奶奶跟随及进客厅的观感。
 - 对反馈先记录版本、复现步骤、预期和实际行为，再修改对应脚本，补验同一路径。验收结果放进 PR。
 

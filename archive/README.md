@@ -1,9 +1,11 @@
-# 历史成品归档
+**English** · [简体中文](README.zh-CN.md)
 
-web/ 集中保存 Unity v2 至 v9 的网页成品。当前发布为仓库根目录的 unity-v10/，固定试玩入口为 unity/。
+# Archived builds
 
-旧版本的分享入口由仓库根目录 404.html 跳转至对应归档位置，保留查询参数和页面片段。GitHub Pages 首次请求旧地址时会返回 404 页面，浏览器随后执行跳转。
+web/ contains the Unity v2–v9 browser builds. The current release is unity-v10/ at the repository root, and unity/ is the stable play entry.
 
-当前源码和协作入口见[仓库首页](../README.zh-CN.md)，下一位协作者从[接力说明](../docs/HANDOFF.zh-CN.md)开始。
+Root 404.html redirects earlier shared version URLs to their archived location, preserving query parameters and fragments. GitHub Pages initially returns the 404 document, whose script performs the browser redirect.
 
-安装发布指南中的浏览器测试依赖后，可从仓库根目录运行 node tools/check-archive-links.cjs，检查八个旧入口的跳转。已有环境可通过 REMEMBER_PLAYWRIGHT 和 REMEMBER_BROWSER 指定模块与浏览器。
+Start from the [project overview](../README.md) and [handoff notes](../docs/HANDOFF.md) for current development.
+
+After preparing the browser dependencies in the deployment guide, run node tools/check-archive-links.cjs from the repository root to check all eight old entries. REMEMBER_PLAYWRIGHT and REMEMBER_BROWSER can select an existing module and browser.

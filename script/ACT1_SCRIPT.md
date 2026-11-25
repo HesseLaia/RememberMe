@@ -1,6 +1,11 @@
+**English** · [简体中文](ACT1_SCRIPT.zh-CN.md)
+
 # Act I — in-game script
 
-Reading copy exported from `game/data/Map001.json`, `Map002.json`, and `Map003.json`. Events appear in map order; event pages may depend on switches. The map data is authoritative.
+Reading copy exported from the historical RPG Maker MV project’s `game/data/Map001.json`, `Map002.json`, and `Map003.json`. Events appear in map order. Event pages may depend on switches. The map data records the implementation for that historical version.
+
+This export records the historical RPG Maker MV version. Shipped v10 is built in Unity. Its current Act I dialogue lives in `Act1Game.cs` and `Act1Story.cs`. See the [Unity project](../RememberMeUnity/README.md). Editing this reading copy does not change the game.
+
 
 ## Act1_Cemetery
 

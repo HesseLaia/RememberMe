@@ -1,13 +1,15 @@
 **English** · [简体中文](README.zh-CN.md)
 
-> This guide documents the original RPG Maker MV dialogue format. Current Unity dialogue lives in Act1Game.cs and KitchenPrototype.cs. See the [Unity project guide](../RememberMeUnity/README.md).
+> This guide records the original RPG Maker MV format and voice rules. Its counts and speaking roles describe an earlier writing snapshot. The later [Act I export](ACT1_SCRIPT.md) includes Aunt and Grandpa dialogue. Shipped v10 uses Unity: Act I dialogue is in `Act1Game.cs` / `Act1Story.cs`, and the kitchen is in `KitchenPrototype.cs`. See the [Unity project guide](../RememberMeUnity/README.md).
 
 # Script guide
 
-This folder holds everything script-related. **The final text of the game is not here, it is in the events in the project** — but how you write it and how you lay it out is decided here.
+This folder contains historical dialogue references and working drafts. The running game reads its dialogue from the engine project. Use this guide when working with the original MV format. Use the Unity project conventions for current implementation.
 
-- [`ACT1_SCRIPT.md`](ACT1_SCRIPT.md) — the full text of the existing Act I, exported automatically from the project data. **This is a read-only reference; editing it does not change the game.**
-- [`drafts/`](drafts/) — new script drafts go here.
+- [`ACT1_SCRIPT.md`](ACT1_SCRIPT.md) — the historical Act I reading copy, exported automatically from the project data. Editing the reading copy leaves game dialogue unchanged.
+- [`drafts/`](drafts/README.md) — scene drafts, including the historical [kitchen v0.4 draft](drafts/scene1_draft_2.md).
+
+Each document has an English default and a `.zh-CN.md` companion. Language links switch between them. The English-only requirements below apply to text imported into the historical MV game.
 
 ---
 
@@ -29,9 +31,9 @@ A message box holds at most **4 rows**, and the name line takes one of them, so 
 
 ---
 
-## 2. Hard format
+## 2. MV format
 
-**English only.** The game interface, subtitles and all text are in English; Chinese characters come out as garbled boxes.
+**MV game text is English.** Its interface and subtitles use English. The historical font setup renders Chinese as boxes. Chinese document translations are reading copies.
 
 One line of dialogue is three things:
 
@@ -41,13 +43,13 @@ One line of dialogue is three things:
 | Name line | `\C[n]NAME\C[0]`, all capitals. **Narration has no name line.** |
 | Body | plain English, one sentence per row, do not write long paragraphs |
 
-The colour code in the name line goes with the face set; see the next section.
+The colour code in the name line goes with the face set. See the next section.
 
 ---
 
 ## 3. Colour codes
 
-`\C[n]` switches the text colour and `\C[0]` switches it back to the default. **This is the only layout tool in the game** — do not pad with spaces or asterisks to fake alignment.
+`\C[n]` switches the text colour and `\C[0]` switches it back to the default. Use these colour controls for MV text layout. Keep spaces and asterisks out of alignment formatting.
 
 | Speaker | Colour code | Name line | Face set |
 |---|---|---|---|
@@ -59,7 +61,7 @@ The colour code in the name line goes with the face set; see the next section.
 | Uncle James | `\C[3]` | `\C[3]UNCLE JAMES\C[0]` | `RM_Face_UncleJames` |
 | Aunt / Grandpa | `\C[7]` | **narration, no name line** | but give them a face set so the player knows they are present |
 
-> Aunt and Grandpa currently **have no lines**, only a one-sentence observation from someone else's point of view ("She holds a tissue in both hands."). This is deliberate; see section 5.
+> In this earlier voice guide, Aunt and Grandpa **have no lines**, only a one-sentence observation from someone else's point of view ("She holds a tissue in both hands."). This is deliberate. See section 5.
 
 ---
 
@@ -70,7 +72,7 @@ Each character's face set has 8 cells, numbered 0–7 (top row 0–3, bottom row
 - Grace → [`../art/specs/faces_grace.png`](../art/specs/faces_grace.png)
 - Other characters work the same way and are in [`../art/`](../art/)
 
-**When you write the script, write "index 3", not "I want a sad expression".** The indexes actually in use:
+**Specify the expression index, such as "index 3".** The indexes actually in use:
 
 | Character | In use | Notes |
 |---|---|---|
@@ -88,7 +90,7 @@ If an emotion has no suitable cell, ask the art team to add an expression at a g
 
 ## 5. Character voice
 
-This is generalised from the existing Act I. New writing has to follow it.
+These voice notes describe the earlier Act I writing baseline.
 
 **Grace (seven years old, first-person observation)**
 Short, concrete sentences that let you see the picture. She describes before she understands, often stopping at "I don't understand", and she does not explain the emotion.
@@ -117,9 +119,9 @@ In the flashback she repeats the same thing and calls the wrong person by name. 
 > "Take your time, Grace."
 
 **Aunt / Grandpa (observation only, no lines)**
-They are people Grace sees, not people who speak. **Do not give them lines**, and do not add explanations of the illness or task instructions.
+In this baseline, Grace observes them without spoken dialogue. Keep that role when revising this version, and keep illness explanations and task instructions out of their observations.
 
-**Narration** uses `\C[7]`. There is no second person; it is always Grace's eyes watching.
+**Narration** uses `\C[7]`. There is no second person. It is always Grace's eyes watching.
 
 ---
 
@@ -156,7 +158,7 @@ Box 3 (narration)
   Body: \C[7]Dad's wiping his face.
 ```
 
-Mark [Scene] and [Trigger] before you write — if it is not clear when these lines appear, whoever builds the event can only guess.
+Mark [Scene] and [Trigger] so the event builder can place each line.
 
 ---
 
@@ -168,15 +170,15 @@ Drafts go in [`drafts/`](drafts/). Naming:
 ACT2_<scene name>_script.md        e.g. ACT2_Attic_script.md
 ```
 
-One file per scene. Do not have everyone writing into the same file. Once it is final, one person merges it into the project.
+Use one file per scene and assign an editor for shared work. Once the draft is final, one person integrates it into the engine project.
 
-**Rule for changing existing lines:** do not edit `ACT1_SCRIPT.md` directly (that file is exported and will be overwritten). To change an existing line, write "original / changed to" clearly in a draft, then give it to whoever builds events to change in the project.
+**Changing existing lines:** record "original / changed to" in a draft, then update the engine source. Re-export the MV reading copy after editing MV events. Regeneration overwrites direct edits to `ACT1_SCRIPT.md`.
 
 ---
 
 ## 9. Self-check before handover
 
-- [ ] it is all English, with no Chinese characters at all
+- [ ] text destined for the historical MV game is English
 - [ ] every box has at most 3 rows of body text and at most 40 characters per row
 - [ ] the name line is written correctly (all capitals + `\C[n]...\C[0]`), and narration has no name line
 - [ ] face indexes were looked up in the reference sheets, not written from memory
@@ -189,6 +191,6 @@ One file per scene. Do not have everyone writing into the same file. Once it is 
 
 ## 10. References
 
-- the full text of the existing Act I: [`ACT1_SCRIPT.md`](ACT1_SCRIPT.md)
+- the historical Act I reading copy: [`ACT1_SCRIPT.md`](ACT1_SCRIPT.md)
 - which line is in which event and how the switches run: [`../docs/GAME_REFERENCE.md`](../docs/GAME_REFERENCE.md)
 - what the face sets look like: [`../art/`](../art/)

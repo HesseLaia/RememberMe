@@ -1,0 +1,12 @@
+测试记录中文译文，原始输出见同名英文日志。
+
+REMEMBER_SMOKE_STARTED: 已开始第一幕自动流程验证。
+REMEMBER_MOTION_PASS: 站立、走路、跑步与蹲姿验证通过，跑步会退出蹲姿。
+REMEMBER_FLASHBACK_HEARTH_PASS: 首次闪回壁炉的正面和侧面碰撞检查通过。
+REMEMBER_HEARTH_PASS: 壁炉阻挡正面与侧面接近。
+REMEMBER_SMOKE_PASS: 封面淡出、移动与焦点、妈妈的入口及第四座旧墓引导、蹲下查看水池、爸爸闪回、雨天空屋和存读档验证通过。
+REMEMBER_ACT_II_BRIDGE_PASS: 可以离开空屋记忆并在家中进入第二幕。
+KITCHEN_ROUTE_PASS: 所有厨房解谜、错误选项与门的恢复、奶奶跟随及外套结尾流程验证通过。
+REMEMBER_WEB_SAVE_RELOADED: 浏览器刷新后读取了保存的进度。
+REMEMBER_SMOKE_STARTED: 已开始第一幕自动流程验证。
+REMEMBER_WEB_VERIFIED: 子路径部署、WASD 菜单、两幕流程、配方撤回、剧情行走和浏览器存档恢复验证通过。

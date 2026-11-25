@@ -6,14 +6,14 @@ A narrative game about Grace, her grandmother and family memories, made for CSS5
 
 [Play v10 · Acts I–II](https://jeddakholmes-byte.github.io/RememberGame/unity-v10/) · [Report playtest feedback](https://github.com/jeddakholmes-byte/RememberGame/issues/new) · [Contributing](CONTRIBUTING.md)
 
-**Start the next handoff with the [handoff notes](docs/HANDOFF.zh-CN.md)**, covering November 24–25 changes, upload status, verification evidence and next tasks.
+Start with the [handoff notes](docs/HANDOFF.md) for November 24–25 changes, uploaded materials, verification evidence and next tasks.
 
 ## Start here
 
 | Task | Entry |
 | --- | --- |
 | Open and edit the game | [Unity project setup](RememberMeUnity/README.md) |
-| Change interaction, inventory or movement | [Interaction rules](RememberMeUnity/Docs/Interaction.zh-CN.md) |
+| Change interaction, inventory or movement | [Interaction rules](RememberMeUnity/Docs/Interaction.md) |
 | Find scripts, art or historical material | [Documentation index](docs/README.md) |
 | Build and publish | [Deployment guide](docs/DEPLOY.md) |
 | Write new scenes or supply artwork | [Contribution workflow](CONTRIBUTING.md) |

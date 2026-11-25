@@ -1,7 +1,9 @@
-# Unity 项目交互说明
+# Unity Interaction Instructions
 
-接力开发先阅读 [当前交接记录](../docs/HANDOFF.zh-CN.md)，核对版本、验证范围和后续任务。
+English | [简体中文](AGENTS.zh-CN.md)
 
-修改输入、对话、暂停菜单、物品栏、场景碰撞或章节切换前，阅读 [交互约定](Docs/Interaction.zh-CN.md)。
+Read the [current handoff](../docs/HANDOFF.md) before continuing development. Check the version, verification scope, and next tasks.
 
-第一幕和第二幕共用 StoryInput 与 Act1HUD。键盘与鼠标应调用同一个剧情处理方法，每帧只执行一次操作。保持现有画风并复用实际物品美术。修改后验证具体故障所在的章节、房间与操作路径。
+Read the [interaction conventions](Docs/Interaction.md) before changing input, dialogue, pause menus, inventory, scene collisions, or chapter transitions.
+
+Act I and Act II share `StoryInput` and `Act1HUD`. Keyboard and mouse input must call the same story action, with one action per frame. Preserve the existing painterly style and reuse the actual item art. After a change, verify the affected chapter, room, and sequence of actions.

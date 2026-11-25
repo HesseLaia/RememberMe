@@ -1,5 +1,7 @@
-# 历史截图
+# Historical Screenshots
 
-此目录保存早期 Unity 试玩截图和美术对照，包含旧版重逢场景等历史内容。
+English | [简体中文](README.zh-CN.md)
 
-当前工程入口见 [Unity README](../../README.md)，当前公开版本见[在线试玩](https://jeddakholmes-byte.github.io/RememberGame/unity-v10/)。新一轮浏览器验证截图写入本地 Build/Review/Web/。
+This directory preserves early Unity playtest screenshots and art comparisons, including an earlier version of the reunion scene.
+
+See the [Unity README](../../README.md) for the current project and [play v10](https://jeddakholmes-byte.github.io/RememberGame/unity-v10/) for the public release. New browser verification screenshots are written locally to `Build/Review/Web/`.

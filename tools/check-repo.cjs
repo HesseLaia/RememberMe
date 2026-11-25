@@ -17,6 +17,13 @@ const documents = [...new Set(['README.md', 'README.zh-CN.md', 'CONTRIBUTING.md'
   'docs/HANDOFF.zh-CN.md', 'docs/UPLOAD.zh-CN.md', 'RememberMeUnity/README.md', 'archive/README.md',
   ...changed.filter(file => file.endsWith('.md') && fs.existsSync(path.join(root, file)))])];
 const errors = [];
+let languages;
+try {
+  languages = JSON.parse(execFileSync(process.execPath, [path.join(root, 'tools/check-languages.cjs')],
+    {cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe']}));
+} catch (error) {
+  errors.push('Bilingual documentation check failed: ' + (error.stderr?.toString() || error.message));
+}
 for (const name of documents) {
   const file = path.join(root, name);
   if (!fs.existsSync(file)) {errors.push('Missing document ' + name); continue;}
@@ -56,6 +63,7 @@ const webEntryChanged = changed.some(file => ['index.html', 'unity/index.html', 
   file.startsWith(release.webRoot + '/') || file.startsWith('releases/web/'));
 const report = {branch: git('branch', '--show-current'), head: git('rev-parse', '--short', 'HEAD'),
   comparisonBase,
+  languages,
   publishedRelease: release.version, changedFiles: changed, unpublishedGameFiles,
   requiredChecks: [routingChanged && 'Archive browser redirects', webEntryChanged && 'Public web entry check',
     unpublishedGameFiles.length && 'Fresh game build and full browser QA'].filter(Boolean),
@@ -65,6 +73,7 @@ fs.mkdirSync(path.dirname(reportPath), {recursive: true});
 fs.writeFileSync(reportPath, JSON.stringify(report, null, 2) + '\n');
 console.log(JSON.stringify({branch: report.branch, head: report.head, release: release.version,
   changedFiles: changed.length, unpublishedGameFiles: unpublishedGameFiles.length,
+  languages,
   requiredChecks: report.requiredChecks, staticChecks: report.staticChecks}));
 for (const error of errors) console.error(error);
 process.exitCode = errors.length ? 1 : 0;

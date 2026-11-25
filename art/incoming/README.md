@@ -2,7 +2,7 @@
 
 # New asset submission area incoming/
 
-Put finished art here first. **Do not drop it straight into `game/`.** This does two things: `game/` always stays a clean, working build, and everyone can see who handed in what.
+Submit art for the historical RPG Maker MV project here for review before integration into `game/`. This keeps submissions visible and the working project ready to play. For the current Unity asset workflow, see [Contributing](../../CONTRIBUTING.md).
 
 ## Naming
 
@@ -13,11 +13,11 @@ Put finished art here first. **Do not drop it straight into `game/`.** This does
 | Scene / item | `RM_<thing name>.png` | `RM_Gravestone.png` |
 | Music / sound effect | `RM_<purpose>`, both `.ogg` and `.m4a` | `RM_DoorCreak.ogg`, `RM_DoorCreak.m4a` |
 
-The hard requirements for sizes and grids are in the parent folder's [`../README.md`](../README.md). **Follow the sizes when you submit too** — an image with the wrong size cannot go into the game.
+Use the exact dimensions and grids in the [art asset guide](../README.md) so MV can slice and display the images correctly.
 
 ## When you are replacing a version
 
-If the new asset is meant to **replace** an existing version (say you redrew `$RM_Grace.png`), put the date in the filename and do not overwrite the old file:
+For a replacement asset, such as a new drawing of `$RM_Grace.png`, add the date to the submission filename and retain the previous version:
 
 ```
 $RM_Grace_20261005.png
@@ -29,4 +29,4 @@ That way the old version is still there, so you can compare against it and roll 
 
 Say in the group chat which asset you handed in and which line or scene it replaces or adds. Whoever owns the project copies it into `game/`, then plays through to confirm.
 
-**Note:** putting a new face set into `game/img/faces/` does not make it show up in the game — someone still has to point a message event at it. So tell the script writer about new art at the same time.
+Share new face-set filenames with the writer so they can connect the images to message events.

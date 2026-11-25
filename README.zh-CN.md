@@ -4,7 +4,7 @@
 
 围绕 Grace、奶奶和家庭记忆展开的叙事游戏，香港中文大学（深圳）CSS5190 Game Your Psychology 课程项目。
 
-[在线试玩 v10 · 第一、二幕](https://jeddakholmes-byte.github.io/RememberGame/unity-v10/) · [提交试玩反馈](https://github.com/jeddakholmes-byte/RememberGame/issues/new) · [参与协作](CONTRIBUTING.md)
+[在线试玩 v10 · 第一、二幕](https://jeddakholmes-byte.github.io/RememberGame/unity-v10/) · [提交试玩反馈](https://github.com/jeddakholmes-byte/RememberGame/issues/new) · [参与协作](CONTRIBUTING.zh-CN.md)
 
 **下一位协作者先读[接力说明](docs/HANDOFF.zh-CN.md)**，其中列出 11 月 24 日、25 日更新的上传状态、验证记录和下一步任务。
 
@@ -12,11 +12,11 @@
 
 | 要做什么 | 阅读入口 |
 | --- | --- |
-| 打开工程、修改游戏 | [Unity 工程说明](RememberMeUnity/README.md) |
+| 打开工程、修改游戏 | [Unity 工程说明](RememberMeUnity/README.zh-CN.md) |
 | 修改交互、物品栏、移动 | [交互约定](RememberMeUnity/Docs/Interaction.zh-CN.md) |
-| 查找代码、美术、旧版资料 | [文档目录](docs/README.md) |
+| 查找代码、美术、旧版资料 | [文档目录](docs/README.zh-CN.md) |
 | 构建和发布网页 | [发布说明](docs/DEPLOY.zh-CN.md) |
-| 提交剧本或美术 | [协作流程](CONTRIBUTING.md) |
+| 提交剧本或美术 | [协作流程](CONTRIBUTING.zh-CN.md) |
 
 ## 当前内容
 
@@ -47,7 +47,7 @@ RememberGame/
 └── tools/                      MV 工具及旧网页入口验证
 ~~~
 
-[开发入口](RememberMeUnity/README.md) · [交付与分支流程](CONTRIBUTING.md) · [文档目录](docs/README.md) · [历史成品说明](archive/README.md)
+[开发入口](RememberMeUnity/README.zh-CN.md) · [交付与分支流程](CONTRIBUTING.zh-CN.md) · [文档目录](docs/README.zh-CN.md) · [历史成品说明](archive/README.zh-CN.md)
 
 ## 游玩和编辑
 
@@ -61,7 +61,7 @@ RememberGame/
 
 构建会调用 Assets/Editor/Act1Builder.cs 重新装配第一幕。需要保留到下次构建的布局改动应同步到该装配脚本。
 
-[分支操作、交付内容和检查清单](CONTRIBUTING.md)
+[分支操作、交付内容和检查清单](CONTRIBUTING.zh-CN.md)
 
 ## 素材与署名
 
