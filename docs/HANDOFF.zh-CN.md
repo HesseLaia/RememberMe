@@ -2,6 +2,8 @@
 
 更新于 2026-11-25。首次接力先读本页，再读[工程入口](../RememberMeUnity/README.md)和[交互约定](../RememberMeUnity/Docs/Interaction.zh-CN.md)。
 
+下一次上传先运行 node tools/check-repo.cjs，后续操作见[固定上传流程](UPLOAD.zh-CN.md)。release.json 记录当前正式版本及对应源码。
+
 ## 已上传内容
 
 | 内容 | 仓库位置或提交 | 状态 |

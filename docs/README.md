@@ -5,6 +5,7 @@
 ## 当前 Unity 工程
 
 - [下一位协作者接力说明与更新记录](HANDOFF.zh-CN.md)
+- [后续上传的固定检查与发布规划](UPLOAD.zh-CN.md)
 - [打开工程与代码位置](../RememberMeUnity/README.md)
 - [协作分支与交付流程](../CONTRIBUTING.md)
 - [输入、菜单、碰撞和存档约定](../RememberMeUnity/Docs/Interaction.zh-CN.md)
