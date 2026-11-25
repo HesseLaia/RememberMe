@@ -2,6 +2,8 @@
 
 [English project overview](README.md) · [中文项目说明](README.zh-CN.md)
 
+接手现有任务先阅读[接力说明](docs/HANDOFF.zh-CN.md)，确认当前版本、已验证内容和下一步任务。
+
 ## 开始任务
 
 首次参与先克隆本仓库。已有副本时，在仓库根目录执行以下命令，将分支名替换为当前任务。

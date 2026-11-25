@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Remember Me</title>
+  <script>
+    // Keep previously shared version links usable after archiving their files.
+    const previousRelease = location.pathname.match(/^(.*\/)unity-v([2-9])(?:\/(.*))?$/);
+    if (previousRelease) {
+      const [, base, version, resource = ''] = previousRelease;
+      location.replace(base + 'archive/web/unity-v' + version + '/' + resource + location.search + location.hash);
+    }
+  </script>
+</head>
+<body>
+  <p>Remember Me</p>
+  <p><a href="/RememberGame/unity/">打开当前试玩 / Play the current release</a></p>
+</body>
+</html>

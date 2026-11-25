@@ -1,0 +1,19 @@
+REMEMBER_SMOKE_STARTED
+
+REMEMBER_MOTION_PASS: separate walk, sprint, and crouch poses; sprint exits crouch.
+
+REMEMBER_FLASHBACK_HEARTH_PASS: first flashback front and side collision verified.
+
+REMEMBER_HEARTH_PASS: the fireplace blocks both front and side approaches.
+
+REMEMBER_SMOKE_PASS: cover dissolve, movement and focus, Mom’s gate and fourth-grave directions, crouched puddle, Dad’s flashback, empty rainy memory and save/load.
+
+REMEMBER_ACT_II_BRIDGE_PASS: leave the empty memory and open Act II at home.
+
+KITCHEN_ROUTE_PASS: walked every puzzle, recovered from wrong choices and doors, escorted Grandma and reached the coat.
+
+REMEMBER_WEB_SAVE_RELOADED
+
+REMEMBER_SMOKE_STARTED
+
+REMEMBER_WEB_VERIFIED: nested Pages URL, WASD menu navigation, full Acts I and II regression, recipe undo, scripted walking and browser save persistence.

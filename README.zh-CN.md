@@ -6,6 +6,8 @@
 
 [在线试玩 v10 · 第一、二幕](https://jeddakholmes-byte.github.io/RememberGame/unity-v10/) · [提交试玩反馈](https://github.com/jeddakholmes-byte/RememberGame/issues/new) · [参与协作](CONTRIBUTING.md)
 
+**下一位协作者先读[接力说明](docs/HANDOFF.zh-CN.md)**，其中列出 11 月 24 日、25 日更新的上传状态、验证记录和下一步任务。
+
 ## 从这里开始
 
 | 要做什么 | 阅读入口 |
@@ -24,17 +26,28 @@ v10 包含 WASD 菜单导航、配方卡撤回、原画物品栏、厨房存读�
 
 ## 仓库目录
 
-| 路径 | 用途 |
-| --- | --- |
-| [RememberMeUnity/](RememberMeUnity/) | 当前 Unity 源工程、美术、场景装配和测试脚本 |
-| [art/incoming/](art/incoming/) | 新美术和原始参考的交付区 |
-| [script/drafts/](script/drafts/) | 新剧本和剧情修订草稿 |
-| [docs/](docs/) | 文档导航、发布流程和早期参考 |
-| [unity-v10/](unity-v10/) | 已发布的 v10 WebGL 成品 |
-| [unity/](unity/) | 跳转到当前版本的固定试玩入口 |
-| unity-v2/ 至 unity-v9/ | 对应既有分享链接的历史网页成品 |
-| [game/](game/) | 原 RPG Maker MV 工程和网页版 |
-| [tools/](tools/) | MV 素材、地图检查及音频工具 |
+~~~text
+RememberGame/
+├── RememberMeUnity/             当前游戏开发
+│   ├── Assets/Scripts/          剧情、输入、界面、移动与存档
+│   ├── Assets/Editor/           第一幕场景装配、构建和检查
+│   ├── Assets/Art、Audio/       第一幕资源
+│   ├── Assets/Resources/        第二幕资源与房间数据
+│   ├── Packages、ProjectSettings/ 工程依赖和设置
+│   ├── Docs/                   Unity 实现与交互约定
+│   └── QA/                     验证脚本，Reference/ 保存历史截图
+├── art/incoming/               新美术交付
+├── script/drafts/              剧本草稿，包含第二幕 v0.4
+├── docs/                       接力说明、更新记录、发布指南
+│   └── handoff/                验证证据和待评审围栏图
+├── unity-v10/                  当前公开网页成品
+├── unity/、index.html          固定试玩入口和首页
+├── archive/web/                集中保存 v2 至 v9 成品
+├── game/                       原 RPG Maker MV 工程
+└── tools/                      MV 工具及旧网页入口验证
+~~~
+
+[开发入口](RememberMeUnity/README.md) · [交付与分支流程](CONTRIBUTING.md) · [文档目录](docs/README.md) · [历史成品说明](archive/README.md)
 
 ## 游玩和编辑
 

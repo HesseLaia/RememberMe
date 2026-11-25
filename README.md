@@ -6,6 +6,8 @@ A narrative game about Grace, her grandmother and family memories, made for CSS5
 
 [Play v10 · Acts I–II](https://jeddakholmes-byte.github.io/RememberGame/unity-v10/) · [Report playtest feedback](https://github.com/jeddakholmes-byte/RememberGame/issues/new) · [Contributing](CONTRIBUTING.md)
 
+**Start the next handoff with the [handoff notes](docs/HANDOFF.zh-CN.md)**, covering November 24–25 changes, upload status, verification evidence and next tasks.
+
 ## Start here
 
 | Task | Entry |
@@ -32,9 +34,9 @@ The v10 release adds WASD menu navigation, reversible recipe-card placement, ill
 | [docs/](docs/) | Documentation index, deployment and earlier reference material |
 | [unity-v10/](unity-v10/) | Published v10 WebGL output |
 | [unity/](unity/) | Stable browser entry that redirects to the current release |
-| unity-v2/ through unity-v9/ | Earlier public builds with existing share links |
+| [archive/web/](archive/web/) | Archived v2–v9 builds, with redirects from earlier shared entry URLs |
 | [game/](game/) | Original RPG Maker MV project and browser edition |
-| [tools/](tools/) | Asset, map and audio utilities for the MV project |
+| [tools/](tools/) | MV asset, map and audio utilities, plus archived web-entry verification |
 
 ## Play and edit
 
