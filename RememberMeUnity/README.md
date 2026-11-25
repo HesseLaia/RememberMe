@@ -1,28 +1,44 @@
-# Remember Me · Unity 第一幕
+# Remember Me · Unity 工程
 
-[在线试玩](https://jeddakholmes-byte.github.io/RememberGame/unity/) · [美术规格与验收记录](Docs/Act1.zh-CN.md)
+[仓库首页](../README.zh-CN.md) · [在线试玩 v10](https://jeddakholmes-byte.github.io/RememberGame/unity-v10/) · [协作流程](../CONTRIBUTING.md)
 
-## 打开工程
+## 打开与试玩
 
-1. 用 Git 或 GitHub Desktop 克隆 `jeddakholmes-byte/RememberGame`。
-2. 在 Unity Hub 安装 **6000.6.1f1**。需要构建网页版的同学同时安装 **Web Build Support**。
-3. 在 Unity Hub 选 **Projects → Add → Add project from disk**，打开仓库内的 `RememberMeUnity`，等待 Unity 导入。
-4. 在 Unity 的 Project 面板打开 `Assets/Scenes/RememberMeAct1.unity`，点编辑器顶部的 **Play**。
+1. 安装 Unity **6000.6.1f1**，从 Unity Hub 添加本目录。
+2. 打开 Assets/Scenes/RememberMeAct1.unity，点击 Play。
+3. 第一幕从 New Game 开始。标题菜单的 Kitchen 可直接进入第二幕，第二幕场景为 Assets/Scenes/Kitchen.unity。
+4. 修改交互前阅读[交互约定](Docs/Interaction.zh-CN.md)。
 
-## 素材和内容的位置
+网页构建需要 Web Build Support，Windows 构建需要 Windows Build Support。本地 Play-RememberMe.cmd 打开当前公开网页版。
 
-| 路径 | 内容 |
-|---|---|
-| [`Assets/Art/Actors`](Assets/Art/Actors) | 人物朝向、动作和墓园悼念者 |
-| [`Assets/Art`](Assets/Art) | 地面、道具、对白立绘、幕卡、剧情特写和字体 |
-| [`Assets/Audio`](Assets/Audio) | 配乐、环境声和音效 |
-| [`Assets/Scenes`](Assets/Scenes) · [`Assets/Scripts`](Assets/Scripts) | 第一幕场景、玩法、对白、界面和存档 |
-| [`Assets/Editor`](Assets/Editor) · [`QA`](QA) | 场景装配、构建脚本、验证脚本和试玩截图 |
-| [`Packages`](Packages) · [`ProjectSettings`](ProjectSettings) | 依赖版本、2D 渲染、输入和其他工程设置 |
+## 修改位置
 
-## 协作与发布
+| 内容 | 文件或目录 |
+| --- | --- |
+| 第一幕剧情与状态 | Assets/Scripts/Act1Game.cs、Act1Story.cs |
+| 第一幕房间、物件、碰撞与布局 | Assets/Editor/Act1Builder.cs、Assets/Scripts/Act1Room.cs |
+| 第二幕厨房、走廊、客厅与剧情 | Assets/Scripts/KitchenPrototype.cs |
+| 厨房界面、配方和物品栏 | Assets/Scripts/KitchenCanvas.cs、KitchenPresentation.cs、KitchenInventory.cs |
+| 共用输入、对话和菜单 | Assets/Scripts/StoryInput.cs、Act1HUD.cs |
+| 角色移动和动画 | Assets/Scripts/GraceMotor.cs、ActorView.cs、GrandmaFigure.cs |
+| 第一幕美术和音频 | Assets/Art/、Assets/Audio/ |
+| 第二幕美术、音频及房间数据 | Assets/Resources/KitchenChapter/ |
+| 编辑器检查与网页构建 | Assets/Editor/Act1Verification.cs、WebBuild.cs |
+| 完整流程及浏览器验证 | Assets/Scripts/KitchenRouteCheck.cs、QA/Verify-Web.cjs |
+| 历史截图 | [QA/Reference/](QA/Reference/) |
 
-- 每项改动从 `main` 建一个分支。合并前在 Unity 里打开第一幕试玩，再提交 Pull Request。多人改同一个 `.unity` 场景前先在组内确认各自负责的部分。
-- 在 Unity 的 Project 面板移动或重命名素材。提交时把素材及对应的 `.meta` 一起提交，Unity 用其中的 GUID 维护场景引用。`Library`、`Logs`、`UserSettings` 和本地 `Build` 由 Unity 生成。
-- 素材已经随工程提交，可以直接编辑和使用。`Assemble-Art.ps1` 保留了原始素材导入流程，重新运行它需要原工作区的 `RememberMeAct1` 和相应原图。
-- 网页版由仓库根目录的 [`unity/`](../unity/) 提供。更新网页时，从 Unity 点 **Remember Me → Build for GitHub Pages**，把 `Build/GitHubPages/docs/` 的输出更新到仓库的 `unity/`，再合并到 `main`。`Release/GitHubPages/` 保存另一套部署方案的参考文件。
+## 构建与验证
+
+Unity 菜单 Remember Me → Build for GitHub Pages 输出 Build/GitHubPages/docs/，包含两幕。命令行入口为 RememberMe.Editor.WebBuild.Build，并传入 -customBuildPath。Windows 命令行入口为 RememberMe.Editor.Act1Builder.Build，输出 Build/Windows/。
+
+构建会调用 Act1Builder.Assemble 重新生成第一幕场景。布局改动同时维护装配脚本，提交场景与新增资源的 .meta。
+
+Windows 流程验证参数为 -remember-smoke -with-kitchen，可用 -kitchen-capture 加截图目录。网页验证使用 QA/Verify-Web.cjs，依赖 Node.js、Playwright 和 Chrome／Chromium。具体命令见[发布说明](../docs/DEPLOY.zh-CN.md)。
+
+## 本地文件与历史资料
+
+Library/、Temp/、Logs/、UserSettings/、Build/ 为本机生成目录，已由 .gitignore 管理。QA/Reference/ 保存早期截图，包含旧剧情画面。
+
+Assemble-Art.ps1 是早期素材导入工具，依赖原始工作区和外部原图。常规协作直接使用 Assets/ 下的现有资源。
+
+[Docs/Archive/LegacyDeployment/](Docs/Archive/LegacyDeployment/) 保存早期 GitHub Actions 部署样例。当前网页通过仓库 main 分支的根目录发布，流程见仓库发布说明。

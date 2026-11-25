@@ -1,5 +1,7 @@
 **English** · [简体中文](FILE_GUIDE.zh-CN.md)
 
+> Historical RPG Maker MV file reference. Current Unity source, code locations and published build directories are listed in the [documentation index](README.md).
+
 # File guide
 
 Every file and folder in this repository, what it does, and whether you are allowed to touch it.

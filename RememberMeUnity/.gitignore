@@ -4,5 +4,6 @@
 /Logs/
 /UserSettings/
 /Build/
+/QA/node_modules/
 /*.csproj
 /*.sln

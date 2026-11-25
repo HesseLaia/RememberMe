@@ -3,6 +3,8 @@ const fs = require('node:fs');
 const http = require('node:http');
 const path = require('node:path');
 const { chromium } = require(process.env.REMEMBER_PLAYWRIGHT || 'playwright');
+const captures = path.resolve(__dirname, '../Build/Review/Web');
+fs.mkdirSync(captures, {recursive: true});
 
 const output = path.resolve(process.env.REMEMBER_WEB_ROOT || path.resolve(__dirname, '../Build/GitHubPages/docs'));
 const mimeTypes = { '.html': 'text/html; charset=utf-8', '.js': 'application/javascript', '.txt': 'text/plain' };
@@ -72,10 +74,10 @@ async function main() {
     const menuClip = { x: canvasBounds.x + canvasBounds.width * .28,
       y: canvasBounds.y + canvasBounds.height * .90, width: canvasBounds.width * .44, height: canvasBounds.height * .08 };
     const titleFocus = await page.screenshot({clip: menuClip});
-    await page.screenshot({path: path.join(__dirname, 'Web-Title.png')});
+    await page.screenshot({path: path.join(captures, 'Web-Title.png')});
     await page.keyboard.press('d');
     await page.waitForTimeout(150);
-    await page.screenshot({path: path.join(__dirname, 'Web-Title-D.png')});
+    await page.screenshot({path: path.join(captures, 'Web-Title-D.png')});
     assert(!titleFocus.equals(await page.screenshot({clip: menuClip})), 'D did not move title-menu focus');
     await page.keyboard.press('a');
     await page.waitForTimeout(150);
@@ -96,14 +98,14 @@ async function main() {
     await page.keyboard.press('w');
     await page.waitForTimeout(150);
     assert(pauseFocus.equals(await page.screenshot({clip: pauseClip})), 'W did not restore pause-menu focus');
-    await page.screenshot({path: path.join(__dirname, 'Web-WASD-Pause.png')});
+    await page.screenshot({path: path.join(captures, 'Web-WASD-Pause.png')});
     if (process.env.REMEMBER_WEB_QUICK === '1') {
       assert.deepEqual(errors, [], 'Browser runtime errors');
       console.log('REMEMBER_LIVE_WEB_VERIFIED: public build loaded, WASD works in title and pause menus, Kitchen is playable.');
       return;
     }
     await start();
-    await page.screenshot({ path: path.join(__dirname, 'Web-Title.png') });
+    await page.screenshot({ path: path.join(captures, 'Web-Title.png') });
     await page.keyboard.press('Enter');
     await page.waitForTimeout(2450);
     for (let i = 0; i < 3; i++) {
@@ -113,7 +115,7 @@ async function main() {
     await page.keyboard.down('w');
     await page.waitForTimeout(350);
     await page.keyboard.up('w');
-    await page.screenshot({ path: path.join(__dirname, 'Web-Cemetery.png') });
+    await page.screenshot({ path: path.join(captures, 'Web-Cemetery.png') });
 
     const notice = regex => page.waitForEvent('console', { predicate: msg => regex.test(msg.text()), timeout: 130000 });
     const completed = notice(/REMEMBER_SMOKE_PASS/);

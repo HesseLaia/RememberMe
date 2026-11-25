@@ -1,158 +1,52 @@
 **English** · [简体中文](DEPLOY.zh-CN.md)
 
-# Publish and update the site
+# Build and publish
 
-The repository is <https://github.com/jeddakholmes-byte/RememberGame> and the published site is <https://jeddakholmes-byte.github.io/RememberGame/>.
+The source project is in RememberMeUnity/. The current public release is [v10](https://jeddakholmes-byte.github.io/RememberGame/unity-v10/). GitHub Pages publishes static files from the root of main.
 
-There is nothing to build. RPG Maker MV projects are static HTML5, GitHub Pages serves static HTML5, so publishing means *put the files in the repository*.
+## Build
 
----
+Install Unity 6000.6.1f1 with Web Build Support. In Unity, choose Remember Me → Build for GitHub Pages. The output is RememberMeUnity/Build/GitHubPages/docs/ and includes both acts and the font license.
 
-## 1. What is already in place
+For command-line builds, run the following from the repository root after replacing the Editor path.
 
-| | |
-|---|---|
-| Repository | `jeddakholmes-byte/RememberGame`, **public**, default branch `main` |
-| Contents | `README.md`, `index.html`, `art/`, `script/`, `docs/`, `game/` (the MV project) |
-| Pages | **enabled**, source = branch `main`, folder `/ (root)` |
-| Live URL | <https://jeddakholmes-byte.github.io/RememberGame/> |
-| Game URL | <https://jeddakholmes-byte.github.io/RememberGame/game/> |
-| `.nojekyll` | present, so Pages serves the folders as-is |
+~~~powershell
+$unityEditor = 'C:/Path/To/Unity/Editor/Unity.exe'
+$projectPath = (Resolve-Path RememberMeUnity).Path
+$outputPath = Join-Path $projectPath 'Build/GitHubPages/docs'
+$logPath = Join-Path $projectPath 'Build/Review/WebBuild.log'
+New-Item -ItemType Directory -Path (Split-Path $logPath) -Force | Out-Null
+& $unityEditor -batchmode -nographics -quit -projectPath $projectPath -buildTarget WebGL -executeMethod RememberMe.Editor.WebBuild.Build -customBuildPath $outputPath -logFile $logPath
+~~~
 
-**Verified on 2026-09-29:** the published site returns HTTP 200 for the landing page, `/game/`, `game/index.html`, `game/data/Map001.json` and `game/img/titles1/RM_Title.png`; and loading `/game/` in a browser reaches the title screen, starts a new game on Map 1 at (12,12), and reports no script errors and no failed requests.
+Check the exit code and REMEMBER_CLEAN_WEB_BUILD_PASS in the log. Building regenerates the Act I scene.
 
-After the initial setup, the site redeploys automatically on every push to `main` — usually within a minute.
+For Windows, use the same Editor and project with build target Win64 and execute method RememberMe.Editor.Act1Builder.Build. Omit -customBuildPath. Output goes to Build/Windows/RememberMe.exe.
 
----
+## Verify
 
-## 2. The commands that were used
+From RememberMeUnity/, install Node.js and prepare the browser test dependencies.
 
-```bash
-cd /Users/leon/Downloads/Game_Your_Psychology/final_project/RememberGame
+~~~sh
+npm install --prefix QA --no-save --package-lock=false playwright
+npx --prefix QA playwright install chromium
+node QA/Verify-Web.cjs
+~~~
 
-git init -b main
-git add -A
-git commit -m "Remember Me — Act I: RPG Maker MV 1.6.1 build, team documentation, GitHub Pages setup"
+REMEMBER_PLAYWRIGHT can point to an existing Playwright module. REMEMBER_BROWSER can specify a Chrome or Chromium executable. The script tests Build/GitHubPages/docs/, writes captures to Build/Review/Web/ and reports REMEMBER_WEB_VERIFIED when complete.
 
-git remote add origin https://github.com/jeddakholmes-byte/RememberGame.git
-git push -u origin main
-```
+Coverage includes WASD menu navigation, both acts, recipe undo, scripted walking frames and browser save persistence. Also play the specific route affected by your change.
 
-The initial push was about 440 MB, almost all of it `game/`. Expect a few minutes on a slow connection. It is a one-time cost — later commits only send what changed.
+## Publish
 
----
+1. Complete source changes and verification on a task branch.
+2. Copy the complete build into a new root release directory, such as unity-v11/. Include .nojekyll, Build/, index.html and Tinos-LICENSE.txt.
+3. Update the root play link, unity/index.html redirect, current README release links and the feedback version in Assets/WebGLTemplates/RememberMePages/index.html.
+4. Commit source, assets and published output, then merge the release pull request into main.
+5. Watch pages build and deployment for that commit. Verify the public page, keyboard input, Kitchen entry and feedback link after deployment succeeds.
 
-## 3. Doing it from scratch on another machine
+Existing version directories serve shared URLs. Check references and shared links before reorganizing those directories.
 
-If you ever need to re-create this repository, this is the whole procedure.
+## Historical material
 
-### 3.1 One-time setup
-
-1. **Install Git.** macOS: run `git --version` in Terminal; if it complains, accept the Xcode Command Line Tools install. Windows: install [Git for Windows](https://git-scm.com/download/win).
-2. **Tell Git who you are:**
-   ```bash
-   git config --global user.name "Your Name"
-   git config --global user.email "your@email.com"
-   ```
-3. **Authenticate.** GitHub stopped accepting account passwords for Git. Create a **fine-grained personal access token** at <https://github.com/settings/tokens> with *Repository access → RememberGame* and *Contents: Read and write*. When `git push` asks for a password, paste the token. macOS will remember it in the Keychain.
-4. **Get the files.** `git clone https://github.com/jeddakholmes-byte/RememberGame.git`. The MV project lives in `game/`; the rest is documentation.
-5. **Delete macOS junk before you commit:**
-   ```bash
-   find . -name ".DS_Store" -delete
-   ```
-
-### 3.2 Commit and push
-
-```bash
-git add -A
-git status              # sanity check: you should see game/, docs/, README.md, index.html
-git commit -m "Initial import of Act I and documentation"
-git branch -M main
-git remote add origin https://github.com/jeddakholmes-byte/RememberGame.git
-git push -u origin main
-```
-
-### 3.3 Create the repository on GitHub, if it does not exist
-
-1. <https://github.com/new>
-2. Name: `RememberGame`. Visibility: **Public** (GitHub Pages on a free account only serves public repositories).
-3. **Do not** add a README, `.gitignore` or licence — you already have files, and an initial commit would make your first push conflict.
-4. Create, then run the push from §3.2.
-
----
-
-## 4. Turn on GitHub Pages (once)
-
-1. Open <https://github.com/jeddakholmes-byte/RememberGame/settings/pages>.
-2. **Source**: *Deploy from a branch*.
-3. **Branch**: `main`, folder **`/ (root)`**. Save.
-4. Wait 1–2 minutes. The page will show the live URL: <https://jeddakholmes-byte.github.io/RememberGame/>.
-5. The first visit after a deploy can 404 for up to a minute. Hard-refresh with `Cmd + Shift + R`.
-
-The same thing over the API:
-
-```bash
-curl -X POST \
-  -H "Authorization: Bearer <TOKEN>" \
-  -H "Accept: application/vnd.github+json" \
-  https://api.github.com/repos/jeddakholmes-byte/RememberGame/pages \
-  -d '{"source":{"branch":"main","path":"/"}}'
-```
-
----
-
-## 5. Adding files, and updating the site
-
-### Where a new file goes
-
-| What you have | Put it in | Notes |
-|---|---|---|
-| New artwork | `art/incoming/` | Never straight into `game/`. Naming rules are in `art/incoming/README.md` |
-| New script or a change to an existing line | `script/drafts/` | One scene per file. `script/drafts/README.md` shows the format for proposing a change to an existing line |
-| A finished asset, ready to go into the game | `game/img/…` or `game/audio/…` | Only after it has been checked against `art/README.md`. **Never rename or delete an existing file** — the game looks assets up by filename string |
-| A finished script, ready to go into the game | the map's events, in the RPG Maker MV editor | Then re-export `script/ACT1_SCRIPT.md` so the repo text still matches the game |
-
-### Committing a change
-
-After any change:
-
-```bash
-cd path/to/RememberGame
-git add -A
-git commit -m "Act I: <what changed>"
-git push
-```
-
-GitHub Pages redeploys automatically, usually within a minute. To watch it: <https://github.com/jeddakholmes-byte/RememberGame/actions>.
-
-**If you edited in the RPG Maker MV editor**, save the project first and close the editor, then commit. MV rewrites the whole JSON files on every save, so one small change can show up as a large diff — that is normal, not corruption.
-
-**After changing any art or script, run the game from New Game before committing.** A mid-chapter save restores the old switch states and will make correct work look broken.
-
-### Do not commit these
-
-`.DS_Store` and `._*` are already ignored by `.gitignore`. Also avoid committing `save/*.rpgsave` files from your own playtesting, and never commit a personal access token.
-
----
-
-## 6. When something goes wrong
-
-| Symptom | Cause | Fix |
-|---|---|---|
-| `remote: Support for password authentication was removed` | You typed your GitHub password | Use a personal access token (§3.1) |
-| `error: File ... is 116 MB; this exceeds GitHub's file size limit of 100 MB` | A single file is too big. This project's largest file is 7.7 MB, so the limit should never trigger | Find it with `find . -type f -size +50M`, remove or compress it |
-| Push hangs, then `RPC failed; HTTP 408` | The 440 MB push timed out on a slow link | Retry — Git resumes. If it keeps failing, raise the buffer: `git config http.postBuffer 524288000` |
-| Push rejected: `non-fast-forward` | Someone else committed to the repository | `git pull --rebase origin main` then push |
-| Pages URL gives 404 | Pages not enabled, or fewer than 60 seconds have passed | §4 |
-| Site loads but the game is a black screen | Usually the browser cached an old `index.html`, or you are opening `file:///` | Hard-refresh; serve over HTTP locally |
-| Only the landing page works, `/game/` 404s | `.nojekyll` was deleted, or `game/index.html` was renamed | Restore `.nojekyll` and the filename |
-| The Pages build fails with a Jekyll error | A file has a name Jekyll dislikes (a `#`, `%` or `:`), or `.nojekyll` is missing | Restore `.nojekyll` |
-| A teammate's clone is enormous | The repository is 440 MB because it carries the full RPG Maker MV run-time library | Expected. Shallow clone is much faster: `git clone --depth 1 <url>` |
-
----
-
-## 7. Notes on size
-
-`game/` is 400 MB, and about 330 MB of that is the **RPG Maker MV run-time package** — battle backgrounds, enemy art, battle animations and music that this game never uses. It stays in the repository on purpose: it is the pooled library the MV editor offers in every dropdown, so removing it removes choices from whoever edits next.
-
-If you ever need a small distribution build instead of the working repository, use RPG Maker MV's own **File → Deployment → Web Browsers** with **Exclude unused files** ticked. That produces roughly 20–40 MB and removes the unused assets safely. Do that in a throwaway copy, not in this repository.
+The original RPG Maker MV project is game/Game.rpgproject, with a browser player in game/. [Earlier Actions and GameCI deployment samples](../RememberMeUnity/Docs/Archive/LegacyDeployment/) are archived for reference.

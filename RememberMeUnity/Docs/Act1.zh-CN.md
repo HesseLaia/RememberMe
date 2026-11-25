@@ -27,4 +27,4 @@
 
 - Unity 6000.6.1f1 生成 Windows x64 成品。地图验证共覆盖墓园 22 个、前厅 7 个、后室 6 个可达互动点和触发位置。
 - Windows 成品回归覆盖第一幕渐隐、轻点原地转向、桌前受阻转向、键盘与鼠标焦点、走跑蹲、Shift 解除蹲下、积水的蹲下提示和倒影插画、妈妈四面触发、对白立绘、墓碑事件、遗物和存档读取。
-- [`QA/Comparison.png`](../QA/Comparison.png) 和 [`QA/Act1Actors.png`](../QA/Act1Actors.png) 保存早期 Windows 试玩截图和角色素材对照。
+- [`QA/Reference/Comparison.png`](../QA/Reference/Comparison.png) 和 [`QA/Reference/Act1Actors.png`](../QA/Reference/Act1Actors.png) 保存早期 Windows 试玩截图和角色素材对照。

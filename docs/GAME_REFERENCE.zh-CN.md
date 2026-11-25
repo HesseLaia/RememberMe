@@ -1,5 +1,7 @@
 [English](GAME_REFERENCE.md) · **简体中文**
 
+> 本文记录原 RPG Maker MV 的地图与事件。当前 Unity 工程与实现入口见[文档目录](README.md)。
+
 # 第一幕工程参考
 
 RPG Maker MV 1.6.1，816 × 624。以下以 `game/data/` 和已启用的 `RM_Act1_Storybook` 为准。

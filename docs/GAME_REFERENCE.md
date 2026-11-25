@@ -1,5 +1,7 @@
 **English** · [简体中文](GAME_REFERENCE.zh-CN.md)
 
+> Historical RPG Maker MV maps and events. Current Unity navigation and implementation references are in the [documentation index](README.md).
+
 # Act I game reference
 
 RPG Maker MV 1.6.1 at 816 × 624. The source of truth is `game/data/` and the enabled `RM_Act1_Storybook` plugin.
