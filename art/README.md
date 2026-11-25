@@ -1,5 +1,7 @@
 **English** · [简体中文](README.zh-CN.md)
 
+> These specifications describe the original RPG Maker MV assets. For Unity asset integration and .meta handling, see the [contribution workflow](../CONTRIBUTING.md).
+
 # Art asset guide
 
 This folder is for you. Everything you need to change lives in `game/img/` and `game/audio/`; you do not need to touch any other folder.

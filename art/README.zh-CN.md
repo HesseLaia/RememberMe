@@ -1,5 +1,7 @@
 [English](README.md) · **简体中文**
 
+> 以下规格对应原 RPG Maker MV 素材。Unity 素材接入及 .meta 提交方式见[协作流程](../CONTRIBUTING.md)。
+
 # 美工素材指南
 
 这个文件夹是给你看的。你要改的所有素材都在 `game/img/` 和 `game/audio/` 里，其他文件夹不用碰。

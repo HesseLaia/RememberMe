@@ -1,5 +1,7 @@
 [English](README.md) · **简体中文**
 
+> 本页记录原 RPG Maker MV 的对白格式。当前 Unity 对白主要在 Act1Game.cs 和 KitchenPrototype.cs，位置见[工程说明](../RememberMeUnity/README.md)。
+
 # 剧本指南
 
 这个文件夹放剧本相关的东西。**游戏的最终文本不在这里，在工程的事件里**——但这么写、这么排版，是这里定的。

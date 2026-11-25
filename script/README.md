@@ -1,5 +1,7 @@
 **English** · [简体中文](README.zh-CN.md)
 
+> This guide documents the original RPG Maker MV dialogue format. Current Unity dialogue lives in Act1Game.cs and KitchenPrototype.cs. See the [Unity project guide](../RememberMeUnity/README.md).
+
 # Script guide
 
 This folder holds everything script-related. **The final text of the game is not here, it is in the events in the project** — but how you write it and how you lay it out is decided here.
