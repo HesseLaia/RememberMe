@@ -7,7 +7,7 @@ namespace RememberMe
     {
         Grave, WiltedGrave, MossGrave, SlateGrave, PebbleGrave, Dad, Mom, Parcel, Ribbon,
         Birdbath, Grandfather, Gate, Photo, Blanket, Window, Clock, Sewing, Book, Shelf,
-        Letters, Tea, ToStudy, ToHall, Grandma, WhiteFlowers, Uncle, Aunt, Puddle, Plaque,
+        Letters, Tea, ToStudy, ToHall, LeaveMemory, WhiteFlowers, Uncle, Aunt, Puddle, Plaque,
         Register, Note, FamilyPlot, Memorial, OldCross
     }
 

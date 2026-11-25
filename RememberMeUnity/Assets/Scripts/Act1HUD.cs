@@ -8,6 +8,38 @@ namespace RememberMe
 {
     public sealed class Act1HUD : MonoBehaviour
     {
+        bool clickedContinue;
+        bool clickedInteraction;
+        public bool TakeInteraction()
+        {
+            bool requested = clickedInteraction || StoryInput.ConfirmPressed;
+            clickedInteraction = false;
+            return StoryInput.Consume(requested);
+        }
+        public bool TakeContinue()
+        {
+            bool requested = clickedContinue || StoryInput.ConfirmPressed;
+            clickedContinue = false;
+            return StoryInput.Consume(requested);
+        }
+
+        // Input is owned here while a menu is open. The EventSystem handles pointer
+        // clicks only. Controllers must return after calling this method.
+        public void HandleMenuInput(bool confirm = false)
+        {
+            if (!IsModal) return;
+            var events = EventSystem.current;
+            var focused = events.currentSelectedGameObject;
+            if (!focused) return;
+            MoveDirection direction = Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) ? MoveDirection.Up :
+                Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S) ? MoveDirection.Down :
+                Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A) ? MoveDirection.Left :
+                Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D) ? MoveDirection.Right : MoveDirection.None;
+            if (direction != MoveDirection.None)
+                ExecuteEvents.Execute(focused, new AxisEventData(events) { moveDir = direction }, ExecuteEvents.moveHandler);
+            if (StoryInput.Consume(confirm || StoryInput.ConfirmPressed))
+                ExecuteEvents.Execute(events.currentSelectedGameObject, new BaseEventData(events), ExecuteEvents.submitHandler);
+        }
         public Font BrowserTypeface;
         static readonly Color Ink = new(0.055f, 0.082f, 0.074f);
         static readonly Color Paper = new(0.98f, 0.95f, 0.88f);
@@ -48,6 +80,13 @@ namespace RememberMe
         public bool IsModal => modal.gameObject.activeSelf;
         public bool HasObjectiveArrow => objectiveArrow.gameObject.activeInHierarchy;
         public bool HasPortrait => portrait.enabled && dialogue.gameObject.activeInHierarchy;
+        internal RectTransform OverlayRoot => (RectTransform)stageCanvas.transform;
+        internal Font StoryTypeface => serif;
+        internal bool ShowsPrompt(string key, string action) =>
+            interaction.gameObject.activeInHierarchy && cueKey.text == key && cue.text == action;
+        internal bool ShowsPicture(Sprite image) => illustration.enabled && illustration.sprite == image;
+        internal bool ShowsDialogue(string name, string phrase) =>
+            dialogue.gameObject.activeInHierarchy && speaker.text == name && paragraph.text.Contains(phrase);
 
         public void Initialize()
         {
@@ -66,6 +105,7 @@ namespace RememberMe
             scaler.referenceResolution = new Vector2(1280, 800);
             canvas = (RectTransform)stage.transform;
             _ = new GameObject("Event System", typeof(EventSystem), typeof(StandaloneInputModule));
+            EventSystem.current.sendNavigationEvents = false;
             var art = Rect(canvas, "Presentation", Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
             presentation = art.gameObject.AddComponent<CanvasGroup>();
             presentation.blocksRaycasts = false;
@@ -101,6 +141,10 @@ namespace RememberMe
             objective = Copy(card, "", 21, Paper, TextAnchor.MiddleLeft, new(14, 7), new(396, 36));
             objective.fontStyle = FontStyle.Bold;
             interaction = HintBar(hud, "Interaction");
+            interaction.GetComponent<Image>().raycastTarget = true;
+            var interactButton = interaction.gameObject.AddComponent<Button>();
+            interactButton.transition = Selectable.Transition.None;
+            interactButton.onClick.AddListener(() => clickedInteraction = true);
             cueKey = HintKey(interaction, "", 84);
             cue = HintText(interaction, "");
             interaction.gameObject.SetActive(false);
@@ -133,6 +177,9 @@ namespace RememberMe
             Copy(dialogue, "E / Enter  ·  Continue", 17, Ink, TextAnchor.MiddleRight,
                 new Vector2(196, 15), new Vector2(928, 39));
             dialogue.gameObject.SetActive(false);
+            var continueButton = dialogue.gameObject.AddComponent<Button>();
+            continueButton.transition = Selectable.Transition.None;
+            continueButton.onClick.AddListener(() => clickedContinue = true);
             modal = Surface(canvas, "Menu", new Color(.03f, .05f, .05f, .74f), Vector2.zero, Vector2.one,
                 Vector2.zero, Vector2.zero).rectTransform;
             modal.gameObject.SetActive(false);
@@ -332,6 +379,43 @@ namespace RememberMe
             splash.color = new Color(0.06f, 0.08f, 0.075f, amount);
         }
 
+        public void Inventory(List<(string Name, Sprite Art)> items, Action back)
+        {
+            Menu("Inventory", "", new[] { "Back" }, _ => back());
+            // HideMenu defers Destroy until the end of the frame. The newest child
+            // is the active sheet, while Find can return an older inactive sheet.
+            var sheet = modal.GetChild(modal.childCount - 1).GetComponent<RectTransform>();
+            sheet.offsetMin = new Vector2(-440, -290);
+            sheet.offsetMax = new Vector2(440, 290);
+            foreach (var text in sheet.GetComponentsInChildren<Text>())
+                if (text.text == "Inventory") text.gameObject.SetActive(false);
+            var backButton = sheet.GetComponentInChildren<Button>().GetComponent<RectTransform>();
+            backButton.offsetMin = new Vector2(235, 18);
+            backButton.offsetMax = new Vector2(645, 61);
+            Copy(sheet, "Inventory", 32, Ink, TextAnchor.MiddleCenter, new(20, 520), new(860, 563));
+            if (items.Count == 0)
+                Copy(sheet, "Things Grace finds will be kept here.", 22, Ink, TextAnchor.MiddleCenter, new(25, 220), new(855, 320));
+            for (int i = 0; i < items.Count; i++)
+            {
+                float x = 30 + i % 5 * 165;
+                float y = 365 - i / 5 * 145;
+                var art = Surface(sheet, "Inventory art " + items[i].Name, Color.white, Vector2.zero, Vector2.zero,
+                    new(x + 12, y + 32), new(x + 141, y + 137));
+                art.sprite = items[i].Art;
+                art.preserveAspect = true;
+                art.raycastTarget = false;
+                Copy(sheet, items[i].Name, 18, Ink, TextAnchor.MiddleCenter, new(x, y), new(x + 153, y + 32));
+            }
+        }
+
+        public void VerifyInventory(int expected)
+        {
+            int visible = 0;
+            foreach (var art in modal.GetComponentsInChildren<Image>())
+                if (art.name.StartsWith("Inventory art ") && art.sprite) visible++;
+            if (visible != expected) throw new InvalidOperationException("Inventory artwork is missing from the active menu.");
+        }
+
         public void Menu(string title, string description, string[] choices, Action<int> onChoice,
             Func<int, bool> enabled = null, bool coverMenu = false, bool photoMenu = false)
         {
@@ -429,6 +513,14 @@ namespace RememberMe
         {
             var events = EventSystem.current;
             ExecuteEvents.Execute(events.currentSelectedGameObject, new BaseEventData(events), ExecuteEvents.submitHandler);
+        }
+
+        public void ClickDialogueForVerification()
+        {
+            if (!dialogue.GetComponent<Image>().raycastTarget || !interaction.GetComponent<Image>().raycastTarget)
+                throw new InvalidOperationException("Dialogue and interaction prompts must receive pointer input.");
+            ExecuteEvents.Execute(dialogue.gameObject, new PointerEventData(EventSystem.current)
+                { button = PointerEventData.InputButton.Left }, ExecuteEvents.pointerClickHandler);
         }
 
         public void HoverForVerification(int index)

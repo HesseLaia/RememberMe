@@ -4,7 +4,7 @@ const http = require('node:http');
 const path = require('node:path');
 const { chromium } = require(process.env.REMEMBER_PLAYWRIGHT || 'playwright');
 
-const output = path.resolve(__dirname, '../Build/GitHubPages/docs');
+const output = path.resolve(process.env.REMEMBER_WEB_ROOT || path.resolve(__dirname, '../Build/GitHubPages/docs'));
 const mimeTypes = { '.html': 'text/html; charset=utf-8', '.js': 'application/javascript', '.txt': 'text/plain' };
 
 function startServer() {
@@ -32,12 +32,14 @@ function startServer() {
 
 async function main() {
   assert(fs.existsSync(path.join(output, '.nojekyll')), 'GitHub Pages marker is missing');
-  const { server, url } = await startServer();
+  const { server, url } = process.env.REMEMBER_WEB_URL
+    ? { server: null, url: process.env.REMEMBER_WEB_URL } : await startServer();
   let browser;
   try {
     browser = await chromium.launch({
       executablePath: process.env.REMEMBER_BROWSER,
       headless: true,
+      proxy: process.env.REMEMBER_PROXY ? {server: process.env.REMEMBER_PROXY} : undefined,
       args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'],
     });
     const context = await browser.newContext({ viewport: { width: 1280, height: 820 } });
@@ -52,16 +54,54 @@ async function main() {
       void dialog.dismiss();
     });
     page.on('console', message => {
-      if (message.text().includes('REMEMBER_')) console.log(message.text());
+      if (/REMEMBER_|KITCHEN_/.test(message.text())) console.log(message.text());
       if (/^(?:RuntimeError|Uncaught|InvalidOperationException|NullReferenceException)/.test(message.text())) errors.push(message.text());
     });
 
     const start = async (suffix = '') => {
       await page.goto(url + suffix, { waitUntil: 'domcontentloaded', timeout: 120000 });
       await page.locator('#loading').waitFor({ state: 'hidden', timeout: 120000 });
+      // createUnityInstance resolves before Unity's startup splash has finished.
+      await page.waitForTimeout(3500);
       assert(await page.locator('#unity-canvas').evaluate(canvas => canvas === document.activeElement), 'Game did not receive keyboard focus');
     };
 
+    await start();
+    await page.waitForTimeout(800);
+    const canvasBounds = await page.locator('#unity-canvas').boundingBox();
+    const menuClip = { x: canvasBounds.x + canvasBounds.width * .28,
+      y: canvasBounds.y + canvasBounds.height * .90, width: canvasBounds.width * .44, height: canvasBounds.height * .08 };
+    const titleFocus = await page.screenshot({clip: menuClip});
+    await page.screenshot({path: path.join(__dirname, 'Web-Title.png')});
+    await page.keyboard.press('d');
+    await page.waitForTimeout(150);
+    await page.screenshot({path: path.join(__dirname, 'Web-Title-D.png')});
+    assert(!titleFocus.equals(await page.screenshot({clip: menuClip})), 'D did not move title-menu focus');
+    await page.keyboard.press('a');
+    await page.waitForTimeout(150);
+    assert(titleFocus.equals(await page.screenshot({clip: menuClip})), 'A did not restore title-menu focus');
+    await page.keyboard.press('d');
+    await page.keyboard.press('Enter');
+    await page.waitForTimeout(1300);
+    await page.keyboard.press('e');
+    await page.waitForTimeout(180);
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(180);
+    const pauseClip = {x: canvasBounds.x + canvasBounds.width * .35,
+      y: canvasBounds.y + canvasBounds.height * .34, width: canvasBounds.width * .30, height: canvasBounds.height * .29};
+    const pauseFocus = await page.screenshot({clip: pauseClip});
+    await page.keyboard.press('s');
+    await page.waitForTimeout(150);
+    assert(!pauseFocus.equals(await page.screenshot({clip: pauseClip})), 'S did not move pause-menu focus');
+    await page.keyboard.press('w');
+    await page.waitForTimeout(150);
+    assert(pauseFocus.equals(await page.screenshot({clip: pauseClip})), 'W did not restore pause-menu focus');
+    await page.screenshot({path: path.join(__dirname, 'Web-WASD-Pause.png')});
+    if (process.env.REMEMBER_WEB_QUICK === '1') {
+      assert.deepEqual(errors, [], 'Browser runtime errors');
+      console.log('REMEMBER_LIVE_WEB_VERIFIED: public build loaded, WASD works in title and pause menus, Kitchen is playable.');
+      return;
+    }
     await start();
     await page.screenshot({ path: path.join(__dirname, 'Web-Title.png') });
     await page.keyboard.press('Enter');
@@ -77,17 +117,19 @@ async function main() {
 
     const notice = regex => page.waitForEvent('console', { predicate: msg => regex.test(msg.text()), timeout: 130000 });
     const completed = notice(/REMEMBER_SMOKE_PASS/);
+    const kitchenCompleted = page.waitForEvent('console', {predicate: msg => /KITCHEN_ROUTE_PASS/.test(msg.text()), timeout: 240000});
     await start('?remember-smoke=1');
     await completed;
+    await kitchenCompleted;
 
     const restored = notice(/REMEMBER_WEB_SAVE_RELOADED/);
     await start('?remember-smoke=1');
     await restored;
     assert.deepEqual(errors, [], 'Browser runtime errors');
-    console.log('REMEMBER_WEB_VERIFIED: nested Pages URL, keyboard session, full Act I regression and save persistence after browser reload.');
+    console.log('REMEMBER_WEB_VERIFIED: nested Pages URL, WASD menu navigation, full Acts I and II regression, recipe undo, scripted walking and browser save persistence.');
   } finally {
     if (browser) await browser.close();
-    server.close();
+    server?.close();
   }
 }
 

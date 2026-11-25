@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace RememberMe
 {
-    public enum StoryStage { Farewell, FindDad, FindMom, OpenParcel, FindStudy, Reunion, Complete }
+    // Saves store numeric stages. Stage 5 was Reunion before the empty-house memory.
+    public enum StoryStage { Farewell = 0, FindDad = 1, FindMom = 2, OpenParcel = 3, FindStudy = 4, ExploreMemory = 5, Complete = 6 }
 
     [Serializable]
     public sealed class Act1Story
@@ -19,7 +20,7 @@ namespace RememberMe
         public bool Shelved;
         public bool ParcelOpened;
         public bool MomCalled;
-        public bool SharedKeepsake;
+        public bool SharedKeepsake; // Retained for saves from the original reunion scene.
         public int CemeteryLayout;
 
         public bool VisitOldGrave(int index)

@@ -62,14 +62,14 @@ namespace RememberMe.Editor
             game.Grace.Feet = actor.GetComponent<CircleCollider2D>();
             game.Grace.Feet.radius = .115f / actor.transform.localScale.x;
             game.Grace.Feet.offset = Vector2.zero;
-            foreach (var patrol in game.Rooms[0].GetComponentsInChildren<Act1Patrol>()) patrol.Grace = game.Grace;
             game.Cover = Image("Story/Cover");
             game.Gravestone = Image("Story/Gravestone");
+            game.PuddleReflection = Image("Story/PuddleReflection");
             game.ClosedParcel = Image("Story/ClosedParcel");
             game.OpenParcel = Image("Story/OpenParcel");
             game.Mechanism = Image("Story/Mechanism");
-            game.Reunion = Image("Story/Reunion");
             game.WindowView = Image("Story/WindowView");
+            game.WalkHomeInRain = Image("Story/WalkHomeInRain");
             game.GracePortrait = Image("Portraits/Grace");
             game.MomPortrait = Image("Portraits/Mom");
             game.DadPortrait = Image("Portraits/Dad");
@@ -141,6 +141,7 @@ namespace RememberMe.Editor
                 game.Grace.Feet.offset != Vector2.zero || game.Grace.View.Run.Length != 12 ||
                 game.Grace.View.Walk.Length != 12 || game.Grace.View.Crouch.Length != 12)
                 throw new InvalidOperationException("Invalid 2D scene or Grace motion sheet.");
+            Act1Verification.VerifyMemory(game.Rooms);
             foreach (var room in game.Rooms)
                 room.gameObject.SetActive(false);
             foreach (var room in game.Rooms)
@@ -191,14 +192,7 @@ namespace RememberMe.Editor
             if (unreachable.Length > 0)
                 throw new InvalidOperationException(room.Id + ": unreachable approaches: " + string.Join(", ", unreachable));
             Debug.Log($"REMEMBER_PATHS: {room.Id} · {room.Targets.Length} approachable targets from spawn.");
-            if (room.Id == RoomId.Cemetery)
-            {
-                var visitors = Enumerable.Range(1, 8).Select(i => room.transform.Find("Mourner " + i).GetComponent<SpriteRenderer>()).ToArray();
-                if (visitors.Select(visitor => visitor.sprite.texture).Distinct().Count() != visitors.Length)
-                    throw new InvalidOperationException("Cemetery visitors must have distinct artwork.");
-                for (int i = 0; i < 4; i++) _ = Image("Actors/MournerReserves/" + i);
-                Debug.Log("REMEMBER_VISITORS: eight distinct cemetery sprites and four movement routes.");
-            }
+            if (room.Id == RoomId.Cemetery) Act1Verification.VerifyCemetery(room);
             foreach (var patrol in room.GetComponentsInChildren<Act1Patrol>())
             for (int leg = 0; leg < patrol.Route.Length; leg++)
             {
@@ -220,7 +214,13 @@ namespace RememberMe.Editor
             layoutHeight = room.Size.y * Pixels;
             float width = room.Size.x * Pixels;
             if (id == RoomId.Cemetery) BuildCemeteryLawn();
-            string groundAsset = id == RoomId.Cemetery ? "CemeteryLawn" : id == RoomId.Flashback ? "Hall" : id.ToString();
+            string groundAsset = id switch
+            {
+                RoomId.Cemetery => "CemeteryLawn",
+                RoomId.Flashback => "Hall",
+                RoomId.Hall => "HallRain",
+                _ => "StudyRain"
+            };
             var ground = ArtAt(room.transform, "Ground/" + groundAsset,
                 width / 2, layoutHeight, width, layoutHeight);
             ground.sortingOrder = -3000;
@@ -258,7 +258,6 @@ namespace RememberMe.Editor
 
             var rows = new[] { 335, 465, 655, 775, 975, 1095 };
             var columns = new[] { 400, 545, 690, 835, 1277, 1422, 1567, 1712 };
-            var shapes = new[] { "GraveSlate", "GraveMoss", "GraveStones", "GraveWilt" };
             for (int row = 0; row < rows.Length; row++)
             for (int col = 0; col < columns.Length; col++)
             {
@@ -267,16 +266,15 @@ namespace RememberMe.Editor
                 {
                     case (2, 4): Grave(parent, "GraveMain", x, y, TargetId.Grave, "Read Grandma’s headstone", 99); break;
                     case (4, 3): Grave(parent, "GraveWilt", x, y, TargetId.WiltedGrave, "Examine the withered bouquet"); break;
-                    case (1, 1): Grave(parent, "GraveMoss", x, y, TargetId.MossGrave, "Read the moss-covered stone"); break;
-                    case (0, 6): Grave(parent, "GraveSlate", x, y, TargetId.SlateGrave, "Look at the slate and rosemary"); break;
-                    case (3, 7): Grave(parent, "GraveStones", x, y, TargetId.PebbleGrave, "Look at the three pebbles"); break;
-                    case (1, 2): Grave(parent, "GraveStones", x, y, TargetId.FamilyPlot, "Read two names side by side"); break;
-                    case (5, 5): Grave(parent, "GraveSlate", x, y, TargetId.OldCross, "Read the old cross"); break;
-                    case (0, 2): Grave(parent, "GraveMoss", x, y, TargetId.Memorial, "Read the weathered inscription"); break;
+                    case (1, 1): Grave(parent, "GraveMoss", x, y, TargetId.MossGrave, "Read the moss-covered stone", 91, 91); break;
+                    case (0, 6): Grave(parent, "GraveSlate", x, y, TargetId.SlateGrave, "Look at the slate and rosemary", 70, 95); break;
+                    case (3, 7): Grave(parent, "GraveStones", x, y, TargetId.PebbleGrave, "Look at the three pebbles", 98, 86); break;
+                    case (1, 2): Grave(parent, "GravePlain", x, y, TargetId.FamilyPlot, "Read two names side by side", 91, 73); break;
+                    case (5, 5): Grave(parent, "GravePlain", x, y, TargetId.OldCross, "Read the old headstone", 91, 73); break;
+                    case (0, 2): Grave(parent, "GravePlain", x, y, TargetId.Memorial, "Read the weathered inscription", 91, 73); break;
                     default:
-                        int style = (row * 3 + col * 7 + col / 3) % shapes.Length;
                         int width = 74 + (row * 17 + col * 13) % 18;
-                        var stone = Prop(parent, shapes[style], x, y, width, 70 + (col * 11 + row) % 19, width * .72f, 20);
+                        var stone = Prop(parent, "GravePlain", x, y, width, 62 + (col * 11 + row) % 16, width * .72f, 20);
                         float light = .79f + ((row * 11 + col) % 9) * .023f;
                         stone.color = new Color(light, light * 1.015f, light);
                         break;
@@ -303,7 +301,7 @@ namespace RememberMe.Editor
             Reach(Target(parent, TargetId.Birdbath, "Watch rain in the birdbath", 230, 779), bath);
             var puddle = ArtAt(parent, "Props/Puddle", 1145, 787, 95, 34);
             puddle.sortingOrder = -2900;
-            Target(parent, TargetId.Puddle, "Watch the puddle", 1145, 801).FocusArt = puddle;
+            Target(parent, TargetId.Puddle, "Look into the puddle", 1145, 801).FocusArt = puddle;
             var ribbon = ArtAt(parent, "Props/Ribbon", 470, 957, 28, 14);
             Target(parent, TargetId.Ribbon, "Pick up the ribbon", 470, 980, ribbon).FocusArt = ribbon;
 
@@ -315,7 +313,6 @@ namespace RememberMe.Editor
             NPC(parent, "Grandpa", 1925, 813, TargetId.Grandfather, "Talk to Grandpa");
             NPC(parent, "UncleHD", 783, 891, TargetId.Uncle, "Talk to Uncle James").Speaker.Look(Vector2.left);
             NPC(parent, "AuntHD", 371, 266, TargetId.Aunt, "Talk to Aunt").Speaker.Look(Vector2.right);
-            Mourners(parent);
             var plaque = Prop(parent, "Plaque", 952, 1283, 44, 65, 24, 16);
             Reach(Target(parent, TargetId.Plaque, "Read the gate plaque", 927, 1307), plaque);
             Target(parent, TargetId.Gate, "Listen at the gate", 1056, 1372);
@@ -329,7 +326,7 @@ namespace RememberMe.Editor
             var room = Room(root, id); var parent = room.transform;
             bool flash = id == RoomId.Flashback, study = id == RoomId.Study;
             room.Music = Audio(flash ? "RM_StoryFlashback" : "RM_StoryKeepsake");
-            room.Ambience = Audio("RM_StoryRoom");
+            room.Ambience = Audio(flash ? "RM_StoryRoom" : "RM_StoryRain");
             room.Entry = P(576, study ? 777 : 621);
             room.ReturnEntry = P(576, 265);
             float north = study ? 306 : 224;
@@ -384,7 +381,7 @@ namespace RememberMe.Editor
                 var console = Furniture(parent, "ConsoleFront", 657, 401, 94, 61, 86, 32);
                 On(parent, "Letters", 640, 401, 26, 14, 49);
                 On(parent, "Sewing", 676, 401, 27, 24, 52);
-                Furniture(parent, "Chair", 831, 461, 57, 70, 53, 27);
+                var chair = Furniture(parent, "Chair", 831, 461, 57, 70, 53, 27);
                 var teaTable = Furniture(parent, "TeaTable", 902, 482, 48, 48, 41, 28);
                 On(parent, "Cup", 892, 482, 15, 12, 35);
                 On(parent, "Cup", 910, 482, 12, 10, 34);
@@ -394,7 +391,7 @@ namespace RememberMe.Editor
                 Reach(Target(parent, TargetId.Letters, "Read the letters", 654, 426), console);
                 Reach(Target(parent, TargetId.Tea, "Look at the two cups", 902, 507), teaTable);
                 Target(parent, TargetId.ToHall, "Return to the front room", 576, 796);
-                NPC(parent, "Grandma", 798, 367, TargetId.Grandma, "Talk to Grandma");
+                Target(parent, TargetId.LeaveMemory, "Leave the memory", 831, 491).FocusArt = chair;
                 WallDetail(parent, "WallPhoto", 644, 233, 32, 33, .88f);
                 WallDetail(parent, "SillIvy", 345, 253, 26, 27, .94f);
                 GroundShadow(parent, 975, 369, 37, 18, .75f, -96);
@@ -440,9 +437,9 @@ namespace RememberMe.Editor
         static void DressParlour(Transform parent)
         {
             // Footprints for the hearth, bookcase, and window seat baked into the room painting.
-            Boundary(parent, 437, 268, 168, 24);
-            Boundary(parent, 723, 252, 190, 29);
-            Boundary(parent, 925, 253, 166, 28);
+            Boundary(parent, 437, 246, 180, 72);
+            Boundary(parent, 723, 235, 190, 63);
+            Boundary(parent, 925, 235, 166, 64);
 
             ParlourFurniture(parent, "ParlourTable", 342, 574, 100, 63, 93, 33);
             ParlourFurniture(parent, "PleatedLamp", 217, 482, 35, 99, 19, 14);
@@ -488,9 +485,9 @@ namespace RememberMe.Editor
             return Prop(room, name, x, y, width, height, footWidth, footDepth);
         }
 
-        static void Grave(Transform parent, string name, int x, int y, TargetId id, string label, int width = 91)
+        static void Grave(Transform parent, string name, int x, int y, TargetId id, string label, int width = 91, int height = 85)
         {
-            var stone = Prop(parent, name, x, y, width, 85, width * .77f, 21);
+            var stone = Prop(parent, name, x, y, width, height, width * .77f, 21);
             Reach(Target(parent, id, label, x, y + 29), stone);
         }
 
@@ -503,45 +500,6 @@ namespace RememberMe.Editor
             target.Speaker = actor;
             target.FocusArt = actor.Renderer;
             return target;
-        }
-
-        static void Mourners(Transform room)
-        {
-            Vector2[][] routes = { new Vector2[] { new(250, 390), new(250, 633) },
-                new Vector2[] { new(730, 241), new(890, 241), new(890, 273), new(730, 273) },
-                new Vector2[] { new(1856, 685), new(1856, 430) },
-                new Vector2[] { new(1610, 1204), new(1823, 1204) } };
-            string[] walkingVisitors = { "VisitorA", "VisitorC", "VisitorD", "VisitorE" };
-            for (int i = 0; i < routes.Length; i++)
-            {
-                var points = routes[i];
-                string set = walkingVisitors[i];
-                var actor = Actor(room, "Mourner " + (i + 1), set,
-                    P(points[0].x, points[0].y), 1.04f + .025f * i);
-                actor.Walk = Frames(set + "Walk");
-                actor.Look(P(points[1].x, points[1].y) - (Vector2)actor.transform.position);
-                actor.gameObject.layer = 9;
-                var patrol = actor.gameObject.AddComponent<Act1Patrol>();
-                patrol.View = actor;
-                patrol.Speed = .72f + .095f * i;
-                patrol.Wait = 1.35f + .17f * i;
-                patrol.Route = points.Select(point => P(point.x, point.y)).ToArray();
-                patrol.Body = actor.gameObject.AddComponent<Rigidbody2D>();
-                patrol.Body.bodyType = RigidbodyType2D.Kinematic;
-                patrol.Body.interpolation = RigidbodyInterpolation2D.Interpolate;
-                var feet = actor.gameObject.AddComponent<CircleCollider2D>();
-                feet.offset = Vector2.zero;
-                feet.radius = .105f / actor.transform.localScale.x;
-            }
-            Vector2[] positions = { new(320, 1036), new(1805, 1036), new(406, 798), new(1409, 486) };
-            for (int i = 0; i < positions.Length; i++)
-            {
-                var point = positions[i];
-                float height = 96 + (i % 3) * 3;
-                var art = ArtAt(room, "Actors/MournersPolished/" + i, point.x, point.y, height * 164f / 208, height);
-                art.gameObject.name = "Mourner " + (i + 5);
-                Boundary(art.transform, point.x, point.y - 5, 23, 17);
-            }
         }
 
         static ActorView Actor(Transform parent, string name, string sprites, Vector2 pos, float height)

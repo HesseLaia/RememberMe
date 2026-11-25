@@ -1,0 +1,5124 @@
+fileFormatVersion: 2
+guid: b3e66ec0db347834d9d281f177d1d7e3
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7402342170505999300
+    second: IngredientArtwork_0
+  - first:
+      213: -8980201249898577262
+    second: IngredientArtwork_1
+  - first:
+      213: -9033473720304197676
+    second: IngredientArtwork_2
+  - first:
+      213: -3375761451301661574
+    second: IngredientArtwork_3
+  - first:
+      213: 1631502295640327528
+    second: IngredientArtwork_4
+  - first:
+      213: 494280503104873866
+    second: IngredientArtwork_5
+  - first:
+      213: -25416599375583960
+    second: IngredientArtwork_6
+  - first:
+      213: 7936589979959952369
+    second: IngredientArtwork_7
+  - first:
+      213: -8494809623217598361
+    second: IngredientArtwork_8
+  - first:
+      213: 5455508769753021842
+    second: IngredientArtwork_9
+  - first:
+      213: 8696579001138267136
+    second: IngredientArtwork_10
+  - first:
+      213: -1836476668049116429
+    second: IngredientArtwork_11
+  - first:
+      213: -9185889663787988120
+    second: IngredientArtwork_12
+  - first:
+      213: 8093012884808042931
+    second: IngredientArtwork_13
+  - first:
+      213: 5308445484118230878
+    second: IngredientArtwork_14
+  - first:
+      213: -8193825893624453860
+    second: IngredientArtwork_15
+  - first:
+      213: 4724200982406107934
+    second: IngredientArtwork_16
+  - first:
+      213: -8027118938454577688
+    second: IngredientArtwork_17
+  - first:
+      213: 9101599247492929121
+    second: IngredientArtwork_18
+  - first:
+      213: -113391860583049711
+    second: IngredientArtwork_19
+  - first:
+      213: -1586094022031253930
+    second: IngredientArtwork_20
+  - first:
+      213: 2184148537525404093
+    second: IngredientArtwork_21
+  - first:
+      213: -6371374110355653370
+    second: IngredientArtwork_22
+  - first:
+      213: 1377713972498271385
+    second: IngredientArtwork_23
+  - first:
+      213: 2487533822738128390
+    second: IngredientArtwork_24
+  - first:
+      213: -2788175286807418956
+    second: IngredientArtwork_25
+  - first:
+      213: -700734546953846588
+    second: IngredientArtwork_26
+  - first:
+      213: -266855087049206961
+    second: IngredientArtwork_27
+  - first:
+      213: -7173731403863014880
+    second: IngredientArtwork_28
+  - first:
+      213: 3649475899919740358
+    second: IngredientArtwork_29
+  - first:
+      213: 7144241073798183263
+    second: IngredientArtwork_30
+  - first:
+      213: -5380354151662786655
+    second: IngredientArtwork_31
+  - first:
+      213: -5570114883878105286
+    second: IngredientArtwork_32
+  - first:
+      213: -2771138182863995018
+    second: IngredientArtwork_33
+  - first:
+      213: -8731226947570781897
+    second: IngredientArtwork_34
+  - first:
+      213: -2873747605978915429
+    second: IngredientArtwork_35
+  - first:
+      213: 8305807381836311550
+    second: IngredientArtwork_36
+  - first:
+      213: 8159896770366261043
+    second: IngredientArtwork_37
+  - first:
+      213: 7233296838957073240
+    second: IngredientArtwork_38
+  - first:
+      213: -3589116965079746321
+    second: IngredientArtwork_39
+  - first:
+      213: -9121253690026909686
+    second: IngredientArtwork_40
+  - first:
+      213: 1136992705986926801
+    second: IngredientArtwork_41
+  - first:
+      213: 6414876228752825141
+    second: IngredientArtwork_42
+  - first:
+      213: -7608399536066837095
+    second: IngredientArtwork_43
+  - first:
+      213: 7770750334527335590
+    second: IngredientArtwork_44
+  - first:
+      213: -1286418196878045834
+    second: IngredientArtwork_45
+  - first:
+      213: -3521370154643376353
+    second: IngredientArtwork_46
+  - first:
+      213: -3453049687142951643
+    second: IngredientArtwork_47
+  - first:
+      213: -6750686554484521115
+    second: IngredientArtwork_48
+  - first:
+      213: 6795369565003486076
+    second: IngredientArtwork_49
+  - first:
+      213: 1210436237524408353
+    second: IngredientArtwork_50
+  - first:
+      213: -5459257918503296525
+    second: IngredientArtwork_51
+  - first:
+      213: -6715622909766296942
+    second: IngredientArtwork_52
+  - first:
+      213: -3449996588510862821
+    second: IngredientArtwork_53
+  - first:
+      213: -7470652504942887791
+    second: IngredientArtwork_54
+  - first:
+      213: -36814828004628454
+    second: IngredientArtwork_55
+  - first:
+      213: 7700311000972713084
+    second: IngredientArtwork_56
+  - first:
+      213: -7097854023466923175
+    second: IngredientArtwork_57
+  - first:
+      213: 8804028681113596208
+    second: IngredientArtwork_58
+  - first:
+      213: -1483303701533949417
+    second: IngredientArtwork_59
+  - first:
+      213: 4106260859492057276
+    second: IngredientArtwork_60
+  - first:
+      213: -7799679446867207381
+    second: IngredientArtwork_61
+  - first:
+      213: 1530724143542056481
+    second: IngredientArtwork_62
+  - first:
+      213: 6747002999528033760
+    second: IngredientArtwork_63
+  - first:
+      213: -6441086110547260911
+    second: IngredientArtwork_64
+  - first:
+      213: -8826759969422658381
+    second: IngredientArtwork_65
+  - first:
+      213: -1308845919305265245
+    second: IngredientArtwork_66
+  - first:
+      213: 9151666500638295966
+    second: IngredientArtwork_67
+  - first:
+      213: -1908819263451399569
+    second: IngredientArtwork_68
+  - first:
+      213: -5899848116495305234
+    second: IngredientArtwork_69
+  - first:
+      213: -6334981770911411950
+    second: IngredientArtwork_70
+  - first:
+      213: -7284297957555876094
+    second: IngredientArtwork_71
+  - first:
+      213: 6865130622319549436
+    second: IngredientArtwork_72
+  - first:
+      213: 8599403798043725702
+    second: IngredientArtwork_73
+  - first:
+      213: 830328552947269426
+    second: IngredientArtwork_74
+  - first:
+      213: -8291943320927633571
+    second: IngredientArtwork_75
+  - first:
+      213: -3378764828306622753
+    second: IngredientArtwork_76
+  - first:
+      213: 8975106068653257047
+    second: IngredientArtwork_77
+  - first:
+      213: 7146489131997487000
+    second: IngredientArtwork_78
+  - first:
+      213: -4770849527019308650
+    second: IngredientArtwork_79
+  - first:
+      213: -4401876970564846576
+    second: IngredientArtwork_80
+  - first:
+      213: -4819152739681731325
+    second: IngredientArtwork_81
+  - first:
+      213: -6802553029648273046
+    second: IngredientArtwork_82
+  - first:
+      213: -1266016077406579720
+    second: IngredientArtwork_83
+  - first:
+      213: -6026031965155248505
+    second: IngredientArtwork_84
+  - first:
+      213: 8103841309101174417
+    second: IngredientArtwork_85
+  - first:
+      213: -5278498483760637691
+    second: IngredientArtwork_86
+  - first:
+      213: -5032810199025806484
+    second: IngredientArtwork_87
+  - first:
+      213: -7889954452978764027
+    second: IngredientArtwork_88
+  - first:
+      213: -430113159811640543
+    second: IngredientArtwork_89
+  - first:
+      213: 8006679684145277726
+    second: IngredientArtwork_90
+  - first:
+      213: -8803730091197970987
+    second: IngredientArtwork_91
+  - first:
+      213: -6271264728282003379
+    second: IngredientArtwork_92
+  - first:
+      213: 7556301274528604782
+    second: IngredientArtwork_93
+  - first:
+      213: 6697837541485599142
+    second: IngredientArtwork_94
+  - first:
+      213: 4614304941035431716
+    second: IngredientArtwork_95
+  - first:
+      213: -4384153823518758940
+    second: IngredientArtwork_96
+  - first:
+      213: -4299857446887796464
+    second: IngredientArtwork_97
+  - first:
+      213: -8691056150316133332
+    second: IngredientArtwork_98
+  - first:
+      213: 4635789571613225380
+    second: IngredientArtwork_99
+  - first:
+      213: -116599015701108186
+    second: IngredientArtwork_100
+  - first:
+      213: 8311629332038232634
+    second: IngredientArtwork_101
+  - first:
+      213: -7529242099407686824
+    second: IngredientArtwork_102
+  - first:
+      213: 1232950460134026588
+    second: IngredientArtwork_103
+  - first:
+      213: 3616967794779074430
+    second: IngredientArtwork_104
+  - first:
+      213: -4952959971642423040
+    second: IngredientArtwork_105
+  - first:
+      213: 2492508569815103177
+    second: IngredientArtwork_106
+  - first:
+      213: 3862730497755351297
+    second: IngredientArtwork_107
+  - first:
+      213: 5497520496050331948
+    second: IngredientArtwork_108
+  - first:
+      213: 277729993081232858
+    second: IngredientArtwork_109
+  - first:
+      213: -5606966733014882138
+    second: IngredientArtwork_110
+  - first:
+      213: 8758567475816091802
+    second: IngredientArtwork_111
+  - first:
+      213: -726929341457558026
+    second: IngredientArtwork_112
+  - first:
+      213: -7328110016457616725
+    second: IngredientArtwork_113
+  - first:
+      213: -1450493861223712740
+    second: IngredientArtwork_114
+  - first:
+      213: -1207858219781367805
+    second: IngredientArtwork_115
+  - first:
+      213: -437966765540789545
+    second: IngredientArtwork_116
+  - first:
+      213: 2337096567676409015
+    second: IngredientArtwork_117
+  - first:
+      213: -8556794573338212005
+    second: IngredientArtwork_118
+  - first:
+      213: -546843377487288906
+    second: IngredientArtwork_119
+  - first:
+      213: -2174748308381114342
+    second: IngredientArtwork_120
+  - first:
+      213: -3297126189808882569
+    second: IngredientArtwork_121
+  - first:
+      213: -8054549353129424323
+    second: IngredientArtwork_122
+  - first:
+      213: 4844727826812992871
+    second: IngredientArtwork_123
+  - first:
+      213: 2733307770218290930
+    second: IngredientArtwork_124
+  - first:
+      213: 9166263096123709872
+    second: IngredientArtwork_125
+  - first:
+      213: -606339793128619037
+    second: IngredientArtwork_126
+  - first:
+      213: -1881559823783908418
+    second: IngredientArtwork_127
+  - first:
+      213: -3805225027903095886
+    second: IngredientArtwork_128
+  - first:
+      213: 4995813556997854832
+    second: IngredientArtwork_129
+  - first:
+      213: 6012971736068855992
+    second: IngredientArtwork_130
+  - first:
+      213: -441267617530452901
+    second: IngredientArtwork_131
+  - first:
+      213: 8771519744488338239
+    second: IngredientArtwork_132
+  - first:
+      213: -4015225300330604174
+    second: IngredientArtwork_133
+  - first:
+      213: -6471519010460755168
+    second: IngredientArtwork_134
+  - first:
+      213: 5811629430921512463
+    second: IngredientArtwork_135
+  - first:
+      213: -5751175132657137156
+    second: IngredientArtwork_136
+  - first:
+      213: -8509892064410982070
+    second: IngredientArtwork_137
+  - first:
+      213: 1782803828833598011
+    second: IngredientArtwork_138
+  - first:
+      213: 1953252213971608991
+    second: IngredientArtwork_139
+  - first:
+      213: -420636945697330969
+    second: IngredientArtwork_140
+  - first:
+      213: 1572391633719061731
+    second: IngredientArtwork_141
+  - first:
+      213: 2744732221223185745
+    second: IngredientArtwork_142
+  - first:
+      213: -2526120594416460278
+    second: IngredientArtwork_143
+  - first:
+      213: -8672677858762636516
+    second: IngredientArtwork_144
+  - first:
+      213: 2023050862928516983
+    second: IngredientArtwork_145
+  - first:
+      213: -4353213979705668774
+    second: IngredientArtwork_146
+  - first:
+      213: 6040252714226699806
+    second: IngredientArtwork_147
+  - first:
+      213: 3884827873745872733
+    second: IngredientArtwork_148
+  - first:
+      213: -662771586400770202
+    second: IngredientArtwork_149
+  - first:
+      213: 1679989947711800869
+    second: IngredientArtwork_150
+  - first:
+      213: 6607823361420886621
+    second: IngredientArtwork_151
+  - first:
+      213: 7930963130290310439
+    second: IngredientArtwork_152
+  - first:
+      213: -4613309269974156645
+    second: IngredientArtwork_153
+  - first:
+      213: -321995311475389021
+    second: IngredientArtwork_154
+  - first:
+      213: -8920309893413592263
+    second: IngredientArtwork_155
+  - first:
+      213: 834183158412050898
+    second: IngredientArtwork_156
+  - first:
+      213: -6889572707247483985
+    second: IngredientArtwork_157
+  - first:
+      213: -7469291038503767754
+    second: IngredientArtwork_158
+  - first:
+      213: 3470252075334473710
+    second: IngredientArtwork_159
+  - first:
+      213: 5869891352368583461
+    second: IngredientArtwork_160
+  - first:
+      213: -9010077091482183935
+    second: IngredientArtwork_161
+  - first:
+      213: -1661931196587661826
+    second: IngredientArtwork_162
+  - first:
+      213: 7355202782006155846
+    second: IngredientArtwork_163
+  - first:
+      213: 2931854663600058164
+    second: IngredientArtwork_164
+  - first:
+      213: 5004046977858666121
+    second: IngredientArtwork_165
+  - first:
+      213: -113257769685828704
+    second: IngredientArtwork_166
+  - first:
+      213: 5526714187828584725
+    second: IngredientArtwork_167
+  - first:
+      213: -2535656527831159571
+    second: IngredientArtwork_168
+  - first:
+      213: 3493543017754647970
+    second: IngredientArtwork_169
+  - first:
+      213: 4528284550139690928
+    second: IngredientArtwork_170
+  - first:
+      213: 8673196989257242737
+    second: IngredientArtwork_171
+  - first:
+      213: 6659067975162909812
+    second: IngredientArtwork_172
+  - first:
+      213: 2301511446363670688
+    second: IngredientArtwork_173
+  - first:
+      213: -478851892917198388
+    second: IngredientArtwork_174
+  - first:
+      213: -2593556434385708896
+    second: IngredientArtwork_175
+  - first:
+      213: 7571050207394798692
+    second: IngredientArtwork_176
+  - first:
+      213: -2209081416389135485
+    second: IngredientArtwork_177
+  - first:
+      213: -3418988763593083994
+    second: IngredientArtwork_178
+  - first:
+      213: -2988611927128896470
+    second: IngredientArtwork_179
+  - first:
+      213: -7758584590918379854
+    second: IngredientArtwork_180
+  - first:
+      213: -6505248430119632163
+    second: IngredientArtwork_181
+  - first:
+      213: -8635125860173776012
+    second: IngredientArtwork_182
+  - first:
+      213: -7099372922005457120
+    second: IngredientArtwork_183
+  - first:
+      213: -7928790661946628051
+    second: IngredientArtwork_184
+  - first:
+      213: 236315824139804850
+    second: IngredientArtwork_185
+  - first:
+      213: -3801803336049602311
+    second: IngredientArtwork_186
+  - first:
+      213: -5596607956461902038
+    second: IngredientArtwork_187
+  - first:
+      213: 6184559999097222555
+    second: IngredientArtwork_188
+  - first:
+      213: -3045650216577339636
+    second: IngredientArtwork_189
+  - first:
+      213: -4578969925097201291
+    second: IngredientArtwork_190
+  - first:
+      213: -7705754660428758731
+    second: IngredientArtwork_191
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: IngredientArtwork_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 679
+        height: 704
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3c8815e309954990800000000000000
+      internalID: -7402342170505999300
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_1
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 667
+        width: 29
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 292c648da8aef5380800000000000000
+      internalID: -8980201249898577262
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_2
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 683
+        width: 24
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4df11754387a2a280800000000000000
+      internalID: -9033473720304197676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_3
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 667
+        width: 20
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7415b878d2e621d0800000000000000
+      internalID: -3375761451301661574
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_4
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 693
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86540ed91b244a610800000000000000
+      internalID: 1631502295640327528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_5
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 626
+        width: 144
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a85a7feaf790cd600800000000000000
+      internalID: 494280503104873866
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_6
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 661
+        width: 76
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 825e1deccb3b5aff0800000000000000
+      internalID: -25416599375583960
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_7
+      rect:
+        serializedVersion: 2
+        x: 483
+        y: 675
+        width: 21
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f30073798e642e60800000000000000
+      internalID: 7936589979959952369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_8
+      rect:
+        serializedVersion: 2
+        x: 513
+        y: 597
+        width: 89
+        height: 114
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7609b85b7af5c1a80800000000000000
+      internalID: -8494809623217598361
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_9
+      rect:
+        serializedVersion: 2
+        x: 619
+        y: 685
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29d3822525cd5bb40800000000000000
+      internalID: 5455508769753021842
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_10
+      rect:
+        serializedVersion: 2
+        x: 648
+        y: 632
+        width: 43
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 004c7fb668470b870800000000000000
+      internalID: 8696579001138267136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_11
+      rect:
+        serializedVersion: 2
+        x: 917
+        y: 673
+        width: 35
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f2b3a253368386e0800000000000000
+      internalID: -1836476668049116429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_12
+      rect:
+        serializedVersion: 2
+        x: 967
+        y: 625
+        width: 80
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86b0cfb050a258080800000000000000
+      internalID: -9185889663787988120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_13
+      rect:
+        serializedVersion: 2
+        x: 1028
+        y: 413
+        width: 457
+        height: 303
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b984a11758205070800000000000000
+      internalID: 8093012884808042931
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_14
+      rect:
+        serializedVersion: 2
+        x: 1542
+        y: 699
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e57c46eda036ba940800000000000000
+      internalID: 5308445484118230878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_15
+      rect:
+        serializedVersion: 2
+        x: 1555
+        y: 699
+        width: 37
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c15ed1333cea94e80800000000000000
+      internalID: -8193825893624453860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_16
+      rect:
+        serializedVersion: 2
+        x: 1615
+        y: 651
+        width: 132
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e131edb73cbbf8140800000000000000
+      internalID: 4724200982406107934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_17
+      rect:
+        serializedVersion: 2
+        x: 1794
+        y: 685
+        width: 47
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8edaa9fdad1f99090800000000000000
+      internalID: -8027118938454577688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_18
+      rect:
+        serializedVersion: 2
+        x: 1832
+        y: 528
+        width: 257
+        height: 196
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 16657c21b406f4e70800000000000000
+      internalID: 9101599247492929121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_19
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 680
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 116d68d14b62d6ef0800000000000000
+      internalID: -113391860583049711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_20
+      rect:
+        serializedVersion: 2
+        x: 330
+        y: 682
+        width: 15
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65ed474f3ef0df9e0800000000000000
+      internalID: -1586094022031253930
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_21
+      rect:
+        serializedVersion: 2
+        x: 877
+        y: 619
+        width: 43
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db104e3d587af4e10800000000000000
+      internalID: 2184148537525404093
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_22
+      rect:
+        serializedVersion: 2
+        x: 947
+        y: 675
+        width: 17
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 60d712de0055497a0800000000000000
+      internalID: -6371374110355653370
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_23
+      rect:
+        serializedVersion: 2
+        x: 1528
+        y: 679
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99c0adcfe8f9e1310800000000000000
+      internalID: 1377713972498271385
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_24
+      rect:
+        serializedVersion: 2
+        x: 2065
+        y: 576
+        width: 84
+        height: 114
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 60e531f05de758220800000000000000
+      internalID: 2487533822738128390
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_25
+      rect:
+        serializedVersion: 2
+        x: 925
+        y: 594
+        width: 33
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b7225a59596e49d0800000000000000
+      internalID: -2788175286807418956
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_26
+      rect:
+        serializedVersion: 2
+        x: 963
+        y: 661
+        width: 18
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c0c8f664ad7646f0800000000000000
+      internalID: -700734546953846588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_27
+      rect:
+        serializedVersion: 2
+        x: 979
+        y: 665
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f431de156b0fb4cf0800000000000000
+      internalID: -266855087049206961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_28
+      rect:
+        serializedVersion: 2
+        x: 1488
+        y: 643
+        width: 42
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0224ea6db49c17c90800000000000000
+      internalID: -7173731403863014880
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_29
+      rect:
+        serializedVersion: 2
+        x: 1526
+        y: 657
+        width: 12
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6cda017cefa85a230800000000000000
+      internalID: 3649475899919740358
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_30
+      rect:
+        serializedVersion: 2
+        x: 1637
+        y: 657
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f59fe71a761752360800000000000000
+      internalID: 7144241073798183263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_31
+      rect:
+        serializedVersion: 2
+        x: 1647
+        y: 653
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a76758c7642555b0800000000000000
+      internalID: -5380354151662786655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_32
+      rect:
+        serializedVersion: 2
+        x: 1659
+        y: 651
+        width: 21
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3f445c560af2b2b0800000000000000
+      internalID: -5570114883878105286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_33
+      rect:
+        serializedVersion: 2
+        x: 1679
+        y: 648
+        width: 7
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67fbeda3180fa89d0800000000000000
+      internalID: -2771138182863995018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_34
+      rect:
+        serializedVersion: 2
+        x: 658
+        y: 651
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 731b9b8e95374d680800000000000000
+      internalID: -8731226947570781897
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_35
+      rect:
+        serializedVersion: 2
+        x: 831
+        y: 610
+        width: 45
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9d5f7337c56e18d0800000000000000
+      internalID: -2873747605978915429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_36
+      rect:
+        serializedVersion: 2
+        x: 1440
+        y: 15
+        width: 637
+        height: 643
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: efbab27cec7244370800000000000000
+      internalID: 8305807381836311550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_37
+      rect:
+        serializedVersion: 2
+        x: 1520
+        y: 651
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 337c98131e6cd3170800000000000000
+      internalID: 8159896770366261043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_38
+      rect:
+        serializedVersion: 2
+        x: 1733
+        y: 656
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8530ef0c625d16460800000000000000
+      internalID: 7233296838957073240
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_39
+      rect:
+        serializedVersion: 2
+        x: 1735
+        y: 645
+        width: 20
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe8f71fd225e03ec0800000000000000
+      internalID: -3589116965079746321
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_40
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 632
+        width: 32
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a00a9bb681cca6180800000000000000
+      internalID: -9121253690026909686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_41
+      rect:
+        serializedVersion: 2
+        x: 660
+        y: 612
+        width: 17
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d89f8097d867cf00800000000000000
+      internalID: 1136992705986926801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_42
+      rect:
+        serializedVersion: 2
+        x: 810
+        y: 628
+        width: 22
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53bd8ec41f7360950800000000000000
+      internalID: 6414876228752825141
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_43
+      rect:
+        serializedVersion: 2
+        x: 1705
+        y: 642
+        width: 8
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9954d77dee8896690800000000000000
+      internalID: -7608399536066837095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_44
+      rect:
+        serializedVersion: 2
+        x: 2059
+        y: 635
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6acefbf024047db60800000000000000
+      internalID: 7770750334527335590
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_45
+      rect:
+        serializedVersion: 2
+        x: 2100
+        y: 629
+        width: 7
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67d4c763779b52ee0800000000000000
+      internalID: -1286418196878045834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_46
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 536
+        width: 80
+        height: 94
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f17b1d95084912fc0800000000000000
+      internalID: -3521370154643376353
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_47
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 610
+        width: 20
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5251216ca9d4410d0800000000000000
+      internalID: -3453049687142951643
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_48
+      rect:
+        serializedVersion: 2
+        x: 658
+        y: 578
+        width: 43
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 567c1f9685eb052a0800000000000000
+      internalID: -6750686554484521115
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_49
+      rect:
+        serializedVersion: 2
+        x: 816
+        y: 622
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c73988fad900e4e50800000000000000
+      internalID: 6795369565003486076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_50
+      rect:
+        serializedVersion: 2
+        x: 821
+        y: 602
+        width: 17
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12817e848555cc010800000000000000
+      internalID: 1210436237524408353
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_51
+      rect:
+        serializedVersion: 2
+        x: 975
+        y: 630
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f16f56f8d1dc34b0800000000000000
+      internalID: -5459257918503296525
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_52
+      rect:
+        serializedVersion: 2
+        x: 981
+        y: 628
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29a97e16b805dc2a0800000000000000
+      internalID: -6715622909766296942
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_53
+      rect:
+        serializedVersion: 2
+        x: 1496
+        y: 614
+        width: 19
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b122081b1662f10d0800000000000000
+      internalID: -3449996588510862821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_54
+      rect:
+        serializedVersion: 2
+        x: 1520
+        y: 612
+        width: 22
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19c3f72c029e25890800000000000000
+      internalID: -7470652504942887791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_55
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 617
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a182156eb153d7ff0800000000000000
+      internalID: -36814828004628454
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_56
+      rect:
+        serializedVersion: 2
+        x: 754
+        y: 584
+        width: 19
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7cd201be000dda60800000000000000
+      internalID: 7700311000972713084
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_57
+      rect:
+        serializedVersion: 2
+        x: 772
+        y: 564
+        width: 52
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95b4da72f5b5f7d90800000000000000
+      internalID: -7097854023466923175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_58
+      rect:
+        serializedVersion: 2
+        x: 796
+        y: 622
+        width: 10
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 031702290713e2a70800000000000000
+      internalID: 8804028681113596208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_59
+      rect:
+        serializedVersion: 2
+        x: 797
+        y: 614
+        width: 12
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7120c00742f3a6be0800000000000000
+      internalID: -1483303701533949417
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_60
+      rect:
+        serializedVersion: 2
+        x: 808
+        y: 620
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb04d1dee7e5cf830800000000000000
+      internalID: 4106260859492057276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_61
+      rect:
+        serializedVersion: 2
+        x: 957
+        y: 548
+        width: 50
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2b90971ed8f1c390800000000000000
+      internalID: -7799679446867207381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_62
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 611
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12630f89f793e3510800000000000000
+      internalID: 1530724143542056481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_63
+      rect:
+        serializedVersion: 2
+        x: 1478
+        y: 546
+        width: 37
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ed0d5d1b7b22ad50800000000000000
+      internalID: 6747002999528033760
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_64
+      rect:
+        serializedVersion: 2
+        x: 1486
+        y: 608
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 11ac02d0f4aac96a0800000000000000
+      internalID: -6441086110547260911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_65
+      rect:
+        serializedVersion: 2
+        x: 1585
+        y: 594
+        width: 19
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b4bce0f29c018580800000000000000
+      internalID: -8826759969422658381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_66
+      rect:
+        serializedVersion: 2
+        x: 674
+        y: 585
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3af071a229b06dde0800000000000000
+      internalID: -1308845919305265245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_67
+      rect:
+        serializedVersion: 2
+        x: 697
+        y: 567
+        width: 22
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e974369d130410f70800000000000000
+      internalID: 9151666500638295966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_68
+      rect:
+        serializedVersion: 2
+        x: 728
+        y: 492
+        width: 33
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6a7e854ef28285e0800000000000000
+      internalID: -1908819263451399569
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_69
+      rect:
+        serializedVersion: 2
+        x: 770
+        y: 594
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee53a8395678f1ea0800000000000000
+      internalID: -5899848116495305234
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_70
+      rect:
+        serializedVersion: 2
+        x: 1573
+        y: 578
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 211104eb4af9518a0800000000000000
+      internalID: -6334981770911411950
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_71
+      rect:
+        serializedVersion: 2
+        x: 1576
+        y: 592
+        width: 16
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 20f47c9f999f8ea90800000000000000
+      internalID: -7284297957555876094
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_72
+      rect:
+        serializedVersion: 2
+        x: 1589
+        y: 578
+        width: 7
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cfb53009de7d54f50800000000000000
+      internalID: 6865130622319549436
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_73
+      rect:
+        serializedVersion: 2
+        x: 2156
+        y: 586
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68f8a865138375770800000000000000
+      internalID: 8599403798043725702
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_74
+      rect:
+        serializedVersion: 2
+        x: 641
+        y: 554
+        width: 10
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23f394d6b6be58b00800000000000000
+      internalID: 830328552947269426
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_75
+      rect:
+        serializedVersion: 2
+        x: 714
+        y: 520
+        width: 15
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5f7f627b791dec80800000000000000
+      internalID: -8291943320927633571
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_76
+      rect:
+        serializedVersion: 2
+        x: 724
+        y: 566
+        width: 13
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd633354a473c11d0800000000000000
+      internalID: -3378764828306622753
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_77
+      rect:
+        serializedVersion: 2
+        x: 820
+        y: 540
+        width: 28
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 751b783da6bfd8c70800000000000000
+      internalID: 8975106068653257047
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_78
+      rect:
+        serializedVersion: 2
+        x: 1454
+        y: 546
+        width: 35
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89f56e7700e6d2360800000000000000
+      internalID: 7146489131997487000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_79
+      rect:
+        serializedVersion: 2
+        x: 2100
+        y: 520
+        width: 43
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6997c29d1a98acdb0800000000000000
+      internalID: -4770849527019308650
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_80
+      rect:
+        serializedVersion: 2
+        x: 662
+        y: 506
+        width: 47
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01c7288a73469e2c0800000000000000
+      internalID: -4401876970564846576
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_81
+      rect:
+        serializedVersion: 2
+        x: 762
+        y: 530
+        width: 33
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 30d7be0cd1eee1db0800000000000000
+      internalID: -4819152739681731325
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_82
+      rect:
+        serializedVersion: 2
+        x: 794
+        y: 548
+        width: 6
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a61be0e9f0a7891a0800000000000000
+      internalID: -6802553029648273046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_83
+      rect:
+        serializedVersion: 2
+        x: 794
+        y: 450
+        width: 154
+        height: 111
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f35f32d5153e6ee0800000000000000
+      internalID: -1266016077406579720
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_84
+      rect:
+        serializedVersion: 2
+        x: 867
+        y: 546
+        width: 21
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 786b5cfdadb3f5ca0800000000000000
+      internalID: -6026031965155248505
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_85
+      rect:
+        serializedVersion: 2
+        x: 1591
+        y: 554
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19eac111cb0a67070800000000000000
+      internalID: 8103841309101174417
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_86
+      rect:
+        serializedVersion: 2
+        x: 2138
+        y: 520
+        width: 34
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 509520088910fb6b0800000000000000
+      internalID: -5278498483760637691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_87
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 482
+        width: 21
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c639a19f9cdd72ab0800000000000000
+      internalID: -5032810199025806484
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_88
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 524
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50770305a30418290800000000000000
+      internalID: -7889954452978764027
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_89
+      rect:
+        serializedVersion: 2
+        x: 732
+        y: 522
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 123d4382c5ee70af0800000000000000
+      internalID: -430113159811640543
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_90
+      rect:
+        serializedVersion: 2
+        x: 1454
+        y: 514
+        width: 13
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1be0d360c07d1f60800000000000000
+      internalID: 8006679684145277726
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_91
+      rect:
+        serializedVersion: 2
+        x: 2049
+        y: 500
+        width: 15
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d54abf402ed2d580800000000000000
+      internalID: -8803730091197970987
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_92
+      rect:
+        serializedVersion: 2
+        x: 2063
+        y: 513
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d48805ac4fdf7f8a0800000000000000
+      internalID: -6271264728282003379
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_93
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 486
+        width: 13
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e62eb1469ff5dd860800000000000000
+      internalID: 7556301274528604782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_94
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 504
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a9568fd1cf73fc50800000000000000
+      internalID: 6697837541485599142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_95
+      rect:
+        serializedVersion: 2
+        x: 1553
+        y: 505
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4272fbf65ed490040800000000000000
+      internalID: 4614304941035431716
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_96
+      rect:
+        serializedVersion: 2
+        x: 1567
+        y: 492
+        width: 9
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e76e74635b5823c0800000000000000
+      internalID: -4384153823518758940
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_97
+      rect:
+        serializedVersion: 2
+        x: 1575
+        y: 496
+        width: 7
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0115f650f66d354c0800000000000000
+      internalID: -4299857446887796464
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_98
+      rect:
+        serializedVersion: 2
+        x: 2065
+        y: 490
+        width: 36
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c24de6d7a7a236780800000000000000
+      internalID: -8691056150316133332
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_99
+      rect:
+        serializedVersion: 2
+        x: 2094
+        y: 496
+        width: 41
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a1777dcd02a55040800000000000000
+      internalID: 4635789571613225380
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_100
+      rect:
+        serializedVersion: 2
+        x: 2110
+        y: 453
+        width: 62
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62aa9ff10d1c16ef0800000000000000
+      internalID: -116599015701108186
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_101
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 476
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3a2bd037d6d85370800000000000000
+      internalID: 8311629332038232634
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_102
+      rect:
+        serializedVersion: 2
+        x: 641
+        y: 480
+        width: 28
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85373e4c332c28790800000000000000
+      internalID: -7529242099407686824
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_103
+      rect:
+        serializedVersion: 2
+        x: 666
+        y: 375
+        width: 69
+        height: 126
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5d61f939e15c1110800000000000000
+      internalID: 1232950460134026588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_104
+      rect:
+        serializedVersion: 2
+        x: 716
+        y: 0
+        width: 719
+        height: 491
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7fa5dbbb0d023230800000000000000
+      internalID: 3616967794779074430
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_105
+      rect:
+        serializedVersion: 2
+        x: 746
+        y: 472
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 009468fc52d834bb0800000000000000
+      internalID: -4952959971642423040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_106
+      rect:
+        serializedVersion: 2
+        x: 1458
+        y: 480
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c6327f965b279220800000000000000
+      internalID: 2492508569815103177
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_107
+      rect:
+        serializedVersion: 2
+        x: 1480
+        y: 482
+        width: 13
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 10986cd0cec2b9530800000000000000
+      internalID: 3862730497755351297
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_108
+      rect:
+        serializedVersion: 2
+        x: 1542
+        y: 471
+        width: 14
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c21628893cd1b4c40800000000000000
+      internalID: 5497520496050331948
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_109
+      rect:
+        serializedVersion: 2
+        x: 2073
+        y: 474
+        width: 22
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: add141d05f1bad300800000000000000
+      internalID: 277729993081232858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_110
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 411
+        width: 5
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a8273b967d0032b0800000000000000
+      internalID: -5606966733014882138
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_111
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 317
+        width: 76
+        height: 152
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a90de41e6beac8970800000000000000
+      internalID: 8758567475816091802
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_112
+      rect:
+        serializedVersion: 2
+        x: 664
+        y: 463
+        width: 17
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f51d998d9d69e5f0800000000000000
+      internalID: -726929341457558026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_113
+      rect:
+        serializedVersion: 2
+        x: 1462
+        y: 449
+        width: 9
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba2df0a14c25d4a90800000000000000
+      internalID: -7328110016457616725
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_114
+      rect:
+        serializedVersion: 2
+        x: 1476
+        y: 455
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1830eca48fcedbe0800000000000000
+      internalID: -1450493861223712740
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_115
+      rect:
+        serializedVersion: 2
+        x: 1484
+        y: 438
+        width: 23
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 30855ee3953dc3fe0800000000000000
+      internalID: -1207858219781367805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_116
+      rect:
+        serializedVersion: 2
+        x: 1520
+        y: 451
+        width: 12
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d2b3841c870ce9f0800000000000000
+      internalID: -437966765540789545
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_117
+      rect:
+        serializedVersion: 2
+        x: 1567
+        y: 464
+        width: 21
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b4132222f80f6020800000000000000
+      internalID: 2337096567676409015
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_118
+      rect:
+        serializedVersion: 2
+        x: 642
+        y: 450
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b598f20eba8204980800000000000000
+      internalID: -8556794573338212005
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_119
+      rect:
+        serializedVersion: 2
+        x: 668
+        y: 449
+        width: 7
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b5681178d83968f0800000000000000
+      internalID: -546843377487288906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_120
+      rect:
+        serializedVersion: 2
+        x: 754
+        y: 437
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a10ef039fedb1d1e0800000000000000
+      internalID: -2174748308381114342
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_121
+      rect:
+        serializedVersion: 2
+        x: 1432
+        y: 343
+        width: 27
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77cedc403314e32d0800000000000000
+      internalID: -3297126189808882569
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_122
+      rect:
+        serializedVersion: 2
+        x: 1456
+        y: 436
+        width: 7
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3a4ed4c90e783090800000000000000
+      internalID: -8054549353129424323
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_123
+      rect:
+        serializedVersion: 2
+        x: 1504
+        y: 436
+        width: 22
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76d73ae3a4eeb3340800000000000000
+      internalID: 4844727826812992871
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_124
+      rect:
+        serializedVersion: 2
+        x: 1510
+        y: 371
+        width: 68
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2fe1da17fe8aee520800000000000000
+      internalID: 2733307770218290930
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_125
+      rect:
+        serializedVersion: 2
+        x: 2007
+        y: 293
+        width: 160
+        height: 165
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b9d93298bb153f70800000000000000
+      internalID: 9166263096123709872
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_126
+      rect:
+        serializedVersion: 2
+        x: 2128
+        y: 437
+        width: 11
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e38261bb29d597f0800000000000000
+      internalID: -606339793128619037
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_127
+      rect:
+        serializedVersion: 2
+        x: 2136
+        y: 401
+        width: 36
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ebba6b72f4b53e5e0800000000000000
+      internalID: -1881559823783908418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_128
+      rect:
+        serializedVersion: 2
+        x: 1523
+        y: 439
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2bbf8618fff113bc0800000000000000
+      internalID: -3805225027903095886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_129
+      rect:
+        serializedVersion: 2
+        x: 714
+        y: 409
+        width: 9
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 07610fc06f1b45540800000000000000
+      internalID: 4995813556997854832
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_130
+      rect:
+        serializedVersion: 2
+        x: 1456
+        y: 311
+        width: 57
+        height: 117
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b819d49fed527350800000000000000
+      internalID: 6012971736068855992
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_131
+      rect:
+        serializedVersion: 2
+        x: 1522
+        y: 403
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b54e636907d40e9f0800000000000000
+      internalID: -441267617530452901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_132
+      rect:
+        serializedVersion: 2
+        x: 1528
+        y: 403
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f337d8eebb2bab970800000000000000
+      internalID: 8771519744488338239
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_133
+      rect:
+        serializedVersion: 2
+        x: 2114
+        y: 407
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27912a8ecdd0748c0800000000000000
+      internalID: -4015225300330604174
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_134
+      rect:
+        serializedVersion: 2
+        x: 2116
+        y: 393
+        width: 21
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02b9c406fbb8036a0800000000000000
+      internalID: -6471519010460755168
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_135
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 372
+        width: 23
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0648441d2e07a050800000000000000
+      internalID: 5811629430921512463
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_136
+      rect:
+        serializedVersion: 2
+        x: 730
+        y: 387
+        width: 11
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf949e810b8bf20b0800000000000000
+      internalID: -5751175132657137156
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_137
+      rect:
+        serializedVersion: 2
+        x: 1501
+        y: 385
+        width: 10
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a492ed7314ac6e980800000000000000
+      internalID: -8509892064410982070
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_138
+      rect:
+        serializedVersion: 2
+        x: 1470
+        y: 355
+        width: 9
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3a35d9f2aacdb810800000000000000
+      internalID: 1782803828833598011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_139
+      rect:
+        serializedVersion: 2
+        x: 1520
+        y: 345
+        width: 12
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f95e5823a885b1b10800000000000000
+      internalID: 1953252213971608991
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_140
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 262
+        width: 27
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e82e403de8992af0800000000000000
+      internalID: -420636945697330969
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_141
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 331
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ecee972cd142d510800000000000000
+      internalID: 1572391633719061731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_142
+      rect:
+        serializedVersion: 2
+        x: 1534
+        y: 337
+        width: 10
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15da399b96f371620800000000000000
+      internalID: 2744732221223185745
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_143
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 313
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0e120e04ba61fcd0800000000000000
+      internalID: -2526120594416460278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_144
+      rect:
+        serializedVersion: 2
+        x: 2108
+        y: 305
+        width: 13
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c13ce01ff6574a780800000000000000
+      internalID: -8672677858762636516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_145
+      rect:
+        serializedVersion: 2
+        x: 2146
+        y: 310
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 777d66f8a02531c10800000000000000
+      internalID: 2023050862928516983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_146
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 280
+        width: 25
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5b016423f64693c0800000000000000
+      internalID: -4353213979705668774
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_147
+      rect:
+        serializedVersion: 2
+        x: 1470
+        y: 264
+        width: 13
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1e421947d943d350800000000000000
+      internalID: 6040252714226699806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_148
+      rect:
+        serializedVersion: 2
+        x: 2067
+        y: 263
+        width: 12
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d57a8245e5ea9e530800000000000000
+      internalID: 3884827873745872733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_149
+      rect:
+        serializedVersion: 2
+        x: 2073
+        y: 83
+        width: 99
+        height: 226
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6672c51f0cc5dc6f0800000000000000
+      internalID: -662771586400770202
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_150
+      rect:
+        serializedVersion: 2
+        x: 2075
+        y: 278
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 526c69bd4f5805710800000000000000
+      internalID: 1679989947711800869
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_151
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 262
+        width: 14
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5205046654b3bb50800000000000000
+      internalID: 6607823361420886621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_152
+      rect:
+        serializedVersion: 2
+        x: 1444
+        y: 200
+        width: 37
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72d8cab62f0701e60800000000000000
+      internalID: 7930963130290310439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_153
+      rect:
+        serializedVersion: 2
+        x: 2065
+        y: 267
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9a7c2c49ab3affb0800000000000000
+      internalID: -4613309269974156645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_154
+      rect:
+        serializedVersion: 2
+        x: 2069
+        y: 242
+        width: 18
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ad0b2068fa088bf0800000000000000
+      internalID: -321995311475389021
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_155
+      rect:
+        serializedVersion: 2
+        x: 677
+        y: 242
+        width: 14
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9332eace961b43480800000000000000
+      internalID: -8920309893413592263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_156
+      rect:
+        serializedVersion: 2
+        x: 1536
+        y: 227
+        width: 14
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d183c2b92d939b00800000000000000
+      internalID: 834183158412050898
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_157
+      rect:
+        serializedVersion: 2
+        x: 2081
+        y: 208
+        width: 16
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa3994210225360a0800000000000000
+      internalID: -6889572707247483985
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_158
+      rect:
+        serializedVersion: 2
+        x: 2021
+        y: 165
+        width: 45
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63179fddf5fb75890800000000000000
+      internalID: -7469291038503767754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_159
+      rect:
+        serializedVersion: 2
+        x: 2059
+        y: 208
+        width: 8
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee79f5750efc82030800000000000000
+      internalID: 3470252075334473710
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_160
+      rect:
+        serializedVersion: 2
+        x: 2065
+        y: 216
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5231110c51b067150800000000000000
+      internalID: 5869891352368583461
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_161
+      rect:
+        serializedVersion: 2
+        x: 2100
+        y: 200
+        width: 9
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 107d15b6f96c5f280800000000000000
+      internalID: -9010077091482183935
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_162
+      rect:
+        serializedVersion: 2
+        x: 1522
+        y: 179
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef5a04ac162afe8e0800000000000000
+      internalID: -1661931196587661826
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_163
+      rect:
+        serializedVersion: 2
+        x: 1512
+        y: 160
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64a1170f5fde21660800000000000000
+      internalID: 7355202782006155846
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_164
+      rect:
+        serializedVersion: 2
+        x: 1518
+        y: 162
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43f24fc684a00b820800000000000000
+      internalID: 2931854663600058164
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_165
+      rect:
+        serializedVersion: 2
+        x: 2067
+        y: 170
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 98ef1aab632f17540800000000000000
+      internalID: 5004046977858666121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_166
+      rect:
+        serializedVersion: 2
+        x: 2069
+        y: 155
+        width: 8
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0abb2d598a0ad6ef0800000000000000
+      internalID: -113257769685828704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_167
+      rect:
+        serializedVersion: 2
+        x: 1504
+        y: 140
+        width: 7
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51162a4a545d2bc40800000000000000
+      internalID: 5526714187828584725
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_168
+      rect:
+        serializedVersion: 2
+        x: 2065
+        y: 134
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dec293a82d98fccd0800000000000000
+      internalID: -2535656527831159571
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_169
+      rect:
+        serializedVersion: 2
+        x: 979
+        y: 85
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2addfc47dde8b7030800000000000000
+      internalID: 3493543017754647970
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_170
+      rect:
+        serializedVersion: 2
+        x: 985
+        y: 78
+        width: 18
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0bf37f47ec2b7de30800000000000000
+      internalID: 4528284550139690928
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_171
+      rect:
+        serializedVersion: 2
+        x: 2083
+        y: 79
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1785aab85b26d5870800000000000000
+      internalID: 8673196989257242737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_172
+      rect:
+        serializedVersion: 2
+        x: 2116
+        y: 37
+        width: 39
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 474d3caca03c96c50800000000000000
+      internalID: 6659067975162909812
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_173
+      rect:
+        serializedVersion: 2
+        x: 2140
+        y: 87
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a8800f677c90ff10800000000000000
+      internalID: 2301511446363670688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_174
+      rect:
+        serializedVersion: 2
+        x: 893
+        y: 63
+        width: 23
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc1a5ae8db6ca59f0800000000000000
+      internalID: -478851892917198388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_175
+      rect:
+        serializedVersion: 2
+        x: 981
+        y: 67
+        width: 10
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a8d2870a26d10cd0800000000000000
+      internalID: -2593556434385708896
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_176
+      rect:
+        serializedVersion: 2
+        x: 1020
+        y: 61
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46c1a6cec06c11960800000000000000
+      internalID: 7571050207394798692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_177
+      rect:
+        serializedVersion: 2
+        x: 1390
+        y: 68
+        width: 7
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3837530f724c751e0800000000000000
+      internalID: -2209081416389135485
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_178
+      rect:
+        serializedVersion: 2
+        x: 1472
+        y: 50
+        width: 11
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a37bf685df4d80d0800000000000000
+      internalID: -3418988763593083994
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_179
+      rect:
+        serializedVersion: 2
+        x: 975
+        y: 33
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2c8cff59415686d0800000000000000
+      internalID: -2988611927128896470
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_180
+      rect:
+        serializedVersion: 2
+        x: 997
+        y: 41
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b69d7adb68f35490800000000000000
+      internalID: -7758584590918379854
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_181
+      rect:
+        serializedVersion: 2
+        x: 820
+        y: 19
+        width: 10
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd24d03e407b8b5a0800000000000000
+      internalID: -6505248430119632163
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_182
+      rect:
+        serializedVersion: 2
+        x: 931
+        y: 9
+        width: 15
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47b7d81f7ced92880800000000000000
+      internalID: -8635125860173776012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_183
+      rect:
+        serializedVersion: 2
+        x: 1034
+        y: 21
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02776d701f5f97d90800000000000000
+      internalID: -7099372922005457120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_184
+      rect:
+        serializedVersion: 2
+        x: 1038
+        y: 16
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d28ac38c6e647f190800000000000000
+      internalID: -7928790661946628051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_185
+      rect:
+        serializedVersion: 2
+        x: 1044
+        y: 23
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b028a07dff874300800000000000000
+      internalID: 236315824139804850
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_186
+      rect:
+        serializedVersion: 2
+        x: 1088
+        y: 18
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f05ed832084d3bc0800000000000000
+      internalID: -3801803336049602311
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_187
+      rect:
+        serializedVersion: 2
+        x: 1094
+        y: 18
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a27a6f737bad452b0800000000000000
+      internalID: -5596607956461902038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_188
+      rect:
+        serializedVersion: 2
+        x: 1150
+        y: 15
+        width: 9
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b95b74e4d88f3d550800000000000000
+      internalID: 6184559999097222555
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_189
+      rect:
+        serializedVersion: 2
+        x: 1311
+        y: 17
+        width: 7
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c0fe0dab34dabb5d0800000000000000
+      internalID: -3045650216577339636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_190
+      rect:
+        serializedVersion: 2
+        x: 1504
+        y: 15
+        width: 28
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57162611d1b3470c0800000000000000
+      internalID: -4578969925097201291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IngredientArtwork_191
+      rect:
+        serializedVersion: 2
+        x: 1832
+        y: 17
+        width: 9
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53145d296f8af0590800000000000000
+      internalID: -7705754660428758731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      IngredientArtwork_0: -7402342170505999300
+      IngredientArtwork_1: -8980201249898577262
+      IngredientArtwork_10: 8696579001138267136
+      IngredientArtwork_100: -116599015701108186
+      IngredientArtwork_101: 8311629332038232634
+      IngredientArtwork_102: -7529242099407686824
+      IngredientArtwork_103: 1232950460134026588
+      IngredientArtwork_104: 3616967794779074430
+      IngredientArtwork_105: -4952959971642423040
+      IngredientArtwork_106: 2492508569815103177
+      IngredientArtwork_107: 3862730497755351297
+      IngredientArtwork_108: 5497520496050331948
+      IngredientArtwork_109: 277729993081232858
+      IngredientArtwork_11: -1836476668049116429
+      IngredientArtwork_110: -5606966733014882138
+      IngredientArtwork_111: 8758567475816091802
+      IngredientArtwork_112: -726929341457558026
+      IngredientArtwork_113: -7328110016457616725
+      IngredientArtwork_114: -1450493861223712740
+      IngredientArtwork_115: -1207858219781367805
+      IngredientArtwork_116: -437966765540789545
+      IngredientArtwork_117: 2337096567676409015
+      IngredientArtwork_118: -8556794573338212005
+      IngredientArtwork_119: -546843377487288906
+      IngredientArtwork_12: -9185889663787988120
+      IngredientArtwork_120: -2174748308381114342
+      IngredientArtwork_121: -3297126189808882569
+      IngredientArtwork_122: -8054549353129424323
+      IngredientArtwork_123: 4844727826812992871
+      IngredientArtwork_124: 2733307770218290930
+      IngredientArtwork_125: 9166263096123709872
+      IngredientArtwork_126: -606339793128619037
+      IngredientArtwork_127: -1881559823783908418
+      IngredientArtwork_128: -3805225027903095886
+      IngredientArtwork_129: 4995813556997854832
+      IngredientArtwork_13: 8093012884808042931
+      IngredientArtwork_130: 6012971736068855992
+      IngredientArtwork_131: -441267617530452901
+      IngredientArtwork_132: 8771519744488338239
+      IngredientArtwork_133: -4015225300330604174
+      IngredientArtwork_134: -6471519010460755168
+      IngredientArtwork_135: 5811629430921512463
+      IngredientArtwork_136: -5751175132657137156
+      IngredientArtwork_137: -8509892064410982070
+      IngredientArtwork_138: 1782803828833598011
+      IngredientArtwork_139: 1953252213971608991
+      IngredientArtwork_14: 5308445484118230878
+      IngredientArtwork_140: -420636945697330969
+      IngredientArtwork_141: 1572391633719061731
+      IngredientArtwork_142: 2744732221223185745
+      IngredientArtwork_143: -2526120594416460278
+      IngredientArtwork_144: -8672677858762636516
+      IngredientArtwork_145: 2023050862928516983
+      IngredientArtwork_146: -4353213979705668774
+      IngredientArtwork_147: 6040252714226699806
+      IngredientArtwork_148: 3884827873745872733
+      IngredientArtwork_149: -662771586400770202
+      IngredientArtwork_15: -8193825893624453860
+      IngredientArtwork_150: 1679989947711800869
+      IngredientArtwork_151: 6607823361420886621
+      IngredientArtwork_152: 7930963130290310439
+      IngredientArtwork_153: -4613309269974156645
+      IngredientArtwork_154: -321995311475389021
+      IngredientArtwork_155: -8920309893413592263
+      IngredientArtwork_156: 834183158412050898
+      IngredientArtwork_157: -6889572707247483985
+      IngredientArtwork_158: -7469291038503767754
+      IngredientArtwork_159: 3470252075334473710
+      IngredientArtwork_16: 4724200982406107934
+      IngredientArtwork_160: 5869891352368583461
+      IngredientArtwork_161: -9010077091482183935
+      IngredientArtwork_162: -1661931196587661826
+      IngredientArtwork_163: 7355202782006155846
+      IngredientArtwork_164: 2931854663600058164
+      IngredientArtwork_165: 5004046977858666121
+      IngredientArtwork_166: -113257769685828704
+      IngredientArtwork_167: 5526714187828584725
+      IngredientArtwork_168: -2535656527831159571
+      IngredientArtwork_169: 3493543017754647970
+      IngredientArtwork_17: -8027118938454577688
+      IngredientArtwork_170: 4528284550139690928
+      IngredientArtwork_171: 8673196989257242737
+      IngredientArtwork_172: 6659067975162909812
+      IngredientArtwork_173: 2301511446363670688
+      IngredientArtwork_174: -478851892917198388
+      IngredientArtwork_175: -2593556434385708896
+      IngredientArtwork_176: 7571050207394798692
+      IngredientArtwork_177: -2209081416389135485
+      IngredientArtwork_178: -3418988763593083994
+      IngredientArtwork_179: -2988611927128896470
+      IngredientArtwork_18: 9101599247492929121
+      IngredientArtwork_180: -7758584590918379854
+      IngredientArtwork_181: -6505248430119632163
+      IngredientArtwork_182: -8635125860173776012
+      IngredientArtwork_183: -7099372922005457120
+      IngredientArtwork_184: -7928790661946628051
+      IngredientArtwork_185: 236315824139804850
+      IngredientArtwork_186: -3801803336049602311
+      IngredientArtwork_187: -5596607956461902038
+      IngredientArtwork_188: 6184559999097222555
+      IngredientArtwork_189: -3045650216577339636
+      IngredientArtwork_19: -113391860583049711
+      IngredientArtwork_190: -4578969925097201291
+      IngredientArtwork_191: -7705754660428758731
+      IngredientArtwork_2: -9033473720304197676
+      IngredientArtwork_20: -1586094022031253930
+      IngredientArtwork_21: 2184148537525404093
+      IngredientArtwork_22: -6371374110355653370
+      IngredientArtwork_23: 1377713972498271385
+      IngredientArtwork_24: 2487533822738128390
+      IngredientArtwork_25: -2788175286807418956
+      IngredientArtwork_26: -700734546953846588
+      IngredientArtwork_27: -266855087049206961
+      IngredientArtwork_28: -7173731403863014880
+      IngredientArtwork_29: 3649475899919740358
+      IngredientArtwork_3: -3375761451301661574
+      IngredientArtwork_30: 7144241073798183263
+      IngredientArtwork_31: -5380354151662786655
+      IngredientArtwork_32: -5570114883878105286
+      IngredientArtwork_33: -2771138182863995018
+      IngredientArtwork_34: -8731226947570781897
+      IngredientArtwork_35: -2873747605978915429
+      IngredientArtwork_36: 8305807381836311550
+      IngredientArtwork_37: 8159896770366261043
+      IngredientArtwork_38: 7233296838957073240
+      IngredientArtwork_39: -3589116965079746321
+      IngredientArtwork_4: 1631502295640327528
+      IngredientArtwork_40: -9121253690026909686
+      IngredientArtwork_41: 1136992705986926801
+      IngredientArtwork_42: 6414876228752825141
+      IngredientArtwork_43: -7608399536066837095
+      IngredientArtwork_44: 7770750334527335590
+      IngredientArtwork_45: -1286418196878045834
+      IngredientArtwork_46: -3521370154643376353
+      IngredientArtwork_47: -3453049687142951643
+      IngredientArtwork_48: -6750686554484521115
+      IngredientArtwork_49: 6795369565003486076
+      IngredientArtwork_5: 494280503104873866
+      IngredientArtwork_50: 1210436237524408353
+      IngredientArtwork_51: -5459257918503296525
+      IngredientArtwork_52: -6715622909766296942
+      IngredientArtwork_53: -3449996588510862821
+      IngredientArtwork_54: -7470652504942887791
+      IngredientArtwork_55: -36814828004628454
+      IngredientArtwork_56: 7700311000972713084
+      IngredientArtwork_57: -7097854023466923175
+      IngredientArtwork_58: 8804028681113596208
+      IngredientArtwork_59: -1483303701533949417
+      IngredientArtwork_6: -25416599375583960
+      IngredientArtwork_60: 4106260859492057276
+      IngredientArtwork_61: -7799679446867207381
+      IngredientArtwork_62: 1530724143542056481
+      IngredientArtwork_63: 6747002999528033760
+      IngredientArtwork_64: -6441086110547260911
+      IngredientArtwork_65: -8826759969422658381
+      IngredientArtwork_66: -1308845919305265245
+      IngredientArtwork_67: 9151666500638295966
+      IngredientArtwork_68: -1908819263451399569
+      IngredientArtwork_69: -5899848116495305234
+      IngredientArtwork_7: 7936589979959952369
+      IngredientArtwork_70: -6334981770911411950
+      IngredientArtwork_71: -7284297957555876094
+      IngredientArtwork_72: 6865130622319549436
+      IngredientArtwork_73: 8599403798043725702
+      IngredientArtwork_74: 830328552947269426
+      IngredientArtwork_75: -8291943320927633571
+      IngredientArtwork_76: -3378764828306622753
+      IngredientArtwork_77: 8975106068653257047
+      IngredientArtwork_78: 7146489131997487000
+      IngredientArtwork_79: -4770849527019308650
+      IngredientArtwork_8: -8494809623217598361
+      IngredientArtwork_80: -4401876970564846576
+      IngredientArtwork_81: -4819152739681731325
+      IngredientArtwork_82: -6802553029648273046
+      IngredientArtwork_83: -1266016077406579720
+      IngredientArtwork_84: -6026031965155248505
+      IngredientArtwork_85: 8103841309101174417
+      IngredientArtwork_86: -5278498483760637691
+      IngredientArtwork_87: -5032810199025806484
+      IngredientArtwork_88: -7889954452978764027
+      IngredientArtwork_89: -430113159811640543
+      IngredientArtwork_9: 5455508769753021842
+      IngredientArtwork_90: 8006679684145277726
+      IngredientArtwork_91: -8803730091197970987
+      IngredientArtwork_92: -6271264728282003379
+      IngredientArtwork_93: 7556301274528604782
+      IngredientArtwork_94: 6697837541485599142
+      IngredientArtwork_95: 4614304941035431716
+      IngredientArtwork_96: -4384153823518758940
+      IngredientArtwork_97: -4299857446887796464
+      IngredientArtwork_98: -8691056150316133332
+      IngredientArtwork_99: 4635789571613225380
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -9,6 +9,10 @@ namespace RememberMe
     {
         const int Columns = 41, Rows = 53;
         readonly Dictionary<Sprite, Mesh> poses = new Dictionary<Sprite, Mesh>();
+        readonly Dictionary<Sprite, Vector2> alignment = new Dictionary<Sprite, Vector2>();
+        // Visible head and sole coordinates in the authored 328 × 416 pose images.
+        static readonly int[] Heads = {24, 27, 24, 25, 42, 24, 48, 87, 27, 89, 82, 24, 80, 34, 25, 35};
+        static readonly int[] Soles = {408, 410, 411, 410, 408, 408, 408, 410, 410, 410, 410, 411, 409, 410, 410, 410};
         SpriteRenderer source;
         MeshFilter filter;
         MeshRenderer surface;
@@ -26,7 +30,17 @@ namespace RememberMe
                 new[] {'\r','\n'}, StringSplitOptions.RemoveEmptyEntries);
             int frame = 0;
             foreach (var clips in new[] {actor.Idle, actor.Walk})
-                foreach (var sprite in clips) poses.Add(sprite, Build(sprite, Convert.FromBase64String(depths[frame++])));
+                foreach (var sprite in clips)
+                {
+                    int standing = frame < 4 ? frame : (frame - 4) / 3;
+                    bool stride = frame >= 4 && (frame - 4) % 3 != 1;
+                    float height = Soles[standing] - Heads[standing] - (stride ? 4f : 0f);
+                    float scale = height / (Soles[frame] - Heads[frame]);
+                    // The visible sole is the ground anchor in every frame.
+                    float shift = -(416 - Soles[frame]) * scale / sprite.pixelsPerUnit;
+                    alignment.Add(sprite, new Vector2(scale, shift));
+                    poses.Add(sprite, Build(sprite, Convert.FromBase64String(depths[frame++])));
+                }
             source.forceRenderingOff = true;
         }
 
@@ -78,11 +92,11 @@ namespace RememberMe
                 active=source.sprite;
                 filter.sharedMesh=poses[active];
                 paint.mainTexture=active.texture;
+                var offset = alignment[active];
+                transform.localScale = new Vector3(1, offset.x, 1);
+                transform.localPosition = new Vector3(0, offset.y, 0);
             }
             surface.sortingOrder=source.sortingOrder;
-            float side=source.GetComponent<ActorView>().Forward.x;
-            var aim=Quaternion.Euler(4f,6f*side,0);
-            transform.localRotation=Quaternion.Slerp(transform.localRotation,aim,1-Mathf.Exp(-12*Time.deltaTime));
         }
 
         void OnDestroy()

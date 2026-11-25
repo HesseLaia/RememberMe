@@ -23,6 +23,23 @@ namespace RememberMe
         Vector2 intent;
         Vector2 velocity;
         bool sprint;
+        int scriptedFrame = -1;
+        Vector2 scriptedMotion;
+
+        // Scripted walking retains the gait phase. Place is reserved for room entry
+        // and save recovery, since it resets movement and animation state.
+        public void MoveScripted(Vector2 destination)
+        {
+            scriptedMotion = Resolve(destination - Body.position);
+            Body.position += scriptedMotion;
+            transform.position = Body.position;
+            scriptedFrame = Time.frameCount;
+            if (scriptedMotion.magnitude > .001f)
+            {
+                strideProgress += scriptedMotion.magnitude / .44f;
+                if (strideProgress >= 1) { strideProgress -= 1; Footfall?.Invoke(); }
+            }
+        }
         float turnUntil;
         float strideProgress = .55f;
         float stillFor;
@@ -139,6 +156,12 @@ namespace RememberMe
 
         void LateUpdate()
         {
+            if (scriptedFrame == Time.frameCount)
+            {
+                float stride = scriptedMotion.magnitude / .44f;
+                View.Pose(scriptedMotion, false, false, stride * .5f, scriptedMotion);
+                return;
+            }
             Vector2 movement = CanMove && intent != Vector2.zero ? Motion : Vector2.zero;
             float speed = Crouched ? CrouchSpeed : Running ? RunSpeed : WalkSpeed;
             float strideRate = speed > 0 ? Mathf.Clamp01(movement.magnitude / (speed * Time.fixedDeltaTime)) : 0;

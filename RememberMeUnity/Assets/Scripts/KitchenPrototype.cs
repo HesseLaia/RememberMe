@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Expression = RememberMe.Act1Game.Expression;
 
 namespace RememberMe
@@ -12,7 +13,13 @@ namespace RememberMe
         const float Ppu = 134f;
 
         enum Room { Kitchen, Hall, Parlor, Bedroom }
-        enum Chapter { Bedroom, Ingredients, Cards, Baking, Tray, FindDoor, ReturnForGrandma, Escort, Ending, Finished }
+        enum Chapter { Bedroom, MeetGrandma, Ingredients, Cards, Baking, Tray, FirstCollapse, FindDoor, ReturnForGrandma, Escort, Ending, Finished }
+        enum Door { Clock, Curtains, Water }
+        enum Reach { Fixture, Object, Character, Threshold }
+        const int FlourBit = 1, ButterBit = 2, EggsBit = 4, SugarBit = 8;
+        const int AllIngredients = FlourBit | ButterBit | EggsBit | SugarBit;
+        const int AllCards = 7;
+        const int MixSteps = 4, DoughPieces = 3;
 
         [Serializable] sealed class RoomCatalog { public RoomArt[] rooms; }
         [Serializable] sealed class RoomArt { public string art; public float top; public Rect[] furniture; }
@@ -30,11 +37,15 @@ namespace RememberMe
             public readonly Vector2 Feet;
             public readonly string Label;
             public readonly Action Use;
-            public Target(float x, float y, string label, Action use)
+            public readonly Reach Kind;
+            public readonly Func<bool> Available;
+            public Target(float x, float y, string label, Action use, Reach kind = Reach.Fixture, Func<bool> available = null)
             {
                 Feet = new Vector2(x, y);
                 Label = label;
                 Use = use;
+                Kind = kind;
+                Available = available;
             }
         }
 
@@ -49,6 +60,8 @@ namespace RememberMe
         GraceMotor motor;
         GameObject obstacles;
         Collider2D grandmaFeet;
+        Collider2D keepsakeCollider;
+        Rect doorwayPassage;
         AudioSource footsteps;
         AudioClip[] woodSteps;
         int lastStep = -1;
@@ -58,20 +71,23 @@ namespace RememberMe
         AudioSource sound;
         Sprite[] graceFaces, grandmaFaces;
         Expression mood;
-        Texture2D photo, parlorPreview;
+        Texture2D photo, livingRoomPhoto;
         readonly Texture2D[] cardArt = new Texture2D[3];
+        readonly SpriteRenderer[] counterCards = new SpriteRenderer[3];
         int visibleCard = -1;
-        bool throughDoor, waterSpace;
+        bool showingFamilyPhoto, waterSpace;
+        Door? shownDoor;
         [SerializeField] Font typeface;
         [SerializeField] Sprite recipeTable, shadow;
         Act1HUD hud;
-        Act1Patrol grandmaRoutine;
-        Rigidbody2D grandmaBody;
-        SpriteRenderer table, tableShadow;
+        SpriteRenderer table, tableShadow, bed, keepsake, familyFrame;
+        float grandmaPace;
+        float grandmaStride;
+        Vector2 grandmaHeading = Vector2.down;
+        Action whenGrandmaArrives;
         Target grandmaTarget;
         int choiceFrame;
         Vector2 cameraVelocity;
-        Vector2 facing = Vector2.up;
         readonly Queue<Vector2> trail = new Queue<Vector2>();
         Vector2 lastTrailPoint;
 
@@ -82,14 +98,15 @@ namespace RememberMe
         Action afterDialogue;
         int line;
         int anchors; // Objects Grace has recognised on the return trip.
-        bool forkMark, showingFreshCookies;
+        bool showingFreshCookies, largestServed, sugarClueFound;
         float trayFocus;
         bool looped;
-        bool showPhoto;
-        float decay;
+        bool showPhoto, showingNote;
+        float decay, handCue, clockTime, doorFlicker;
         float endingTime, transition;
-        Texture2D parcel, quilt;
-        int wrongDoors;
+        int wrongDoors, inspectedDoors, mixCount, shapedCount, shapedSlots;
+        float bedroomArrival, bedroomChime;
+        bool mixing, shaping, serving;
 
         void Awake()
         {
@@ -101,6 +118,7 @@ namespace RememberMe
             view.transform.position = new Vector3(Width / Ppu / 2f, -Height / Ppu / 2f, -10f);
             view.clearFlags = CameraClearFlags.SolidColor;
             view.backgroundColor = new Color(.041f, .045f, .058f);
+            view.rect = new Rect(0, 0, 1, 1);
             backdrop = new GameObject("Room illustration").AddComponent<SpriteRenderer>();
             roomMaterial = new Material(Resources.Load<Shader>("KitchenChapter/Art/MemoryWash"));
             backdrop.sharedMaterial = roomMaterial;
@@ -135,16 +153,9 @@ namespace RememberMe
             grandmaCollider.radius = .12f / grandma.View.transform.localScale.x;
             grandmaCollider.offset = Vector2.zero;
             grandmaFeet = grandmaCollider;
-            grandmaBody = grandma.View.gameObject.AddComponent<Rigidbody2D>();
+            var grandmaBody = grandma.View.gameObject.AddComponent<Rigidbody2D>();
             grandmaBody.bodyType = RigidbodyType2D.Kinematic;
-            grandmaBody.interpolation = RigidbodyInterpolation2D.Interpolate;
-            grandmaRoutine = grandma.View.gameObject.AddComponent<Act1Patrol>();
-            grandmaRoutine.Grace = motor;
-            grandmaRoutine.View = grandma.View;
-            grandmaRoutine.Body = grandmaBody;
-            grandmaRoutine.Speed = .62f;
-            grandmaRoutine.Wait = 3.2f;
-            grandmaRoutine.Route = new[] {World(new Vector2(625,397)),World(new Vector2(695,373)),World(new Vector2(536,389))};
+            grandmaBody.gravityScale = 0;
             var feetShade = Prop("Grandma contact shadow", shadow, Vector2.zero, 47,13);
             feetShade.transform.SetParent(grandma.View.transform, true);
             feetShade.transform.localPosition = new Vector3(0,-.015f,0);
@@ -158,11 +169,15 @@ namespace RememberMe
             music.loop = true;
             music.volume = .32f;
             sound = gameObject.AddComponent<AudioSource>();
-            parcel = LoadTexture("Parcel");
-            quilt = LoadTexture("Quilt");
+            bed = RoomProp("Grace’s bed", "Bed", new Vector2(300, 489), 177, 242);
+            keepsake = RoomProp("Keepsake box", "Parcel", new Vector2(411, 484), 59, 46);
+            familyFrame = RoomProp("Young Dad beside the blue curtains", "LivingRoomPhoto", new Vector2(530, 154), 77, 46);
             photo = LoadTexture("Photograph");
+            livingRoomPhoto = LoadTexture("LivingRoomPhoto");
             for (int i = 0; i < cardArt.Length; i++) cardArt[i] = LoadTexture("Card" + i);
-            parlorPreview = LoadTexture("Parlor");
+            counterCards[0] = RoomProp("Picture card beside the bowl", "Card0", new Vector2(677, 324), 40, 40);
+            counterCards[1] = RoomProp("Picture card on the baking counter", "Card1", new Vector2(460, 324), 40, 40);
+            counterCards[2] = RoomProp("Picture card on the refrigerator", "Card2", new Vector2(775, 313), 40, 40);
             kitchenArt = LoadTexture("Kitchen");
             cookieTray = new GameObject("Grandma’s enamel tray").AddComponent<SpriteRenderer>();
             enamel = new Material(Resources.Load<Shader>("KitchenChapter/Art/EnamelTray"));
@@ -170,6 +185,14 @@ namespace RememberMe
             trayQuad = Sprite.Create(white, new Rect(0,0,white.width,white.height),new Vector2(.5f,.5f),white.width,0,SpriteMeshType.FullRect);
             cookieTray.sprite = trayQuad;
             cookieTray.sharedMaterial = enamel;
+            platedCookie = new GameObject("Dad’s cookie by the window").AddComponent<SpriteRenderer>();
+            platedCookie.sprite = trayQuad;
+            plateMaterial = new Material(enamel);
+            plateMaterial.SetFloat("_SingleCookie", 1);
+            platedCookie.sharedMaterial = plateMaterial;
+            platedCookie.transform.position = World(new Vector2(754, 291));
+            platedCookie.transform.localScale = new Vector3(.18f, .13f, 1);
+            platedCookie.sortingOrder = 4;
             Restart();
             StartPlaythroughIfRequested();
         }
@@ -198,7 +221,7 @@ namespace RememberMe
 
         void PlayWoodStep()
         {
-            if (woodSteps.Length == 0 || !motor.CanMove) return;
+            if (woodSteps.Length == 0 || (!motor.CanMove && !serving && chapter != Chapter.Ending)) return;
             int index = lastStep < 0 ? UnityEngine.Random.Range(0, woodSteps.Length) :
                 (lastStep + 1 + UnityEngine.Random.Range(0, Mathf.Max(1, woodSteps.Length - 1))) % woodSteps.Length;
             lastStep = index;
@@ -208,12 +231,14 @@ namespace RememberMe
         }
 
         SpriteRenderer grandmaShadow;
-        SpriteRenderer cookieTray;
-        Material enamel;
+        SpriteRenderer cookieTray, platedCookie;
+        Material enamel, plateMaterial;
         Sprite trayQuad;
         Texture2D kitchenArt;
-        bool inspectJars, sortingCards;
+        bool inspectJars, sortingCards, viewRecipe;
         int[] remainingCardIds = Array.Empty<int>();
+        readonly List<int> recipeOrder = new List<int>(3);
+        readonly List<Sprite> roomPropSprites = new List<Sprite>();
         int exitWaypoint;
         float musicFade;
         AudioClip queuedMusic;
@@ -223,7 +248,11 @@ namespace RememberMe
         {
             if (trayQuad) Destroy(trayQuad);
             if (enamel) Destroy(enamel);
+            if (plateMaterial) Destroy(plateMaterial);
             if (roomMaterial) Destroy(roomMaterial);
+            if (backdrop && backdrop.sprite) Destroy(backdrop.sprite);
+            if (circle) Destroy(circle);
+            foreach (var sprite in roomPropSprites) Destroy(sprite);
         }
 
 
@@ -237,167 +266,245 @@ namespace RememberMe
             return prop;
         }
 
+        SpriteRenderer RoomProp(string name, string art, Vector2 feet, float width, float height)
+        {
+            var texture = LoadTexture(art);
+            var sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height),
+                new Vector2(.5f, 0), Ppu, 0, SpriteMeshType.FullRect);
+            roomPropSprites.Add(sprite);
+            return Prop(name, sprite, feet, width, height);
+        }
+
         void Restart()
         {
             chapter = Chapter.Bedroom;
-            looped = forkMark = showingFreshCookies = false;
-            trayFocus = 0;
-            enamel.SetFloat("_ForkMark", 0);
-            wrongDoors = anchors = ingredients = cards = baking = errors = 0;
-            photoSeen = showPhoto = false;
+            looped = showingFreshCookies = largestServed = sugarClueFound = false;
+            trayFocus = handCue = clockTime = doorFlicker = 0;
+            wrongDoors = anchors = ingredients = cards = baking = errors = inspectedDoors = mixCount = shapedCount = shapedSlots = 0;
+            photoSeen = showPhoto = showingNote = showingFamilyPhoto = false;
             endingTime = decay = 0;
             exitWaypoint = 0;
-            waterSpace = throughDoor = inspectJars = sortingCards = false;
+            waterSpace = inspectJars = sortingCards = viewRecipe = mixing = shaping = serving = false;
+            shownDoor = null;
+            whenGrandmaArrives = null;
             visibleCard = -1;
+            recipeOrder.Clear();
             choices = null;
             PlayMusic("Rain");
             Enter(Room.Bedroom);
-            Say("Grace", Expression.Quiet, new[] { "The rain still hasn't stopped. The box is just where I left it, by my bed." });
+            bedroomArrival = .6f;
+            bedroomChime = 0;
+            hud.Fade(1f);
         }
 
-        void Enter(Room room)
+        void Enter(Room room, Vector2? entry = null)
         {
             currentRoom = room;
+            roomMaterial.SetFloat("_Room", (int)room);
             transition = .45f;
             var art = LoadTexture(catalog.rooms[(int)room].art);
             if (backdrop.sprite != null) Destroy(backdrop.sprite);
             backdrop.sprite = Sprite.Create(art, new Rect(0, 0, art.width, art.height),
                 Vector2.zero, Ppu, 0, SpriteMeshType.FullRect);
             backdrop.transform.localScale = new Vector3(Width / art.width, Height / art.height, 1f);
-            grace.Feet = room == Room.Kitchen ? new Vector2(585, 475) : new Vector2(576, 627);
-            grandma.Feet = room == Room.Kitchen ? new Vector2(625, 397) :
-                room == Room.Hall ? new Vector2(576, 656) : new Vector2(542, 607);
+            grace.Feet = entry ?? (room == Room.Kitchen ? new Vector2(585, 587) : new Vector2(576, 627));
+            grandma.Feet = room == Room.Kitchen
+                ? chapter == Chapter.Escort ? new Vector2(585, 627) : new Vector2(625, 397)
+                : room == Room.Hall ? new Vector2(576, 666) : new Vector2(542, 607);
             motor.Place(World(grace.Feet));
             motor.View.Look(Vector2.up);
-            facing = Vector2.up;
             grandma.View.transform.position = World(grandma.Feet);
-            grandma.View.Look(Vector2.down);
+            grandmaHeading = Vector2.down;
+            grandma.View.Look(grandmaHeading);
+            grandmaPace = 0;
             grandmaFeet.enabled = room == Room.Kitchen && chapter != Chapter.Escort;
-            grandmaBody.position = World(grandma.Feet);
-            grandmaRoutine.enabled = room == Room.Kitchen && chapter < Chapter.ReturnForGrandma;
-            table.enabled = tableShadow.enabled = room == Room.Kitchen;
+            table.enabled = tableShadow.enabled = familyFrame.enabled = room == Room.Kitchen;
+            bed.enabled = keepsake.enabled = room == Room.Bedroom;
             cameraVelocity = Vector2.zero;
             BuildObstacles();
-            grandma.Renderer.enabled = room == Room.Parlor ||
-                (room == Room.Kitchen) ||
-                (room == Room.Hall && chapter == Chapter.Escort);
+            grandma.Renderer.enabled = (room == Room.Parlor && chapter >= Chapter.Ending) ||
+                room == Room.Kitchen || (room == Room.Hall && chapter == Chapter.Escort);
             grandmaShadow.enabled = grandma.Renderer.enabled;
             trail.Clear();
             lastTrailPoint = grace.Feet;
+            whenGrandmaArrives = null;
+            FitView(true);
             targets = room == Room.Kitchen ? new[]
             {
                 new Target(895, 339, "Blue serving tray", TakeTray),
-                new Target(177, 339, "Flour cupboard", Flour),
-                new Target(330, 339, "White jars", Jars),
-                new Target(761, 339, "Refrigerator", Fridge),
+                new Target(177, 339, "Flour cupboard", Flour, available: () => chapter >= Chapter.Ingredients),
+                new Target(330, 339, "White jars", Jars, available: () => chapter >= Chapter.Ingredients),
+                new Target(761, 339, "Refrigerator", Fridge, available: () => chapter >= Chapter.Ingredients),
                 new Target(585, 339, "Recipe book", Recipe),
                 new Target(677, 339, "Mixing bowl", Bowl),
                 new Target(460, 339, "Baking counter", Counter),
                 new Target(518, 339, "Family photograph", FamilyPhoto),
                 new Target(975, 339, "Music box", MusicBox),
-                grandmaTarget = new Target(625, 397, "Talk to Grandma", HelpGrandma),
-                new Target(355, 538, "Read the family recipe", Recipe),
-                new Target(576, 742, "Kitchen doorway", LeaveKitchen)
+                grandmaTarget = new Target(625, 397, "Talk to Grandma", HelpGrandma, Reach.Character),
+                new Target(576, 781, "Kitchen doorway", LeaveKitchen, Reach.Threshold)
             } : room == Room.Hall ? new[]
             {
-                new Target(317, 343, "Listen at the left door", ClockDoor),
-                new Target(576, 343, "Look under the middle door", BlueDoor),
-                new Target(836, 343, "Listen at the right door", SinkDoor),
-                new Target(576, 742, "Back to the kitchen", () => Enter(Room.Kitchen))
-            } : room == Room.Bedroom ? new[] {new Target(405, 485, "Open the keepsake box", OpenBox)} : Array.Empty<Target>();
+                new Target(317, 343, "Inspect the left door", () => InspectDoor(Door.Clock)),
+                new Target(576, 343, "Inspect the middle door", () => InspectDoor(Door.Curtains)),
+                new Target(836, 343, "Inspect the right door", () => InspectDoor(Door.Water)),
+                new Target(576, 781, "Back to the kitchen", () => Enter(Room.Kitchen), Reach.Threshold)
+            } : room == Room.Bedroom ? new[] {new Target(411, 487, "Open the keepsake box", OpenBox, Reach.Object)} : Array.Empty<Target>();
             nearby = null;
 
         }
 
         void Update()
         {
-            if (grandmaRoutine.enabled)
-            {
-                Vector2 pos = grandmaBody.position * Ppu;
-                grandma.Feet = new Vector2(pos.x,-pos.y);
-            }
             float dt = Mathf.Min(Time.deltaTime, .05f);
             FitView();
             UpdateMusic(dt);
-            transition = Mathf.Max(0, transition - dt);
-            if (Input.GetKeyDown(KeyCode.Escape) && lines == null && choices == null)
+            if (bedroomArrival > 0)
             {
-                if (chapter == Chapter.Finished)
-                    UnityEngine.SceneManagement.SceneManager.LoadScene("RememberMeAct1");
-                else
+                bedroomArrival = Mathf.Max(0, bedroomArrival - dt);
+                motor.CanMove = false;
+                if (bedroomArrival == 0)
                 {
-                    Offer("Paused",new[] {"Resume","Return to title"}, index => {
-                        if (index == 1) UnityEngine.SceneManagement.SceneManager.LoadScene("RememberMeAct1");
+                    hud.Fade(0);
+                    transition = .45f;
+                    Say("Grace", Expression.Quiet, new[] {"The walk home is a blur. I barely remember coming upstairs."}, () => {
+                        bedroomChime = 2.4f;
+                        Play("RM_Chime", .26f);
                     });
                 }
                 return;
             }
-            if (Input.GetKeyDown(KeyCode.R) && chapter == Chapter.Finished) Restart();
+            bedroomChime = Mathf.Max(0, bedroomChime - dt);
+            transition = Mathf.Max(0, transition - dt);
+            handCue = Mathf.Max(0, handCue - dt);
+            doorFlicker = Mathf.Max(0, doorFlicker - dt);
+            if (chapter < Chapter.Cards) clockTime += dt;
+            UpdateRoomMood(dt);
+            bool cancel = Input.GetKeyDown(KeyCode.Escape) || routeCancel;
+            bool simulatedConfirm = routeConfirm;
+            bool confirm = StoryInput.ConfirmPressed || routeConfirm;
+            routeCancel = routeConfirm = false;
+            if (Input.GetKeyDown(KeyCode.I) && choices == null && lines == null && !mixing && !shaping)
+            {
+                ShowInventory();
+                return;
+            }
+            if (cancel && lines == null)
+            {
+                CancelInteraction();
+                return;
+            }
+            if (Input.GetKeyDown(KeyCode.R) && chapter == Chapter.Finished)
+            {
+                Restart();
+                return;
+            }
 
-            bool confirm = Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Return) ||
-                Input.GetKeyDown(KeyCode.Space);
-            motor.CanMove = choices == null && lines == null && chapter < Chapter.Ending;
+            motor.CanMove = choices == null && lines == null && !mixing && !shaping &&
+                whenGrandmaArrives == null && chapter < Chapter.Ending;
             if (!motor.CanMove) motor.SetInput(Vector2.zero, false, false);
             if (choices != null)
             {
+                if (sortingCards && Input.GetKeyDown(KeyCode.Backspace)) { UndoRecipeCard(); return; }
                 for (int n = 0; n < choices.Length; n++)
-                    if (Input.GetKeyDown((KeyCode)((int)KeyCode.Alpha1 + n))) { Choose(n); break; }
+                    if (Input.GetKeyDown((KeyCode)((int)KeyCode.Alpha1 + n)) ||
+                        Input.GetKeyDown((KeyCode)((int)KeyCode.Keypad1 + n))) { Choose(n); return; }
+                hud.HandleMenuInput(confirm);
                 return;
             }
             if (lines != null)
             {
                 nearby = null;
-                if (confirm && choiceFrame != Time.frameCount) Advance();
+                if ((StoryInput.Consume(simulatedConfirm) || hud.TakeContinue()) && choiceFrame != Time.frameCount)
+                {
+                    choiceFrame = Time.frameCount;
+                    Advance();
+                }
                 grandma.View.Pose(Vector2.zero, false, false, 0);
+            }
+            else if (mixing || shaping)
+            {
+                if (StoryInput.Consume(confirm) && choiceFrame != Time.frameCount)
+                {
+                    if (mixing) MixDough();
+                    else ShapeCookie();
+                }
+            }
+            else if (whenGrandmaArrives != null)
+            {
+                FollowGrace(dt);
+                if (Vector2.Distance(grace.Feet, grandma.Feet) <= 70f)
+                {
+                    var arrive = whenGrandmaArrives;
+                    whenGrandmaArrives = null;
+                    arrive();
+                }
             }
             else if (chapter == Chapter.Ending && currentRoom == Room.Parlor) AdvanceEnding(dt);
             else if (chapter != Chapter.Finished)
             {
                 MoveGrace();
                 FindTarget();
-                if (confirm) nearby?.Use();
-                if (chapter == Chapter.Escort) FollowGrace(dt);
+                if (StoryInput.Consume(simulatedConfirm) || hud.TakeInteraction()) ActivateNearby();
+                if (chapter == Chapter.Escort && lines == null && choices == null) FollowGrace(dt);
             }
-
-            float goal = chapter == Chapter.Cards || chapter == Chapter.Baking || chapter == Chapter.Tray ? .36f : chapter == Chapter.FindDoor ? .94f :
-                chapter == Chapter.ReturnForGrandma ? .90f - CountFinds(anchors) * .22f :
-                chapter == Chapter.Escort ? .28f : chapter == Chapter.Finished ? .45f : 0f;
-            decay = Mathf.MoveTowards(decay, goal, dt * .48f);
-            roomMaterial.SetFloat("_Decay", decay);
-            roomMaterial.SetFloat("_Path", chapter == Chapter.Escort ? 1f : CountFinds(anchors) * .24f);
         }
 
-        void FitView()
+        void CancelInteraction()
         {
-            float ratio = Screen.width / (float)Mathf.Max(1, Screen.height);
+            choiceFrame = Time.frameCount;
+            if (choices != null) CloseChoices();
+            else if (mixing || shaping) mixing = shaping = false;
+            else if (whenGrandmaArrives != null) whenGrandmaArrives = null;
+            else if (chapter == Chapter.Finished)
+                UnityEngine.SceneManagement.SceneManager.LoadScene("RememberMeAct1");
+            else PauseChapter();
+        }
+
+        void UpdateRoomMood(float dt)
+        {
+            float goal = 0;
+            if (currentRoom == Room.Kitchen)
+            {
+                if (chapter >= Chapter.Cards && chapter <= Chapter.FirstCollapse) goal = .30f;
+                else if (chapter == Chapter.FindDoor) goal = .87f;
+                else if (chapter == Chapter.ReturnForGrandma) goal = .93f - CountFinds(anchors) * .16f;
+                else if (chapter == Chapter.Escort) goal = .40f;
+            }
+            else if (currentRoom == Room.Hall)
+                goal = chapter == Chapter.Escort ? .32f : .68f;
+            else if (currentRoom == Room.Parlor && chapter >= Chapter.Ending)
+                goal = Mathf.Clamp01((endingTime - 1f) * .14f);
+            decay = Mathf.MoveTowards(decay, goal, dt * .55f);
+            roomMaterial.SetFloat("_Decay", decay);
+            roomMaterial.SetFloat("_Path", chapter == Chapter.Escort ? 1f : CountFinds(anchors) * .24f);
+            roomMaterial.SetFloat("_ClockTime", clockTime);
+            roomMaterial.SetFloat("_ClockMissing", chapter >= Chapter.FindDoor ? 1 : 0);
+            roomMaterial.SetFloat("_DoorFlicker", Mathf.Clamp01(doorFlicker * 2f));
+        }
+
+        void FitView(bool snap = false)
+        {
+            float ratio = Mathf.Max(.1f, Screen.width / (float)Mathf.Max(1, Screen.height));
             bool kitchen = currentRoom == Room.Kitchen;
-            float aspect = kitchen ? Mathf.Clamp(ratio, 1.25f, 1.72f) : Width / Height;
+            float aspect = Mathf.Clamp(ratio, 1.25f, 1.72f);
             trayFocus = Mathf.MoveTowards(trayFocus, showingFreshCookies ? 1f : 0f, Time.deltaTime / .85f);
             float focus = Mathf.SmoothStep(0f,1f,trayFocus);
             float halfHeight = kitchen ? Mathf.Lerp(273f,142f,focus) : Height / 2;
-            view.orthographicSize = halfHeight / Ppu;
+            float halfWidth = kitchen ? halfHeight * aspect : Width / 2f;
+            view.orthographicSize = Mathf.Max(halfHeight, halfWidth / ratio) / Ppu;
             Vector2 center = new Vector2(Width / 2, Height / 2);
             if (kitchen)
             {
-                float halfWidth = halfHeight * aspect;
                 center = new Vector2(Mathf.Clamp(grace.Feet.x,92+halfWidth,1060-halfWidth),
                     Mathf.Clamp(grace.Feet.y - 105, 38+halfHeight, 827-halfHeight));
                 // Frame the tray above the dialogue panel and ease back when control returns.
                 center = Vector2.Lerp(center, new Vector2(895,243), focus);
             }
             var destination = World(center);
-            var cameraPoint = kitchen ? Vector2.SmoothDamp((Vector2)view.transform.position,destination,ref cameraVelocity,.14f) : destination;
+            var cameraPoint = kitchen && !snap
+                ? Vector2.SmoothDamp(view.transform.position, destination, ref cameraVelocity, .14f)
+                : destination;
             view.transform.position = new Vector3(cameraPoint.x,cameraPoint.y,-10);
-            if (ratio >= aspect)
-            {
-                float w = aspect / ratio;
-                view.rect = new Rect((1f - w) / 2f, 0, w, 1);
-            }
-            else
-            {
-                float h = ratio / aspect;
-                view.rect = new Rect(0, (1f - h) / 2f, 1, h);
-            }
         }
 
         static bool Held(KeyCode a, KeyCode b) => Input.GetKey(a) || Input.GetKey(b);
@@ -411,7 +518,6 @@ namespace RememberMe
             bool escort = chapter == Chapter.Escort;
             motor.WalkSpeed = escort ? 1.15f : 2.45f;
             motor.SetInput(input, !escort && Held(KeyCode.LeftShift, KeyCode.RightShift), !escort && Input.GetKeyDown(KeyCode.C));
-            if (input != Vector2.zero) facing = input.normalized;
             Vector2 position = motor.Body.position * Ppu;
             grace.Feet = new Vector2(position.x, -position.y);
         }
@@ -421,67 +527,183 @@ namespace RememberMe
             if (obstacles != null) { obstacles.SetActive(false); Destroy(obstacles); }
             obstacles = new GameObject("Walkable room boundaries");
             var data = catalog.rooms[(int)currentRoom];
+            doorwayPassage = new Rect(523, 675, 107, 131);
             AddWall(new Rect(0,0,Width,data.top));
             AddWall(new Rect(0,0,127,Height));
             AddWall(new Rect(1025,0,Width-1025,Height));
-            AddWall(new Rect(0,675,523,Height-675));
-            AddWall(new Rect(630,675,Width-630,Height-675));
-            AddWall(new Rect(523,806,107,Height-806));
+            AddWall(Rect.MinMaxRect(0, doorwayPassage.yMin, doorwayPassage.xMin, Height));
+            AddWall(Rect.MinMaxRect(doorwayPassage.xMax, doorwayPassage.yMin, Width, Height));
+            AddWall(Rect.MinMaxRect(doorwayPassage.xMin, doorwayPassage.yMax, doorwayPassage.xMax, Height));
             foreach (Rect rect in data.furniture) AddWall(rect);
             if (currentRoom == Room.Kitchen) AddWall(new Rect(279,507,152,24));
-            if (currentRoom == Room.Bedroom) AddWall(new Rect(202,420,163,64));
+            keepsakeCollider = null;
+            if (currentRoom == Room.Bedroom)
+            {
+                AddWall(new Rect(218, 263, 160, 217));
+                keepsakeCollider = AddWall(new Rect(390, 461, 42, 22));
+                AddWall(new Rect(925, 215, 110, 136));
+                AddWall(new Rect(730, 215, 165, 168));
+                AddWall(new Rect(113, 215, 97, 136));
+            }
             Physics2D.SyncTransforms();
         }
 
-        void AddWall(Rect rect)
+        Collider2D AddWall(Rect rect)
         {
             var wall = new GameObject("Boundary");
             wall.layer = 8;
             wall.transform.SetParent(obstacles.transform);
             wall.transform.position = World(rect.center);
-            wall.AddComponent<BoxCollider2D>().size = rect.size / Ppu;
+            var collider = wall.AddComponent<BoxCollider2D>();
+            collider.size = rect.size / Ppu;
+            return collider;
         }
 
         void FollowGrace(float dt)
         {
-            if (Vector2.Distance(lastTrailPoint, grace.Feet) >= 11f)
+            if (Vector2.Distance(lastTrailPoint, grace.Feet) >= 9f)
             {
                 trail.Enqueue(grace.Feet);
                 lastTrailPoint = grace.Feet;
             }
-            if (Vector2.Distance(grandma.Feet, grace.Feet) < 34f) trail.Clear();
+            float gap = Vector2.Distance(grandma.Feet, grace.Feet);
+            if (gap >= 45f && (whenGrandmaArrives != null || trail.Count == 0) && ClearFollowPath(grandma.Feet, grace.Feet))
+            {
+                // Grace is stationary or too far away for the most recent point to hold the pair together.
+                trail.Clear();
+                trail.Enqueue(grace.Feet);
+                lastTrailPoint = grace.Feet;
+            }
+            if (gap < 37f && ClearFollowPath(grandma.Feet, grace.Feet))
+            {
+                trail.Clear();
+                lastTrailPoint = grace.Feet;
+            }
             if (trail.Count == 0)
             {
+                StopGrandma();
+                return;
+            }
+            grandmaPace = Mathf.MoveTowards(grandmaPace, Mathf.Clamp((gap - 28f) * 4f, 48f, 184f), 365f * dt);
+            float distanceBudget = grandmaPace * dt;
+            Vector2 next = grandma.Feet;
+            while (trail.Count > 0 && distanceBudget > 0)
+            {
+                Vector2 point = trail.Peek();
+                float distance = Vector2.Distance(next, point);
+                if (trail.Count == 1)
+                {
+                    next = Vector2.MoveTowards(next, point, Mathf.Min(distanceBudget, Mathf.Max(0, distance - 36f)));
+                    break;
+                }
+                next = Vector2.MoveTowards(next, point, distanceBudget);
+                distanceBudget -= distance;
+                if (next == point) trail.Dequeue();
+            }
+            MoveGrandma(next);
+        }
+
+        static bool ClearFollowPath(Vector2 start, Vector2 end)
+        {
+            Vector2 delta = World(end - start);
+            return !Physics2D.CircleCast(World(start), .112f, delta.normalized, delta.magnitude, 1 << 8);
+        }
+
+        void StopGrandma()
+        {
+            grandmaPace = 0;
+            grandma.View.Pose(Vector2.zero, false, false, 0);
+        }
+
+        void MoveGrandma(Vector2 next)
+        {
+            Vector2 delta = World(next - grandma.Feet);
+            if (delta.sqrMagnitude > .000001f)
+            {
+                var hit = Physics2D.CircleCast(World(grandma.Feet), .112f, delta.normalized, delta.magnitude + .012f, 1 << 8);
+                if (hit.collider) next = grandma.Feet + new Vector2(delta.x, -delta.y).normalized *
+                    Mathf.Max(0, hit.distance - .012f) * Ppu;
+            }
+            var movement = World(next - grandma.Feet);
+            grandma.Feet = next;
+            grandma.View.transform.position = World(next);
+            var heading = movement.normalized;
+            if (heading == Vector2.zero)
+            {
+                // Subpixel acceleration can be imperceptible for several frames on a fast display.
                 grandma.View.Pose(Vector2.zero, false, false, 0);
                 return;
             }
-            Vector2 point = trail.Peek();
-            Vector2 next = Vector2.MoveTowards(grandma.Feet, point, 210f * dt);
-            MoveActor(grandma, next, dt);
-            if (next == point) trail.Dequeue();
-        }
-
-        static void MoveActor(Actor actor, Vector2 next, float dt)
-        {
-            Vector2 delta = World(next - actor.Feet);
-            actor.Feet = next;
-            actor.View.transform.position = World(next);
-            actor.View.Pose(delta, false, false, dt);
+            if (Vector2.Dot(heading, grandmaHeading) < .62f)
+                grandmaHeading = Mathf.Abs(heading.x) > Mathf.Abs(heading.y)
+                    ? Vector2.right * Mathf.Sign(heading.x) : Vector2.up * Mathf.Sign(heading.y);
+            grandmaStride += movement.magnitude;
+            if (grandmaStride >= .37f) { grandmaStride -= .37f; PlayWoodStep(); }
+            grandma.View.Pose(heading, false, false, movement.magnitude / .74f, grandmaHeading);
         }
 
         void FindTarget()
         {
             nearby = null;
-            float best = currentRoom == Room.Kitchen ? 39f : 96f;
+            float best = float.PositiveInfinity;
             foreach (var target in targets)
             {
-                Vector2 delta = (target == grandmaTarget ? grandma.Feet : target.Feet) - grace.Feet;
-                float distance = delta.magnitude;
-                if (distance >= best) continue;
-                if (distance > 36f && Vector2.Dot(facing, new Vector2(delta.x, -delta.y).normalized) < -.35f) continue;
+                if (!TryReach(target, out float distance) || distance >= best) continue;
                 best = distance;
                 nearby = target;
             }
+        }
+
+        bool TryReach(Target target, out float distance)
+        {
+            distance = float.PositiveInfinity;
+            if (target.Available != null && !target.Available()) return false;
+            Vector2 approach = target.Feet;
+            float footRadius = motor.Feet.bounds.extents.x * Ppu;
+            if (target.Kind == Reach.Threshold)
+            {
+                // Grace's collision radius places her standing limit just short of the end wall.
+                if (grace.Feet.y < doorwayPassage.yMax - 53 ||
+                    grace.Feet.y > doorwayPassage.yMax - footRadius + 2 ||
+                    grace.Feet.x < doorwayPassage.xMin + footRadius - 1 ||
+                    grace.Feet.x > doorwayPassage.xMax - footRadius + 1) return false;
+            }
+            else if (target.Kind == Reach.Fixture)
+            {
+                // The art lies behind the countertop collider. Measure from a standing position in front of it.
+                float floor = catalog.rooms[(int)currentRoom].top;
+                approach.y = floor + footRadius + 3;
+                float width = currentRoom == Room.Hall ? 72 : 54;
+                if (Mathf.Abs(grace.Feet.x - approach.x) > width ||
+                    grace.Feet.y < floor || grace.Feet.y - approach.y > 64) return false;
+            }
+            else if (target.Kind == Reach.Character)
+            {
+                approach = grandma.Feet;
+                if ((approach - grace.Feet).sqrMagnitude > 62 * 62) return false;
+            }
+            else
+            {
+                Vector2 closest = keepsakeCollider.ClosestPoint(World(grace.Feet)) * Ppu;
+                approach = new Vector2(closest.x, -closest.y);
+                if ((approach - grace.Feet).sqrMagnitude > 62 * 62) return false;
+            }
+
+            if (target.Kind != Reach.Threshold)
+            {
+                var blocker = Physics2D.Linecast(World(grace.Feet), World(approach), 1 << 8).collider;
+                if (blocker && (target.Kind != Reach.Object || blocker != keepsakeCollider)) return false;
+            }
+            distance = (approach - grace.Feet).sqrMagnitude;
+            return true;
+        }
+
+        void ActivateNearby()
+        {
+            if (nearby == null || choiceFrame == Time.frameCount) return;
+            choiceFrame = Time.frameCount;
+            motor.SetInput(Vector2.zero, false, false);
+            nearby.Use();
         }
 
 
@@ -491,11 +713,11 @@ namespace RememberMe
 
         Action<int> choose;
 
-        void Offer(string title, string[] options, Action<int> callback)
+        void Offer(string title, string[] options, Action<int> callback, bool compact = true)
         {
             hud.HideDialogue();
             hud.ShowHUD(false);
-            hud.Menu(title,title,options,Choose,photoMenu:true);
+            hud.Menu(title,title,options,Choose,photoMenu:compact);
             choices = options;
             choose = callback;
             nearby = null;
@@ -503,13 +725,20 @@ namespace RememberMe
 
         void Choose(int index)
         {
-            hud.HideMenu();
-            inspectJars = sortingCards = false;
+            if (choices == null || index < 0 || index >= choices.Length || choiceFrame == Time.frameCount) return;
             choiceFrame = Time.frameCount;
-            choices = null;
             var callback = choose;
-            choose = null;
+            CloseChoices();
             callback(index);
+        }
+
+        void CloseChoices()
+        {
+            hud.HideMenu();
+            inspectJars = sortingCards = viewRecipe = false;
+            shownDoor = null;
+            choices = null;
+            choose = null;
         }
 
         void OpenBox()
@@ -520,12 +749,13 @@ namespace RememberMe
                 Say("Grace", Expression.Reflective, new[] {"That's me. And Grandma. I was so little.", "We used to make cookies."}, () => {
                     Play("RM_StoryTap", .35f);
                     showPhoto = false;
-                    chapter = Chapter.Ingredients;
+                    chapter = Chapter.MeetGrandma;
                     Enter(Room.Kitchen);
                     PlayMusic("RM_StoryKeepsake");
                     Say("Grandma", Expression.Warm, new[] {"Gracie? There you are. Come help me, sweetheart."},
-                        () => Say("Grace", Expression.Surprise, new[] {"Grandma? You're here! Can you come home with me?"},
-                        () => Say("Grandma", Expression.Warm, new[] {"After the cookies, dear. Your dad's waiting.", "Could you get the flour, butter, eggs, and sugar?"})));
+                        () => Say("Grace", Expression.Surprise, new[] {"Grandma?", "You're here! Can you come home with me?"},
+                        () => Say("Grandma", Expression.Warm, new[] {"After the cookies, dear. Your dad's waiting."},
+                        () => Say("Grace", Expression.Warm, new[] {"Okay. I'll help you."}))));
                 });
             });
         }
@@ -533,15 +763,18 @@ namespace RememberMe
         void FamilyPhoto()
         {
             photoSeen = true;
+            showingFamilyPhoto = true;
             if (chapter == Chapter.ReturnForGrandma && (anchors & 1) == 0)
             {
                 anchors |= 1;
                 Say("Grace", Expression.Reflective, new[] {"Dad in his school coat. The sleeves cover his hands."},
-                    () => Say("Grandma", Expression.Warm, new[] {"I left room for him to grow."}));
+                    () => Say("Grandma", Expression.Warm, new[] {"I left room for him to grow."}, () => showingFamilyPhoto = false));
                 return;
             }
             Say("Grace", Expression.Surprise, new[] {"That's Dad! He's so little."}, () =>
-                Say("Grandma", Expression.Reflective, new[] {"By the living room window. See the blue curtains? He always waited there for cookies."}));
+                Say("Grandma", Expression.Reflective, new[] {"He was. Always hungry, too.",
+                    "He always waited for cookies by the living room window. See the blue curtains?"},
+                    () => showingFamilyPhoto = false));
         }
 
         void MusicBox()
@@ -554,141 +787,243 @@ namespace RememberMe
                     () => Say("Grace", Expression.Warm, new[] {"I know. You always used to hum that bit."}));
                 return;
             }
-            Say("Grandma", Expression.Warm, new[] {"Your dad liked that song. I used to play it at bedtime."});
+            Say("Grace", Expression.Reflective, new[] {"This sounds familiar."}, () =>
+                Say("Grandma", Expression.Warm, new[] {"Your dad liked that song. I used to play it at bedtime."}, () =>
+                Say("Grace", new[] {"Can you play it again?"}, () =>
+                Say("Grandma", Expression.Warm, new[] {"Maybe later, sweetheart. The cookies first."}))));
         }
 
         void Flour()
         {
-            if ((ingredients & 1) != 0) { Say("Grace", new[] {"The flour is already set out."}); return; }
-            ingredients |= 1;
-            Say("Grace", new[] {"Flour. I'll set the bag on the counter."});
+            if (chapter == Chapter.MeetGrandma) { AskGrandmaFirst(); return; }
+            if ((ingredients & FlourBit) != 0) { Say("Grace", new[] {"I already have the flour."}); return; }
+            ingredients |= FlourBit;
+            Play("RM_StoryTap", .19f);
         }
 
         void Fridge()
         {
-            if (chapter == Chapter.Cards) { Card(4, "Shape the cookies"); return; }
-            if ((ingredients & 2) != 0) { Say("Grace", new[] {"We have the butter and eggs."}); return; }
-            ingredients |= 2;
-            Say("Grace", new[] {"Butter and eggs, together on the shelf."});
+            if (chapter == Chapter.MeetGrandma) { AskGrandmaFirst(); return; }
+            if (chapter == Chapter.Cards) { Card(2); return; }
+            if ((ingredients & EggsBit) != 0) { Say("Grace", new[] {"I already have the butter and eggs."}); return; }
+            ingredients |= ButterBit | EggsBit;
+            Play("RM_StoryTap", .19f);
         }
 
         void Jars()
         {
-            if ((ingredients & 4) != 0) { Say("Grace", new[] {"The ribbon jar is already beside the flour."}); return; }
+            if (chapter == Chapter.MeetGrandma) { AskGrandmaFirst(); return; }
+            if ((ingredients & SugarBit) != 0) { Say("Grace", new[] {"I already have the ribbon jar."}); return; }
             inspectJars = true;
-            Offer("Two white jars. The labels have worn away.", new[] {"Jar with the blue ribbon", "Plain jar"}, i => {
-                if (i == 0) ingredients |= 4;
-                Say("Grace", new[] {i == 0 ? "Sugar. I'll take the ribbon jar." : "Wait. This might be salt. I'll put it back."});
+            Offer("Two white jars. The labels have worn away.", new[] {"Left jar", "Right jar"}, i => {
+                if (i == 0)
+                {
+                    ingredients |= SugarBit;
+                    Play("RM_StoryTap", .19f);
+                }
+                else Say("Grace", new[] {"Wait. This might be salt. I'll put it back."});
             });
         }
 
-        void Card(int bit, string name)
+        static readonly string[] CardNames = {"Add eggs and flour", "Mix into dough", "Shape the cookies"};
+
+        void Card(int index)
         {
-            cards |= bit;
-            visibleCard = bit == 1 ? 0 : bit == 2 ? 1 : 2;
-            Say("Grace", new[] {"Dad drew this one: " + name + "."}, () => visibleCard = -1);
+            if ((cards & (1 << index)) != 0)
+            {
+                Say("Grace", new[] {"I already put this card beside the recipe."});
+                return;
+            }
+            cards |= 1 << index;
+            visibleCard = index;
+            Play("RM_StoryTap", .21f);
+            Say("Grace", new[] {"Dad drew this one. " + CardNames[index] + "."}, () => visibleCard = -1);
         }
 
         void Bowl()
         {
-            if (chapter == Chapter.Cards) Card(1, "Add eggs and flour");
+            if (chapter == Chapter.Cards) Card(0);
             else if (chapter == Chapter.Baking) Bake(false);
             else Say("Grace", new[] {"Grandma's wooden spoon is resting in the bowl."});
         }
 
         void Counter()
         {
-            if (chapter == Chapter.Cards) Card(2, "Mix into dough");
+            if (chapter == Chapter.Cards) Card(1);
             else if (chapter == Chapter.Baking) Bake(true);
-            else Recipe();
+            else Say("Grace", new[] {"Grandma's oven is here."});
+        }
+
+        void AskGrandmaFirst() => Say("Grace", new[] {"I should ask Grandma what she needs."});
+
+        void ReadDadNote()
+        {
+            showingNote = true;
+            sugarClueFound = true;
+            Say("Grace", Expression.Reflective, new[] {"Dad wrote this?"}, () => showingNote = false);
         }
 
         void Recipe()
         {
-            if (chapter == Chapter.Ingredients)
+            if (chapter <= Chapter.Ingredients)
             {
                 Offer("The old recipe book", new[] {"Read Dad's note", "Set out the ingredients"}, i => {
-                    if (i == 0) Say("Dad's note", new[] {"Mom, sugar has the blue ribbon. Salt has no ribbon. Take your time. Love, your son."});
-                    else if (ingredients != 7) Say("Grace", new[] {"We're missing something. Flour from the cupboard, butter and eggs from the fridge, sugar from the jars."});
+                    if (i == 0) ReadDadNote();
+                    else if (chapter == Chapter.MeetGrandma) AskGrandmaFirst();
+                    else if (ingredients != AllIngredients) Say("Grace", new[] {"I can bring the ingredients back here once I have them."});
                     else {
                         chapter = Chapter.Cards;
-                        Say("Grandma", Expression.Reflective, new[] {"Your dad used to steal the sugar. He thought I never noticed.", "Now, let's see... What comes next? This part is hard to read."},
-                            () => Say("Grace", Expression.Concern, new[] {"The clock stopped. There are drawings by the bowl, the stove and the fridge."}));
+                        PlayMusic("RM_Remember");
+                        Say("Grandma", Expression.Warm, new[] {"There it is! Good job, Gracie.", "Your dad used to steal the sugar."},
+                            () => Say("Grace", Expression.Surprise, new[] {"Dad?"}, () =>
+                            Say("Grandma", Expression.Reflective, new[] {"Just a little. He thought I never noticed.",
+                                "Now, let's see. What comes next? This part is hard to read.",
+                                "Your dad left three picture cards: by the bowl, on the baking counter, and on the fridge. Bring them to the recipe."},
+                            () => Say("Grace", Expression.Concern, new[] {"Grandma? Did the lights just…", "Never mind."}))));
                     }
                 });
             }
-            else if (chapter == Chapter.Cards)
+            else if (chapter == Chapter.Cards && cards == AllCards)
             {
-                if (cards != 7) Say("Grace", new[] {"Three steps are missing. I'll look by the bowl, the stove and the fridge."});
-                else SortCards(new List<int>());
+                viewRecipe = true;
+                Offer("The family recipe", new[] {"Arrange the picture cards", "Read Dad's note"}, i => {
+                    if (i == 1) ReadDadNote();
+                    else
+                    {
+                        SortCards();
+                    }
+                });
             }
-            else if (chapter == Chapter.Baking) Say("Grace", new[] { BakingHint() });
-            else Say("Grace", new[] {"Dad's pictures are still here."});
+            else
+            {
+                viewRecipe = true;
+                Offer(chapter == Chapter.Cards ? "Three steps are missing" : "The family recipe",
+                    new[] {"Close the recipe", "Read Dad's note"}, i => { if (i == 1) ReadDadNote(); });
+            }
         }
 
-        void SortCards(List<int> order)
+        void SortCards()
         {
-            string[] names = {"Add eggs and flour", "Mix into dough", "Shape the cookies"};
             var remaining = new List<int> {2,0,1};
-            remaining.RemoveAll(order.Contains);
+            remaining.RemoveAll(recipeOrder.Contains);
             remainingCardIds = remaining.ToArray();
-            sortingCards = true;
-            string sequence = "Cream butter and sugar";
-            foreach (int step in order) sequence += " → " + names[step];
-            Offer(sequence + "   ·   Choose step " + (order.Count+2), remaining.ConvertAll(i => names[i]).ToArray(), selection => {
-                order.Add(remaining[selection]);
-                if (order.Count < 3) { SortCards(order); return; }
-                if (order[0] != 0 || order[1] != 1) {
+            sortingCards = viewRecipe = true;
+            var options = remaining.ConvertAll(i => CardNames[i]);
+            if (recipeOrder.Count > 0) options.Add("Undo last card");
+            Offer("Choose the picture for step " + (recipeOrder.Count + 2), options.ToArray(), selection => {
+                if (selection == remaining.Count) { UndoRecipeCard(); return; }
+                recipeOrder.Add(remaining[selection]);
+                if (recipeOrder.Count < 3) { SortCards(); return; }
+                if (recipeOrder[0] != 0 || recipeOrder[1] != 1)
+                {
                     errors++;
-                    Say("Grace", new[] {errors > 1 ? "We add the ingredients before we mix. Shaping comes last." : "Hmm. That doesn't look right. Let's try again."});
+                    recipeOrder.Clear();
+                    viewRecipe = true;
+                    Say("Grace", new[] {errors > 1 ? "First add the flour and eggs. Mix the dough before shaping it." :
+                        "Hmm. That doesn't look right. Try again?"}, () => viewRecipe = false);
                     return;
                 }
                 chapter = Chapter.Baking;
-                Say("Grace", Expression.Warm, new[] {"Look, Grandma. Dad drew these."}, () =>
-                    Say("Grandma", Expression.Warm, new[] {"Oh. These are nice. Shall we do it together?"}));
+                Say("Grace", Expression.Warm, new[] {"Look, Grandma. Dad drew these. The pictures tell us what to do."}, () =>
+                    Say("Grandma", Expression.Warm, new[] {"Oh. These are nice. Then let's try.", "Oh. What was I doing?"}, () =>
+                    Say("Grace", Expression.Warm, new[] {"We were mixing. Look. Like this."}, () =>
+                    Say("Grandma", Expression.Warm, new[] {"Right. Shall we do it together?"}))));
             });
+        }
+
+        void UndoRecipeCard()
+        {
+            // Choose closes the option menu before invoking its callback, which
+            // clears sortingCards. Chapter and placed cards own undo eligibility.
+            if (chapter != Chapter.Cards || recipeOrder.Count == 0) return;
+            recipeOrder.RemoveAt(recipeOrder.Count - 1);
+            SortCards();
+        }
+
+        void RemoveRecipeCardsFrom(int index)
+        {
+            if (!sortingCards || index < 0 || index >= recipeOrder.Count || choiceFrame == Time.frameCount) return;
+            choiceFrame = Time.frameCount;
+            recipeOrder.RemoveRange(index, recipeOrder.Count - index);
+            SortCards();
         }
 
         string BakingHint()
         {
-            if (baking == 0) return "Stir the butter and sugar at the mixing bowl.";
-            if (baking == 1) return "Fold the dough at the mixing bowl.";
-            if (baking == 2) return "Shape the cookies at the baking counter.";
-            return "Slide the tray into the oven at the baking counter.";
+            if (baking == 0) return "Mix the dough together at the bowl.";
+            if (baking == 1) return "Shape the dough at the baking counter.";
+            return "Bake the cookies at the baking counter.";
         }
 
         void Bake(bool atCounter)
         {
-            if (atCounter != (baking >= 2))
+            if (atCounter != (baking > 0))
             {
                 Say("Grace", new[] { BakingHint() });
                 return;
             }
-            // The first two actions are direct interactions, leaving the decision for Dad’s cookie.
-            if (baking < 2)
+            choiceFrame = Time.frameCount;
+            if (baking == 0) mixing = true;
+            else if (baking == 1) shaping = true;
+            else
             {
-                Play("RM_StoryTap", .23f);
-                baking++;
-                Say("Grandma", Expression.Warm, new[] {baking == 1 ? "That's it. I'll hold the bowl. Fold the flour in now." :
-                    "Feel how it comes away from the spoon? Take it over to the board."});
-                return;
+                chapter = Chapter.Tray;
+                transition = .45f;
+                Play("RM_DoorCreak", .21f);
+                Play("RM_Chime", .36f);
+                showingFreshCookies = true;
+                Say("Grace", Expression.Warm, new[] {"They smell good!"}, () =>
+                    Say("Grandma", Expression.Warm, new[] {"They do, don't they? We made them together.",
+                        "All done. Let's bring these to your dad."}, () => showingFreshCookies = false));
             }
-            if (baking == 2)
+        }
+
+        void MixDough()
+        {
+            if (!mixing || lines != null || choiceFrame == Time.frameCount) return;
+            choiceFrame = Time.frameCount;
+            Play("RM_StoryTap", .18f);
+            if (++mixCount < MixSteps) return;
+            mixing = false;
+            baking = 1;
+            Say("Grandma", Expression.Warm, new[] {"That's it. I'll keep holding the bowl. Now we can shape the dough."});
+        }
+
+        void ShapeCookie()
+        {
+            for (int slot = 0; slot < DoughPieces; slot++)
+                if (CanPlaceDough(slot))
+                {
+                    ShapeCookie(slot);
+                    return;
+                }
+        }
+
+        bool CanPlaceDough(int slot)
+        {
+            return shaping && lines == null && slot >= 0 && slot < DoughPieces &&
+                (shapedSlots & (1 << slot)) == 0 && (slot != DoughPieces - 1 || shapedCount == DoughPieces - 1);
+        }
+
+        void ShapeCookie(int slot)
+        {
+            if (!CanPlaceDough(slot) || choiceFrame == Time.frameCount) return;
+            choiceFrame = Time.frameCount;
+            shapedSlots |= 1 << slot;
+            Play("RM_StoryTap", .22f);
+            shapedCount++;
+            if (shapedCount == DoughPieces - 1)
             {
-                Offer("Leave a mark on Dad’s cookie", new[] {"Press your thumb into the dough", "Press a cross with the fork"}, i => {
-                    forkMark = i == 1;
-                    enamel.SetFloat("_ForkMark", forkMark ? 1 : 0);
-                    baking++;
-                    Say("Grandma", Expression.Warm, new[] {forkMark ? "He used to count those little squares before he'd take a bite." :
-                        "Your thumb just fits inside the print he used to make."});
-                });
-                return;
+                Say("Grandma", Expression.Warm, new[] {"Wait. Let's make this one bigger."}, () =>
+                    Say("Grace", new[] {"Why?"}, () =>
+                    Say("Grandma", Expression.Warm, new[] {"Your dad always likes the biggest one."}, () =>
+                    Say("Grace", new[] {"Even now?"}, () =>
+                    Say("Grandma", Expression.Warm, new[] {"Oh, yes."})))));
             }
-            Play("RM_Chime", .36f);
-            chapter = Chapter.Tray;
-            showingFreshCookies = true;
-            Say("Grace", Expression.Quiet, new[] {"We sit by the oven until the edges turn gold."}, () =>
-                Say("Grandma", Expression.Warm, new[] {"There. He'll know which one's his."}, () => showingFreshCookies = false));
+            if (shapedCount < DoughPieces) return;
+            shaping = false;
+            baking = 2;
+            Say("Grandma", Expression.Warm, new[] {"There. That should do it."});
         }
 
         void TakeTray()
@@ -699,10 +1034,8 @@ namespace RememberMe
                 Say("Grace", new[] { "I still have the tray. The cookies are warm." });
                 return;
             }
-            chapter = Chapter.FindDoor;
-            Play("RM_Swell", .54f);
-            Say("Grandma", Expression.Concern, new[] { "The living room is just… Where did the door go?" },
-                () => Say("Grace", new[] { "Wait here. I’ll find it." }));
+            chapter = Chapter.FirstCollapse;
+            Play("RM_StoryTap", .28f);
         }
 
         void LeaveKitchen()
@@ -715,26 +1048,72 @@ namespace RememberMe
             if (!looped)
             {
                 looped = true;
-                Play("RM_DoorCreak", .52f);
-                Enter(Room.Kitchen);
-                grace.Feet = new Vector2(485, 641);
-                motor.Place(World(grace.Feet));
-                Say("Grace", Expression.Surprise, new[] { "I just went through that door. Why am I back in the kitchen?" });
+                chapter = Chapter.FindDoor;
+                doorFlicker = 1.2f;
+                Play("RM_Swell", .54f);
+                Say("Grace", Expression.Concern, new[] {"Grandma? Something's wrong."}, () =>
+                    Say("Grandma", Expression.Concern, new[] {"Where's the living room?"}, () =>
+                    Say("Grace", new[] {"It's right there."}, () =>
+                    {
+                        Play("RM_DoorCreak", .52f);
+                        Enter(Room.Kitchen, new Vector2(485, 616));
+                        Say("Grace", Expression.Surprise, new[] {"Huh? Wasn't I just here?"});
+                    })));
                 return;
             }
-            Enter(Room.Hall);
+            if (chapter == Chapter.Escort) WaitForGrandma(() => Enter(Room.Hall));
+            else Enter(Room.Hall);
+        }
+
+        void WaitForGrandma(Action ready)
+        {
+            if (Vector2.Distance(grace.Feet, grandma.Feet) <= 70f) ready();
+            else
+            {
+                whenGrandmaArrives = ready;
+                nearby = null;
+                motor.SetInput(Vector2.zero, false, false);
+            }
+        }
+
+        void InspectDoor(Door door)
+        {
+            inspectedDoors |= 1 << (int)door;
+            shownDoor = door;
+            string clue;
+            if (door == Door.Clock)
+            {
+                Play("RM_StoryTap", .48f);
+                clue = "A clock ticks on the other side.";
+            }
+            else if (door == Door.Water)
+            {
+                Play("RM_StoryDrip", .57f);
+                clue = "Water drips on the other side.";
+            }
+            else
+                clue = photoSeen ? "Blue curtains, like the ones in Dad’s picture." : "A blue curtain by a warmly lit window.";
+            Offer(clue, new[] {"Open the door", "Step back"}, i => {
+                if (i != 0) return;
+                if (door == Door.Clock) ClockDoor();
+                else if (door == Door.Water) SinkDoor();
+                else BlueDoor();
+            });
+        }
+
+        string WrongDoorHint()
+        {
+            if (wrongDoors < 2) return "I'll try another door.";
+            if (!photoSeen) return "The living room… I've seen it before. Maybe the family photo can help.";
+            return "Dad was sitting by the blue curtains.";
         }
 
         void ClockDoor()
         {
             wrongDoors++;
-            Play("RM_StoryTap", .52f);
-            Say("Grace", new[] { "Tick. Tick. Our clock sounded like that before it stopped." }, () =>
-            {
-                if (chapter == Chapter.Escort) return;
-                Play("RM_DoorCreak", .42f);
-                Enter(Room.Kitchen);
-            });
+            Play("RM_DoorCreak", .42f);
+            Enter(Room.Kitchen);
+            Say("Grace", new[] {"Back in the kitchen. " + WrongDoorHint()});
         }
 
         void SinkDoor()
@@ -743,27 +1122,24 @@ namespace RememberMe
             wrongDoors++;
             transition = .45f;
             waterSpace = true;
-            Say("Grace", Expression.Tense, new[] { "Water dripping. The walls have disappeared.", wrongDoors >= 2 ? "Dad sat by the blue curtains. I should look for that light." : "There’s the hallway again." }, () => waterSpace = false);
+            Say("Grace", Expression.Tense, new[] {"Is that water? The walls have disappeared."}, () => {
+                waterSpace = false;
+                transition = .45f;
+                Say("Grace", new[] {"There's the hallway again. " + WrongDoorHint()});
+            });
         }
 
         void BlueDoor()
         {
             if (chapter == Chapter.Escort)
             {
-                if (Vector2.Distance(grace.Feet, grandma.Feet) > 100f)
-                {
-                    Say("Grace", new[] { "One moment. We’ll go through together." });
-                    return;
-                }
-                chapter = Chapter.Ending;
-                Enter(Room.Parlor);
-                endingTime = 0f;
-                Say("Grandma", new[]
-                {
-                    forkMark ? "Leave the one with the little squares by his chair, would you?" : "Leave the one with your thumbprint by his chair, would you?",
-                    "He’ll be home from school any minute."
-                }, () => Say("Grace", Expression.Surprise, new[] { "From school?" },
-                    () => Say("Grandma", new[] { "Oh, his coat. It gets cold when the sun goes down." })));
+                WaitForGrandma(() => {
+                    chapter = Chapter.Ending;
+                    Enter(Room.Parlor);
+                    endingTime = 0f;
+                    PlayMusic("RM_StoryKeepsake");
+                    StartCoroutine(ServeCookies());
+                });
                 return;
             }
             if (chapter == Chapter.ReturnForGrandma)
@@ -772,17 +1148,26 @@ namespace RememberMe
                 return;
             }
             chapter = Chapter.ReturnForGrandma;
-            throughDoor = true;
             Play("RM_DoorCreak", .42f);
+            Enter(Room.Parlor, new Vector2(576, 601));
+            decay = 0;
+            roomMaterial.SetFloat("_Decay", 0);
             Say("Grace", new[]
             {
                 photoSeen ? "Like the blue curtains in Dad’s picture!" : "Blue curtains. There’s an empty chair by the window.",
-                "Grandma? … She’s still in the kitchen."
-            }, () => throughDoor = false);
+                "Grandma? … Where is she? I should go back for her."
+            }, () => Enter(Room.Hall, new Vector2(576, 410)));
         }
 
         void HelpGrandma()
         {
+            if (chapter == Chapter.MeetGrandma)
+            {
+                chapter = Chapter.Ingredients;
+                Say("Grandma", Expression.Warm, new[] {"Could you get the flour, butter, eggs, and sugar?",
+                    "I put them away somewhere."}, () => Say("Grace", Expression.Warm, new[] {"Okay!"}));
+                return;
+            }
             if (chapter == Chapter.Ingredients) { Say("Grandma", new[] {"Could you get the flour, butter, eggs, and sugar?"}); return; }
             if (chapter == Chapter.Cards || chapter == Chapter.Baking) { Say("Grandma", new[] {"Let's look at the pictures on the counter together."}); return; }
             if (chapter != Chapter.ReturnForGrandma)
@@ -794,31 +1179,60 @@ namespace RememberMe
                 () => Say("Grace", Expression.Warm, new[] {"I'm here. I found it. Come with me."},
                 () => Say("Grandma", Expression.Quiet, new[] {"Will you stay with me?"},
                 () => Say("Grace", Expression.Warm, new[] {"Yes. Take my hand."}, () => {
-                    chapter = Chapter.Escort;
-                    grandmaRoutine.enabled = false;
-                    grandmaFeet.enabled = false;
-                    trail.Clear();
-                    lastTrailPoint = grace.Feet;
-                    PlayMusic("RM_Remember");
+                    handCue = 2.3f;
+                    Say("Grandma", Expression.Warm, new[] {"All right, sweetheart. Let's go."}, () => {
+                        chapter = Chapter.Escort;
+                        grandmaFeet.enabled = false;
+                        trail.Clear();
+                        lastTrailPoint = grace.Feet;
+                        PlayMusic("RM_Remember");
+                    });
                 }))));
+        }
+
+        System.Collections.IEnumerator ServeCookies()
+        {
+            serving = true;
+            Vector2 place = new Vector2(759, 405);
+            Vector2 atTable = new Vector2(796, 409);
+            while (Vector2.Distance(grandma.Feet, place) > .5f || Vector2.Distance(grace.Feet, atTable) > .5f)
+            {
+                float dt = Mathf.Min(Time.deltaTime, .05f);
+                MoveGrandma(Vector2.MoveTowards(grandma.Feet, place, 123f * dt));
+                Vector2 next = Vector2.MoveTowards(grace.Feet, atTable, 143f * dt);
+                motor.MoveScripted(World(next));
+                Vector2 actual = motor.Body.position * Ppu;
+                grace.Feet = new Vector2(actual.x, -actual.y);
+                yield return null;
+            }
+            StopGrandma();
+            grace.View.Look(Vector2.up);
+            grandma.View.Look(Vector2.up);
+            largestServed = true;
+            serving = false;
+            Say("Grandma", Expression.Warm, new[] {"There. Your dad always sits right here. He likes the biggest one."}, () =>
+                Say("Grace", Expression.Reflective, new[] {"Where is he now?"}, () =>
+                Say("Grandma", new[] {"He'll be home from school soon."}, () =>
+                Say("Grace", Expression.Surprise, new[] {"From school?"}, () =>
+                Say("Grandma", new[] {"Oh. I should get his coat ready. It's cold outside."})))));
         }
 
         void AdvanceEnding(float dt)
         {
+            if (serving) return;
             float previous = endingTime;
             endingTime += dt;
             if (exitWaypoint < coatRoute.Length)
             {
-                Vector2 next = Vector2.MoveTowards(grandma.Feet,coatRoute[exitWaypoint],119f * dt);
-                MoveActor(grandma,next,dt);
+                Vector2 next = Vector2.MoveTowards(grandma.Feet, coatRoute[exitWaypoint], 116f * dt);
+                MoveGrandma(next);
                 if (next == coatRoute[exitWaypoint]) exitWaypoint++;
             }
             else grandma.View.Look(Vector2.up);
             if (previous < 3.8f && endingTime >= 3.8f) Play("Key", .7f);
             if (endingTime < 4.9f || exitWaypoint < coatRoute.Length) return;
             chapter = Chapter.Finished;
-            Play("RM_Chime", .47f);
-            Say("Grace", Expression.Tense, new[] { "Grandma, wait—!" });
+            Say("Grace", Expression.Tense, new[] { "Grandma? Wait!" });
         }
 
         void Say(string name, string[] words, Action onFinish = null)
@@ -832,7 +1246,10 @@ namespace RememberMe
             line = 0;
             afterDialogue = onFinish;
             if (name == "Grandma" && grandma.Renderer.enabled)
+            {
                 grandma.View.Look(World(grace.Feet - grandma.Feet));
+                grandmaHeading = grandma.View.Forward;
+            }
             PresentLine();
         }
 
@@ -846,11 +1263,15 @@ namespace RememberMe
         void LateUpdate()
         {
             PositionTray();
-            bool exploring = lines == null && choices == null;
+            bool exploring = bedroomArrival == 0 && lines == null && choices == null &&
+                !mixing && !shaping && chapter != Chapter.Ending;
             hud.ShowHUD(exploring);
             if (exploring)
                 hud.Guide(Objective(),"E",nearby == null ? "" :
-                    nearby == grandmaTarget && chapter == Chapter.ReturnForGrandma ? "Offer Grandma your hand" : nearby.Label);
+                    nearby == grandmaTarget && chapter == Chapter.ReturnForGrandma ? "Offer Grandma your hand" :
+                    chapter == Chapter.Cards && (nearby.Feet.x == 677 || nearby.Feet.x == 460 || nearby.Feet.x == 761)
+                        ? "Inspect the picture card" : nearby.Label);
+            UpdateKitchenCanvas();
         }
 
         void Advance()
@@ -889,82 +1310,47 @@ namespace RememberMe
 
         void PositionTray()
         {
-            cookieTray.enabled = chapter >= Chapter.Tray;
+            cookieTray.enabled = currentRoom == Room.Parlor && serving;
+            platedCookie.enabled = currentRoom == Room.Parlor && largestServed;
             if (!cookieTray.enabled) return;
-            bool carried = chapter > Chapter.Tray && chapter < Chapter.Ending;
-            Vector2 center = carried ? grace.Feet + new Vector2(18,-36) :
-                currentRoom == Room.Parlor ? new Vector2(778,290) : new Vector2(895,212);
+            bool grandmaCarries = currentRoom == Room.Parlor && serving;
+            bool carried = (chapter > Chapter.Tray && chapter < Chapter.Ending) || grandmaCarries;
+            var holder = grandmaCarries ? grandma : grace;
+            Vector2 center = carried ? holder.Feet + new Vector2(18, -36) :
+                currentRoom == Room.Parlor ? new Vector2(788, 292) : new Vector2(895, 212);
             cookieTray.transform.position = World(center);
-            cookieTray.transform.localScale = new Vector3(carried ? .27f : .41f,carried ? .13f : .19f,1);
-            cookieTray.sortingOrder = carried ? grace.Renderer.sortingOrder + 1 : 3;
+            float width = carried ? .27f : currentRoom == Room.Parlor ? .35f : .41f;
+            cookieTray.transform.localScale = new Vector3(width, carried ? .13f : .19f, 1);
+            cookieTray.sortingOrder = carried ? holder.Renderer.sortingOrder + 1 : 3;
+            enamel.SetFloat("_RemoveLargest", largestServed ? 1 : 0);
         }
 
         static int CountFinds(int bits) => (bits & 1) + ((bits >> 1) & 1) + ((bits >> 2) & 1);
 
         string Objective()
         {
+            if (whenGrandmaArrives != null) return "Wait for Grandma at the doorway.";
             switch (chapter)
             {
-                case Chapter.Bedroom: return "Open the keepsake box beside the bed.";
+                case Chapter.Bedroom: return "Check the sound beside the bed.";
+                case Chapter.MeetGrandma: return "Ask Grandma how you can help.";
                 case Chapter.Ingredients:
-                    if (ingredients == 7) return "Set the ingredients beside the recipe.";
-                    return "Gather ingredients  ·  " + CountFinds(ingredients) + " / 3";
-                case Chapter.Cards: return cards == 7 ? "Put Dad’s cards in order at the recipe book." :
-                    "Find Dad’s recipe cards  ·  " + CountFinds(cards) + " / 3";
+                    return ingredients == AllIngredients ? "Bring the ingredients to the recipe." : "Gather the ingredients.";
+                case Chapter.Cards: return cards == AllCards ? "Put Dad’s cards in order at the recipe." :
+                    $"Cards {CountFinds(cards)}/3 · " + ((cards & 1) == 0 ? "Check beside the bowl." :
+                    (cards & 2) == 0 ? "Check the oven counter." : "Check the fridge door.");
                 case Chapter.Baking: return BakingHint();
                 case Chapter.Tray: return "Pick up the blue serving tray.";
-                case Chapter.FindDoor: return "Find the room with the blue curtains.";
+                case Chapter.FirstCollapse: return "Bring the cookies to the living room.";
+                case Chapter.FindDoor: return currentRoom == Room.Kitchen ? "Try the doorway again." : "Find the living room.";
                 case Chapter.ReturnForGrandma:
                     if (currentRoom == Room.Hall) return "Return to the kitchen for Grandma.";
-                    return anchors == 0 ? "Find Grandma. The photo and music box may feel familiar." : "Go to Grandma and offer her your hand.";
+                    return "Offer Grandma your hand.";
                 case Chapter.Escort:
-                    return currentRoom == Room.Kitchen ? "Lead Grandma back to the hallway." : "Walk with Grandma to the blue curtains.";
+                    return currentRoom == Room.Kitchen ? "Lead Grandma to the hallway." : "Take Grandma to the living room.";
                 case Chapter.Finished: return "Chapter complete   ·   R to replay   /   Esc for title";
                 default: return "By the Blue Curtains";
             }
-        }
-
-        void OnGUI()
-        {
-            if (view == null) return;
-            Rect viewport = view.pixelRect;
-            var matrix = GUI.matrix;
-            GUI.matrix = Matrix4x4.TRS(new Vector3(viewport.xMin, Screen.height - viewport.yMax),
-                Quaternion.identity, new Vector3(viewport.width / Width, viewport.height / Height, 1f));
-
-            if (currentRoom == Room.Bedroom)
-            {
-                GUI.DrawTexture(new Rect(192, 347, 190, 150), quilt, ScaleMode.ScaleToFit);
-                GUI.DrawTexture(new Rect(382, 409, 50, 53), parcel, ScaleMode.ScaleToFit);
-            }
-            if (inspectJars)
-            {
-                Panel(new Rect(329,170,494,345));
-                GUI.DrawTextureWithTexCoords(new Rect(338,179,476,327), kitchenArt,
-                    new Rect(104f/480,1-104f/360,60f/480,41f/360));
-            }
-            if (waterSpace) Tint(new Rect(0,0,Width,Height),new Color(.025f,.055f,.075f,.94f));
-            if (visibleCard >= 0) GUI.DrawTexture(new Rect(405,245,342,212),cardArt[visibleCard]);
-            if (sortingCards)
-                for (int n = 0; n < remainingCardIds.Length; n++)
-                {
-                    float left = (Width - 171f) / 2f + (n - (remainingCardIds.Length - 1) / 2f) * 182f;
-                    GUI.DrawTexture(new Rect(left,340,171,106),cardArt[remainingCardIds[n]]);
-                }
-            if (throughDoor)
-            {
-                Panel(new Rect(240,127,672,448));
-                GUI.DrawTexture(new Rect(250,137,652,428),parlorPreview,ScaleMode.ScaleToFit);
-            }
-            if (showPhoto)
-            {
-                Panel(new Rect(240, 127, 672, 448));
-                GUI.DrawTexture(new Rect(250, 137, 652, 428), photo, ScaleMode.ScaleToFit);
-            }
-
-            if (transition > 0)
-                Tint(new Rect(0,0,Width,Height), new Color(.08f,.08f,.08f,transition/.45f));
-            GUI.matrix = matrix;
         }
 
         static void Tint(Rect rect, Color color)
