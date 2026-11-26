@@ -1,0 +1,13 @@
+{
+  "id": "narrative-trial-01",
+  "baseline": "ac9c4ae",
+  "engine": "6000.6.1f1",
+  "builtLocally": true,
+  "published": false,
+  "scripts": {
+    "Act1Game.cs": "3c22f2f0c90782763faffccc9b8dd94ea53d1ab18dd3080acd33e2c620435849",
+    "KitchenPrototype.cs": "5c386ec0ae26dde9230b9fb766a566c8eb65dac5f3e2abbe7ea574e189cbaaa4",
+    "KitchenPresentation.cs": "a47e6144840b2ffc3f0836f7f3d0893dc130fb94f1dcaea983348fcdbadb930e",
+    "KitchenRouteCheck.cs": "7733370fb0cd6a2fe69e9ceb1dda1f22ba31a33fb16df2e0007b731466d58fcd"
+  }
+}
