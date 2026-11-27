@@ -1,13 +1,17 @@
 {
-  "id": "narrative-trial-01",
-  "baseline": "ac9c4ae",
-  "engine": "6000.6.1f1",
-  "builtLocally": true,
-  "published": false,
-  "scripts": {
-    "Act1Game.cs": "3c22f2f0c90782763faffccc9b8dd94ea53d1ab18dd3080acd33e2c620435849",
-    "KitchenPrototype.cs": "5c386ec0ae26dde9230b9fb766a566c8eb65dac5f3e2abbe7ea574e189cbaaa4",
-    "KitchenPresentation.cs": "a47e6144840b2ffc3f0836f7f3d0893dc130fb94f1dcaea983348fcdbadb930e",
-    "KitchenRouteCheck.cs": "7733370fb0cd6a2fe69e9ceb1dda1f22ba31a33fb16df2e0007b731466d58fcd"
-  }
+    "id":  "narrative-trial-01",
+    "iteration":  2,
+    "baseline":  "ac9c4ae",
+    "engine":  "6000.6.1f1",
+    "builtLocally":  true,
+    "published":  false,
+    "builtAt":  "2026-11-27T02:37:30.2615330Z",
+    "scripts":  {
+                    "Act1Game.cs":  "3c22f2f0c90782763faffccc9b8dd94ea53d1ab18dd3080acd33e2c620435849",
+                    "KitchenPrototype.cs":  "f6afac950abad75d0a9a1aece0f1ad4bb1c06dd6d4b428a788a83b58a4ec2fce",
+                    "KitchenPresentation.cs":  "a8ac6998f5365bdaea56499743c1771c660ed031c76d1e249ab18cc4e3556aba",
+                    "KitchenRouteCheck.cs":  "594c226353c0f15d6a010ac9137ea2ff336db6a9fd0ab103366714975ebd25a9",
+                    "KitchenInventory.cs":  "883d3a51fafdfa1e729f0578509414c63ad01ff61334e1430ec2323233ce3e0c",
+                    "KitchenCanvas.cs":  "8fb2522fec62d63e092744157e4118e525992e3152d568186575c54c9861f758"
+                }
 }
